@@ -22,6 +22,7 @@
   "homepage": "https://github.com/mabu-github/gir2js#readme",
   "bin": "src/converter/convertGirToJs",
   "dependencies": {
+    "js-beautify": "^1.7.5",
     "xml2js": "^0.4.19"
   }
 }

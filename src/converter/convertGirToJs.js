@@ -3,7 +3,8 @@
 const
     xml2js = require('xml2js'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    beautify = require('js-beautify').js_beautify;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -19,7 +20,18 @@ function processGir(gir) {
     const repository = gir['repository'];
     repository['namespace'].forEach(function (namespace) {
         const name = namespace.$.name;
-        converted += "var " + name + " = {};\n";
+        converted += "var " + name + " = {"
+            + processClasses(namespace)
+            + "};\n";
+    });
+    return converted;
+}
+
+function processClasses(namespace) {
+    let converted = "";
+    namespace.class.forEach(function (clazz) {
+        const name = clazz.$.name;
+
     });
     return converted;
 }
@@ -28,7 +40,7 @@ parser = new xml2js.Parser();
 fs.readFile(girFile, function(err, data) {
     parser.parseString(data, function (err, result) {
         let converted = processGir(result);
-        fs.writeFile(jsFile, converted, function(err) {
+        fs.writeFile(jsFile, beautify(converted, {indent_size: 4}), function(err) {
             if(err) {
                 console.log(err);
             }
