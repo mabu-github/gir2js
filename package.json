@@ -20,5 +20,8 @@
     "url": "https://github.com/mabu-github/gir2js/issues"
   },
   "homepage": "https://github.com/mabu-github/gir2js#readme",
-  "bin": "src/converter/convertGirToJs"
+  "bin": "src/converter/convertGirToJs",
+  "dependencies": {
+    "xml2js": "^0.4.19"
+  }
 }
