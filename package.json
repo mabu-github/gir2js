@@ -1,0 +1,24 @@
+{
+  "name": "gir2js",
+  "version": "1.0.0",
+  "description": "Converts GIR 2 Javascript Code that can be used for autocompletion and documentation in IDEs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mabu-github/gir2js.git"
+  },
+  "keywords": [
+    "GIR",
+    "JS"
+  ],
+  "author": "Mathias Burger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mabu-github/gir2js/issues"
+  },
+  "homepage": "https://github.com/mabu-github/gir2js#readme",
+  "bin": "src/converter/convertGirToJs"
+}
