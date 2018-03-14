@@ -31,7 +31,10 @@ function processClasses(namespace) {
     let converted = "";
     namespace.class.forEach(function (clazz) {
         const name = clazz.$.name;
-
+        if (clazz.doc) {
+            converted += "/**" + clazz.doc[0]._ + "*/";
+        }
+        converted += name + ": " + "{},";
     });
     return converted;
 }
