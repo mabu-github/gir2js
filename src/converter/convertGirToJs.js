@@ -37,13 +37,34 @@ function processClasses(namespace) {
 
 function processClass(clazz) {
     let numConstructorParameters = 0;
+    let constructorSignatures = "";
+    const name = clazz.$.name;
+
     // first constructor belongs to JavaScript internals,
     // starting from second belongs to class definition
     if (clazz.constructor.length !== 1) {
-        clazz.constructor.forEach(function (constructor, idx) {
-            if (idx === 0) return;
+        clazz.constructor.forEach(function (constructor, constructorIdx) {
+            if (constructorIdx === 0) return;
             if (constructor.parameters) {
                 numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
+
+                constructorSignatures += "\n@signature";
+                constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
+                    constructorSignatures += "\n@param {";
+                    if (parameter.type) {
+                        constructorSignatures += getParameterType(parameter);
+                    } else if (parameter.varargs) {
+                        constructorSignatures += "...*";
+                    } else if (parameter.array) {
+                        constructorSignatures += "Array.<" + getParameterType(parameter.array[0]) + ">";
+                    } else {
+                        throw new TypeError("Expected typed parameter or varargs");
+                    }
+                    constructorSignatures += "} " + "arg" + parameterIdx;
+                });
+                constructorSignatures += "\n@return {" + name + "}";
+            } else {
+                constructorSignatures += "\n@signature\n@return {" + name + "}";
             }
         });
     }
@@ -54,18 +75,55 @@ function processClass(clazz) {
     }
 
     let converted = "";
-    converted += processDocumentation(clazz, converted);
-    converted += clazz.$.name + ": ";
+    converted += processDocumentation(clazz, constructorSignatures);
+    converted += name + ": ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{" + "}";
     converted += ",";
 
     return converted;
 }
 
-function processDocumentation(type) {
+function getParameterType(parameter) {
+    const parameterType = parameter.type[0].$.name;
+    let convertedParameterType = "";
+    if (parameterType === "utf8") {
+        convertedParameterType = "string";
+    } else if (parameterType === "gdouble"
+        || parameterType === "gfloat"
+        || parameterType === "gshort"
+        || parameterType === "gushort"
+        || parameterType === "gint"
+        || parameterType === "guint"
+        || parameterType === "glong"
+        || parameterType === "gulong"
+        || parameterType === "gint8"
+        || parameterType === "guint8"
+        || parameterType === "gint16"
+        || parameterType === "guint16"
+        || parameterType === "gint32"
+        || parameterType === "guint32"
+        || parameterType === "gint64"
+        || parameterType === "guint64"
+        || parameterType === "gsize"
+        || parameterType === "gssize"
+        || parameterType === "goffset"
+    ) {
+        convertedParameterType = "number";
+    } else if (parameterType === "gboolean") {
+        convertedParameterType = "boolean";
+    } else {
+        if (parameterType.startsWith("g")) {
+            throw new TypeError("Cannot handle glib type " + parameterType);
+        }
+        convertedParameterType = parameterType;
+    }
+    return convertedParameterType;
+}
+
+function processDocumentation(type, appendAdditionalDocumentation = "") {
     let converted = "";
     if (type.doc) {
-        converted += "/**" + type.doc[0]._ + "*/";
+        converted += "/**\n" + type.doc[0]._ + "\n" + appendAdditionalDocumentation + "\n*/";
     }
     return converted;
 }

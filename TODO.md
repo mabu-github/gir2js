@@ -7,13 +7,14 @@ Process elements in namespace:
 * class
 ** constructor
 *** does a parent constructor have to be handled when none is given? Currently parameterless default constructor is assumed.
-*** handle multiple constructors: use @signature annotation
+*** handle multiple constructors: use @signature annotation + describe parameter better than arg0, arg1, e.g. use name
 *** handle multiple constructors: process documentation per constructor and merge it with the classes docblock
     let documentation = "";
     if (clazz.constructor.length === 2) {
         documentation = processDocumentation(clazz.constructor[1])
     }
 *** constructor parameters
+**** handle parameter types that are not utf8->string or class
 ** fields
 ** signals
 ** implements
@@ -38,3 +39,6 @@ Add js-doc type hints:
 
 Try to find out how mapping works by using seed:
 * [Seed Examples](https://github.com/GNOME/seed-examples)
+
+Handle basic types in getParameterType():
+* [Glib Basic Types](https://developer.gnome.org/glib/stable/glib-Basic-Types.html)
