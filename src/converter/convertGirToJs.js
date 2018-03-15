@@ -45,6 +45,7 @@ function processClass(clazz) {
     if (clazz.constructor.length !== 1) {
         clazz.constructor.forEach(function (constructor, constructorIdx) {
             if (constructorIdx === 0) return;
+            constructorSignatures += "\n";
             if (constructor.parameters) {
                 numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
 
@@ -126,7 +127,7 @@ function getParameterType(parameter) {
 function processDocumentation(type, appendAdditionalDocumentation = "") {
     let converted = "";
     if (type.doc) {
-        converted += "/**\n" + type.doc[0]._ + "\n" + appendAdditionalDocumentation + "\n*/";
+        converted += "/**\n" + type.doc[0]._ + appendAdditionalDocumentation + "\n*/";
     }
     return converted;
 }
