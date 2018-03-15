@@ -4,7 +4,8 @@ const
     xml2js = require('xml2js'),
     fs = require('fs'),
     path = require('path'),
-    beautify = require('js-beautify').js_beautify;
+    beautify = require('js-beautify').js_beautify,
+    getParameterType = require('./conversions/glibBasicTypes.js').getParameterType;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -86,43 +87,6 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
-}
-
-function getParameterType(parameter) {
-    const parameterType = parameter.type[0].$.name;
-    let convertedParameterType = "";
-    if (parameterType === "utf8") {
-        convertedParameterType = "string";
-    } else if (parameterType === "gdouble"
-        || parameterType === "gfloat"
-        || parameterType === "gshort"
-        || parameterType === "gushort"
-        || parameterType === "gint"
-        || parameterType === "guint"
-        || parameterType === "glong"
-        || parameterType === "gulong"
-        || parameterType === "gint8"
-        || parameterType === "guint8"
-        || parameterType === "gint16"
-        || parameterType === "guint16"
-        || parameterType === "gint32"
-        || parameterType === "guint32"
-        || parameterType === "gint64"
-        || parameterType === "guint64"
-        || parameterType === "gsize"
-        || parameterType === "gssize"
-        || parameterType === "goffset"
-    ) {
-        convertedParameterType = "number";
-    } else if (parameterType === "gboolean") {
-        convertedParameterType = "boolean";
-    } else {
-        if (parameterType.startsWith("g")) {
-            throw new TypeError("Cannot handle glib type " + parameterType);
-        }
-        convertedParameterType = parameterType;
-    }
-    return convertedParameterType;
 }
 
 function processDocumentation(type, appendAdditionalDocumentation = "") {
