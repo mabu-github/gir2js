@@ -81,7 +81,7 @@ function processClass(namespace, clazz) {
     converted += processDocumentation(clazz, constructorSignatures);
     converted += namespace + "." + name + " = ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
-        + "/** " + "\n@constructor" + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};"
+        + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};"
         + "}";
     converted += ";\n";
 
