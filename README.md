@@ -1,5 +1,8 @@
 # gir2js
-Converts GIR 2 Javascript Code that can be used for autocompletion and documentation in IDEs
+
+Converts GIR 2 Javascript Code that can be used for autocompletion and documentation in IDEs.
+
+Motivation: it is much easier to develop when autocompletion can be provided where possible.
 
 ## Setup
 
