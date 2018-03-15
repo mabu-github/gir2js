@@ -5,7 +5,9 @@ const
     fs = require('fs'),
     path = require('path'),
     beautify = require('js-beautify').js_beautify,
-    getParameterType = require('./conversions/glibBasicTypes.js').getParameterType;
+    getParameterType = require('./conversions/glibBasicTypes.js').getParameterType,
+    processDocumentation = require('./conversions/documentation.js').processDocumentation,
+    processSignals = require('./conversions/signals').processSignals;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -78,22 +80,17 @@ function processClass(namespace, clazz) {
         constructorParameters[i] = "arg" + i;
     }
 
+    let signals = processSignals(clazz);
+
     let converted = "\n";
     converted += processDocumentation(clazz, constructorSignatures);
     converted += namespace + "." + name + " = ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
-        + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};"
+        + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
+        + signals
         + "}";
     converted += ";\n";
 
-    return converted;
-}
-
-function processDocumentation(type, appendAdditionalDocumentation = "") {
-    let converted = "";
-    if (type.doc) {
-        converted += "/**\n" + type.doc[0]._ + appendAdditionalDocumentation + "\n*/";
-    }
     return converted;
 }
 
