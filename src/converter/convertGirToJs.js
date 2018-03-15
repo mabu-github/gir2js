@@ -61,6 +61,9 @@ function processClass(clazz) {
                         throw new TypeError("Expected typed parameter or varargs");
                     }
                     constructorSignatures += "} " + "arg" + parameterIdx;
+                    if (parameter.$.name) {
+                        constructorSignatures += " " + parameter.$.name;
+                    }
                 });
                 constructorSignatures += "\n@return {" + name + "}";
             } else {
