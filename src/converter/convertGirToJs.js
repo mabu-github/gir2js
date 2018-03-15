@@ -80,18 +80,28 @@ function processClass(namespace, clazz) {
         constructorParameters[i] = "arg" + i;
     }
 
-    let signals = processSignals(clazz);
-
     let converted = "\n";
     converted += processDocumentation(clazz, constructorSignatures);
     converted += namespace + "." + name + " = ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
         + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
-        + signals
+        + processSignals(clazz)
+        + processProperties(clazz)
         + "}";
     converted += ";\n";
 
     return converted;
+}
+
+function processProperties(clazz) {
+    if (!clazz.property) return "";
+
+    let properties = "";
+    clazz.property.forEach(function (property) {
+        properties += processDocumentation(property);
+        properties += "this['" + property.$.name + "'] = null;\n";
+    });
+    return properties;
 }
 
 parser = new xml2js.Parser();

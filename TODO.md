@@ -29,6 +29,8 @@ Process elements in namespace:
 ** implements
 ** methods
 ** properties
+*** autocompletion for properties with - sign does not work
+*** property type hint
 ** virtual methods
 * constant
 * enumeration
