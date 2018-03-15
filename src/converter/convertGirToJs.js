@@ -30,12 +30,43 @@ function processGir(gir) {
 function processClasses(namespace) {
     let converted = "";
     namespace.class.forEach(function (clazz) {
-        const name = clazz.$.name;
-        if (clazz.doc) {
-            converted += "/**" + clazz.doc[0]._ + "*/";
-        }
-        converted += name + ": " + "{},";
+        converted += processClass(clazz);
     });
+    return converted;
+}
+
+function processClass(clazz) {
+    let numConstructorParameters = 0;
+    // first constructor belongs to JavaScript internals,
+    // starting from second belongs to class definition
+    if (clazz.constructor.length !== 1) {
+        clazz.constructor.forEach(function (constructor, idx) {
+            if (idx === 0) return;
+            if (constructor.parameters) {
+                numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
+            }
+        });
+    }
+
+    let constructorParameters = [];
+    for (let i = 0; i < numConstructorParameters; i++) {
+        constructorParameters[i] = "arg" + i;
+    }
+
+    let converted = "";
+    converted += processDocumentation(clazz, converted);
+    converted += clazz.$.name + ": ";
+    converted += "function (" + constructorParameters.join(", ") + ")" + "{" + "}";
+    converted += ",";
+
+    return converted;
+}
+
+function processDocumentation(type) {
+    let converted = "";
+    if (type.doc) {
+        converted += "/**" + type.doc[0]._ + "*/";
+    }
     return converted;
 }
 
