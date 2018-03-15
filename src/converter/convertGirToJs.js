@@ -20,9 +20,8 @@ function processGir(gir) {
     const repository = gir['repository'];
     repository['namespace'].forEach(function (namespace) {
         const name = namespace.$.name;
-        converted += "var " + name + " = {"
-            + processClasses(namespace)
-            + "};\n";
+        converted += "var " + name + " = {};\n";
+        converted += processClasses(namespace)
     });
     return converted;
 }
@@ -30,12 +29,12 @@ function processGir(gir) {
 function processClasses(namespace) {
     let converted = "";
     namespace.class.forEach(function (clazz) {
-        converted += processClass(clazz);
+        converted += processClass(namespace.$.name, clazz);
     });
     return converted;
 }
 
-function processClass(clazz) {
+function processClass(namespace, clazz) {
     let numConstructorParameters = 0;
     let constructorSignatures = "";
     const name = clazz.$.name;
@@ -78,11 +77,13 @@ function processClass(clazz) {
         constructorParameters[i] = "arg" + i;
     }
 
-    let converted = "";
+    let converted = "\n";
     converted += processDocumentation(clazz, constructorSignatures);
-    converted += name + ": ";
-    converted += "function (" + constructorParameters.join(", ") + ")" + "{" + "}";
-    converted += ",";
+    converted += namespace + "." + name + " = ";
+    converted += "function (" + constructorParameters.join(", ") + ")" + "{"
+        + "/** " + "\n@constructor" + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};"
+        + "}";
+    converted += ";\n";
 
     return converted;
 }
