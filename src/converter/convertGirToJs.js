@@ -9,6 +9,7 @@ const
     processDocumentation = require('./conversions/documentation.js').processDocumentation,
     getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
+    processConstants = require('./conversions/constant.js').processConstants,
     processSignals = require('./conversions/signals').processSignals;
 
 const girFile = process.argv[2];
@@ -26,8 +27,9 @@ function processGir(gir) {
     repository['namespace'].forEach(function (namespace) {
         const name = namespace.$.name;
         converted += "var " + name + " = {};\n";
-        converted += processClasses(namespace);
+        converted += processConstants(namespace);
         converted += processEnumerations(namespace);
+        converted += processClasses(namespace);
     });
     return converted;
 }

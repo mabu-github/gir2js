@@ -31,7 +31,8 @@ Process elements in namespace:
 *** autocompletion for properties with - sign does not work
 *** (/) property type hint
 ** virtual methods
-* constant
+* (/) constant
+** (/) respect constant type
 * enumeration
 * function
 * interface

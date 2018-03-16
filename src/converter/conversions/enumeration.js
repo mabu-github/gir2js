@@ -10,7 +10,7 @@ exports.processEnumerations = function(namespace) {
         enumerations += fullyQualifiedEnumName + " = {";
         enumeration.member.forEach(function (enumMember) {
             enumerations += processDocumentation(enumMember);
-            enumerations += enumMember.$.name.toUpperCase() + ":  " + Number(enumMember.$.value) + ",";
+            enumerations += enumMember.$.name.toUpperCase() + ":  " + enumMember.$.value + ",";
         });
         enumerations += "};";
     });
