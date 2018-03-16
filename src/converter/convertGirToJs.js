@@ -53,20 +53,8 @@ function processClass(namespace, clazz) {
 
                 constructorSignatures += "\n@signature";
                 constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                    constructorSignatures += "\n@param {";
-                    if (parameter.type) {
-                        constructorSignatures += getParameterType(parameter);
-                    } else if (parameter.varargs) {
-                        constructorSignatures += "...*";
-                    } else if (parameter.array) {
-                        constructorSignatures += "Array.<" + getParameterType(parameter.array[0]) + ">";
-                    } else {
-                        throw new TypeError("Expected typed parameter or varargs");
-                    }
-                    constructorSignatures += "} " + "arg" + parameterIdx;
-                    if (parameter.$.name) {
-                        constructorSignatures += " " + parameter.$.name;
-                    }
+                    const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
+                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, alternativeParameterName);
                 });
                 constructorSignatures += "\n@return {" + name + "}";
             } else {
@@ -93,12 +81,34 @@ function processClass(namespace, clazz) {
     return converted;
 }
 
+function getDocblockSignatureForParameter(docTag, parameter, alternativeParameterName=undefined) {
+    let docblockSignature = "";
+    docblockSignature += "\n" + docTag + " {";
+    if (parameter.type) {
+        docblockSignature += getParameterType(parameter);
+    } else if (parameter.varargs) {
+        docblockSignature += "...*";
+    } else if (parameter.array) {
+        docblockSignature += "Array.<" + getParameterType(parameter.array[0]) + ">";
+    } else {
+        throw new TypeError("Expected typed parameter or varargs");
+    }
+    docblockSignature += "}";
+    if (!alternativeParameterName) {
+        docblockSignature += " " + parameter.$.name;
+    } else {
+        docblockSignature += " " + alternativeParameterName;
+    }
+    return docblockSignature;
+}
+
 function processProperties(clazz) {
     if (!clazz.property) return "";
 
     let properties = "";
     clazz.property.forEach(function (property) {
-        properties += processDocumentation(property);
+        let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property);
+        properties += processDocumentation(property, propertySignature);
         properties += "this['" + property.$.name + "'] = null;\n";
     });
     return properties;
