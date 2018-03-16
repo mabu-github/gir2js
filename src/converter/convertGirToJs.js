@@ -5,7 +5,7 @@ const
     fs = require('fs'),
     path = require('path'),
     beautify = require('js-beautify').js_beautify,
-    getParameterType = require('./conversions/glibBasicTypes.js').getParameterType,
+    getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
     processDocumentation = require('./conversions/documentation.js').processDocumentation,
     getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
     processSignals = require('./conversions/signals').processSignals;
@@ -48,19 +48,16 @@ function processClass(namespace, clazz) {
     if (clazz.constructor.length !== 1) {
         clazz.constructor.forEach(function (constructor, constructorIdx) {
             if (constructorIdx === 0) return;
-            constructorSignatures += "\n";
+            constructorSignatures += "\n\n@signature";
             if (constructor.parameters) {
                 numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
 
-                constructorSignatures += "\n@signature";
                 constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                     const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
                     constructorSignatures += getDocblockSignatureForParameter("@param", parameter, alternativeParameterName);
                 });
-                constructorSignatures += "\n@return {" + name + "}";
-            } else {
-                constructorSignatures += "\n@signature\n@return {" + name + "}";
             }
+            constructorSignatures += "\n@return {" + name + "}";
         });
     }
 
@@ -75,14 +72,15 @@ function processClass(namespace, clazz) {
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
         + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(clazz)
-        + processProperties(clazz)
+        + processClassProperties(clazz)
+        + processClassMethods(clazz)
         + "}";
     converted += ";\n";
 
     return converted;
 }
 
-function processProperties(clazz) {
+function processClassProperties(clazz) {
     if (!clazz.property) return "";
 
     let properties = "";
@@ -94,6 +92,27 @@ function processProperties(clazz) {
     return properties;
 }
 
+function processClassMethods(clazz) {
+    if (!clazz.method) return "";
+
+    let classMethods = "";
+    clazz.method.forEach(function (method) {
+        let methodSignature = "";
+        let methodParameters = [];
+        if (method.parameters && method.parameters[0].parameter) {
+            method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
+                methodSignature += getDocblockSignatureForParameter("@param", parameter);
+                methodParameters[parameterIdx] = parameter.$.name;
+            });
+        }
+        classMethods += processDocumentation(method, methodSignature);
+        classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
+    });
+
+    return classMethods;
+}
+
+// write conversion
 parser = new xml2js.Parser();
 fs.readFile(girFile, function(err, data) {
     parser.parseString(data, function (err, result) {
@@ -104,4 +123,12 @@ fs.readFile(girFile, function(err, data) {
             }
         });
     });
+});
+
+// write additional type file for types without javascript equivalent
+let types = "var " + getTypesWithoutJsEquivalent().join(";\nvar ") + ";\n";
+fs.writeFile(path.dirname(jsFile) + "/incompatibleTypes.js", beautify(types, {indent_size: 4}), function(err) {
+    if(err) {
+        console.log(err);
+    }
 });

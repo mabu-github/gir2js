@@ -21,7 +21,7 @@ Process elements in namespace:
 **** a signal can probably do more than connect()
 **** add signal method documentation (e.g. to all connect calls etc.)
 **** autocompletion for signals does not work
-*** class properties
+*** (/) class properties
 *** class fields
 *** class virtual-methods
 ** fields
@@ -38,25 +38,18 @@ Process elements in namespace:
 * interface
 * record
 
-Check against schema elements:
-* [GIR Reference](https://github.com/GNOME/gobject-introspection/blob/master/docs/reference/gi-gir-reference.xml)
-* [GIR Schema](https://github.com/shana/bindinator/blob/master/scheme/gir.xsd)
-
-Add js-doc type hints:
-* [Webstorm Type Validation](https://blog.jetbrains.com/webstorm/2012/10/validating-javascript-code-with-jsdoc-types-annotations/)
-* [Closure Compiler JS Annotations](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler)
-* [JS Doc](http://usejsdoc.org/index.html)
-* [Article about Typehinting in JS](https://strongloop.com/strongblog/type-hinting-in-javascript/)
-
 Try to find out how mapping works by using seed:
 * [Seed Examples](https://github.com/GNOME/seed-examples)
 
 Handle basic types in getParameterType():
-* [Glib Basic Types](https://developer.gnome.org/glib/stable/glib-Basic-Types.html)
 * is GStr also a normal string in javascript?
 * take care of namespace: Gtk.Action instead of Action (all kind of types)
 ** return types
 ** parameter types
 ** property types
+* is conversion valid? find example
+** gpointer -> string (closest equivalent to byte data), or better ArrayBuffer?
 
 Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script accordingly.
+
+Why is there an empty docblock in Gtk.WindowAccessible.c_new()?

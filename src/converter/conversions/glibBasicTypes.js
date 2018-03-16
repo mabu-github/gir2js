@@ -1,7 +1,10 @@
 exports.getParameterType = function(parameter) {
     const parameterType = parameter.type[0].$.name;
     let convertedParameterType = "";
-    if (parameterType === "utf8") {
+    if (parameterType === "utf8"
+        || parameterType === "gchar"
+        || parameterType === "guchar"
+        || parameterType === "gunichar") {
         convertedParameterType = "string";
     } else if (parameterType === "gdouble"
         || parameterType === "gfloat"
@@ -27,10 +30,21 @@ exports.getParameterType = function(parameter) {
     } else if (parameterType === "gboolean") {
         convertedParameterType = "boolean";
     } else {
-        if (parameterType.startsWith("g")) {
+        if (exports.getTypesWithoutJsEquivalent().includes(parameterType)) {
+            console.warn("Could not convert " + parameterType + " to JavaScript");
+        } else if (parameterType.startsWith("g")) {
             throw new TypeError("Cannot handle glib type " + parameterType);
         }
         convertedParameterType = parameterType;
     }
     return convertedParameterType;
+};
+
+exports.getTypesWithoutJsEquivalent = function() {
+    return [
+        'gpointer',
+        'gconstpointer',
+        'gintptr',
+        'guintptr'
+    ];
 };
