@@ -36,7 +36,8 @@ JS-DOC Typehints:
 * [JS Doc](http://usejsdoc.org/index.html)
 * [Article about Typehinting in JS](https://strongloop.com/strongblog/type-hinting-in-javascript/)
 
-Seed examples:
+Seed:
+* [Seed runtime documentation](https://people.gnome.org/~racarr/seed/runtime.html)
 * [Seed Examples](https://github.com/GNOME/seed-examples)
 
 Glib Basic Types:

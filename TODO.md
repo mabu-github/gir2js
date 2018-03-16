@@ -53,3 +53,6 @@ Handle basic types in getParameterType():
 Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script accordingly.
 
 Why is there an empty docblock in Gtk.WindowAccessible.c_new()?
+
+Improve seed runtime info file:
+* [Seed runtime documentation](https://people.gnome.org/~racarr/seed/runtime.html)
