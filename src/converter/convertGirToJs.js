@@ -11,7 +11,8 @@ const
     transformJsKeywords = require('./conversions/jsKeywords.js').transformJsKeywords,
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
-    processSignals = require('./conversions/signals').processSignals;
+    processSignals = require('./conversions/signals.js').processSignals,
+    createSeedRuntimeInformation = require("./runtime/seed.js").createSeedRuntimeInformation;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -137,6 +138,13 @@ fs.readFile(girFile, function(err, data) {
 // write additional type file for types without javascript equivalent
 let types = "var " + getTypesWithoutJsEquivalent().join(";\nvar ") + ";\n";
 fs.writeFile(path.dirname(jsFile) + "/GLibJsIncompatibleTypes.js", beautify(types, {indent_size: 4}), function(err) {
+    if(err) {
+        console.log(err);
+    }
+});
+
+// put seed runtime file to output
+fs.writeFile(path.dirname(jsFile) + "/Seed.js", beautify(createSeedRuntimeInformation(), {indent_size: 4}), function(err) {
     if(err) {
         console.log(err);
     }
