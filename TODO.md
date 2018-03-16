@@ -5,10 +5,10 @@ Process elements in namespace:
 * bitfield
 * callback
 * class
-** constructor
+** (/) constructor
 *** does a parent constructor have to be handled when none is given? Currently parameterless default constructor is assumed.
 *** (/) handle multiple constructors: use @signature annotation + describe parameter better than arg0, arg1, e.g. use name
-*** handle multiple constructors: process documentation per constructor and merge it with the classes docblock
+*** (/) handle multiple constructors: process documentation per constructor and merge it with the classes docblock
     let documentation = "";
     if (clazz.constructor.length === 2) {
         documentation = processDocumentation(clazz.constructor[1])
@@ -16,21 +16,20 @@ Process elements in namespace:
 *** (/) constructor parameters
 **** (/) handle parameter types that are not utf8->string or class
 *** handle constructor parameters parameter object, e.g. new Gtk.Window.(^{^ type: Gtk.WindowType.TOPLEVEL });
-*** class methods
-*** class signals
+*** (/) class methods
+*** class functions
+*** (/) class signals
 **** a signal can probably do more than connect()
 **** add signal method documentation (e.g. to all connect calls etc.)
 **** autocompletion for signals does not work
 *** (/) class properties
 *** class fields
 *** class virtual-methods
-** fields
-** signals
-** implements
-** methods
-** properties
+*** implements
+** (/) methods
+** (/) properties
 *** autocompletion for properties with - sign does not work
-*** property type hint
+*** (/) property type hint
 ** virtual methods
 * constant
 * enumeration
@@ -53,3 +52,5 @@ Handle basic types in getParameterType():
 Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script accordingly.
 
 Why is there an empty docblock in Gtk.WindowAccessible.c_new()?
+
+Vararg handling is broken: ... is printed out in function signature.

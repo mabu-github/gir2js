@@ -8,6 +8,7 @@ const
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
     processDocumentation = require('./conversions/documentation.js').processDocumentation,
     getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
+    processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processSignals = require('./conversions/signals').processSignals;
 
 const girFile = process.argv[2];
@@ -25,7 +26,8 @@ function processGir(gir) {
     repository['namespace'].forEach(function (namespace) {
         const name = namespace.$.name;
         converted += "var " + name + " = {};\n";
-        converted += processClasses(namespace)
+        converted += processClasses(namespace);
+        converted += processEnumerations(namespace);
     });
     return converted;
 }
