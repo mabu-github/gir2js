@@ -1,4 +1,9 @@
 exports.getParameterType = function(parameter) {
+    if (!parameter.type[0].$) {
+        console.warn("Found non introspectable type");
+        return "__non_introspectable_type__";
+    }
+
     const parameterType = parameter.type[0].$.name;
     let convertedParameterType = "";
     if (parameterType === "utf8"
@@ -42,6 +47,7 @@ exports.getParameterType = function(parameter) {
 
 exports.getTypesWithoutJsEquivalent = function() {
     return [
+        '__non_introspectable_type__',
         'gpointer',
         'gconstpointer',
         'gintptr',
