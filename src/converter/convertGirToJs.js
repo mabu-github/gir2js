@@ -106,7 +106,9 @@ function processClassMethods(clazz) {
         if (method.parameters && method.parameters[0].parameter) {
             method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                 methodSignature += getDocblockSignatureForParameter("@param", parameter);
-                methodParameters[parameterIdx] = parameter.$.name;
+                if (parameter.$.name !== "...") {
+                    methodParameters[parameterIdx] = parameter.$.name;
+                }
             });
         }
         classMethods += processDocumentation(method, methodSignature);

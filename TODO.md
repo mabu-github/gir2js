@@ -52,5 +52,3 @@ Handle basic types in getParameterType():
 Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script accordingly.
 
 Why is there an empty docblock in Gtk.WindowAccessible.c_new()?
-
-Vararg handling is broken: ... is printed out in function signature.
