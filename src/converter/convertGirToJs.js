@@ -7,6 +7,7 @@ const
     beautify = require('js-beautify').js_beautify,
     getParameterType = require('./conversions/glibBasicTypes.js').getParameterType,
     processDocumentation = require('./conversions/documentation.js').processDocumentation,
+    getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
     processSignals = require('./conversions/signals').processSignals;
 
 const girFile = process.argv[2];
@@ -79,27 +80,6 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
-}
-
-function getDocblockSignatureForParameter(docTag, parameter, alternativeParameterName=undefined) {
-    let docblockSignature = "";
-    docblockSignature += "\n" + docTag + " {";
-    if (parameter.type) {
-        docblockSignature += getParameterType(parameter);
-    } else if (parameter.varargs) {
-        docblockSignature += "...*";
-    } else if (parameter.array) {
-        docblockSignature += "Array.<" + getParameterType(parameter.array[0]) + ">";
-    } else {
-        throw new TypeError("Expected typed parameter or varargs");
-    }
-    docblockSignature += "}";
-    if (!alternativeParameterName) {
-        docblockSignature += " " + parameter.$.name;
-    } else {
-        docblockSignature += " " + alternativeParameterName;
-    }
-    return docblockSignature;
 }
 
 function processProperties(clazz) {

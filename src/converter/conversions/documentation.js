@@ -1,3 +1,5 @@
+const getParameterType = require('./glibBasicTypes.js').getParameterType;
+
 exports.processDocumentation = function(type, appendAdditionalDocumentation=undefined) {
     if (!type.doc && !appendAdditionalDocumentation) return "";
 
@@ -12,4 +14,25 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
     converted += "\n*/";
 
     return converted;
+};
+
+exports.getDocblockSignatureForParameter = function(docTag, parameter, alternativeParameterName=undefined) {
+    let docblockSignature = "";
+    docblockSignature += "\n" + docTag + " {";
+    if (parameter.type) {
+        docblockSignature += getParameterType(parameter);
+    } else if (parameter.varargs) {
+        docblockSignature += "...*";
+    } else if (parameter.array) {
+        docblockSignature += "Array.<" + getParameterType(parameter.array[0]) + ">";
+    } else {
+        throw new TypeError("Expected typed parameter or varargs");
+    }
+    docblockSignature += "}";
+    if (!alternativeParameterName) {
+        docblockSignature += " " + parameter.$.name;
+    } else {
+        docblockSignature += " " + alternativeParameterName;
+    }
+    return docblockSignature;
 };
