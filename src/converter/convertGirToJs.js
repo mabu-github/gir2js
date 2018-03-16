@@ -31,6 +31,8 @@ function processGir(gir) {
 }
 
 function processClasses(namespace) {
+    if (!namespace.class) return "";
+
     let converted = "";
     namespace.class.forEach(function (clazz) {
         converted += processClass(namespace.$.name, clazz);
