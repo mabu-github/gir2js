@@ -1,4 +1,6 @@
-const getParameterType = require('./glibBasicTypes.js').getParameterType;
+const
+    getParameterType = require('./glibBasicTypes.js').getParameterType,
+    transformJsKeywords = require('./jsKeywords.js').transformJsKeywords;
 
 exports.processDocumentation = function(type, appendAdditionalDocumentation=undefined) {
     if (!type.doc && !appendAdditionalDocumentation) return "";
@@ -30,7 +32,7 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, alternati
     }
     docblockSignature += "}";
     if (!alternativeParameterName) {
-        docblockSignature += " " + parameter.$.name;
+        docblockSignature += " " + transformJsKeywords(parameter.$.name, "", "_");
     } else {
         docblockSignature += " " + alternativeParameterName;
     }

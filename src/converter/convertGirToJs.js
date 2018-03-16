@@ -8,6 +8,7 @@ const
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
     processDocumentation = require('./conversions/documentation.js').processDocumentation,
     getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
+    transformJsKeywords = require('./conversions/jsKeywords.js').transformJsKeywords,
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
     processSignals = require('./conversions/signals').processSignals;
@@ -109,7 +110,7 @@ function processClassMethods(clazz) {
             method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                 methodSignature += getDocblockSignatureForParameter("@param", parameter);
                 if (parameter.$.name !== "...") {
-                    methodParameters[parameterIdx] = parameter.$.name;
+                    methodParameters[parameterIdx] = transformJsKeywords(parameter.$.name, "", "_");
                 }
             });
         }
@@ -135,7 +136,7 @@ fs.readFile(girFile, function(err, data) {
 
 // write additional type file for types without javascript equivalent
 let types = "var " + getTypesWithoutJsEquivalent().join(";\nvar ") + ";\n";
-fs.writeFile(path.dirname(jsFile) + "/incompatibleTypes.js", beautify(types, {indent_size: 4}), function(err) {
+fs.writeFile(path.dirname(jsFile) + "/GLibJsIncompatibleTypes.js", beautify(types, {indent_size: 4}), function(err) {
     if(err) {
         console.log(err);
     }
