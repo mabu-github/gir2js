@@ -33,7 +33,7 @@ Process elements in namespace:
 ** virtual methods
 * (/) constant
 ** (/) respect constant type
-* enumeration
+* (/) enumeration
 * function
 * interface
 * record
