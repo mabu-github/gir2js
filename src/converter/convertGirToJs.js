@@ -62,10 +62,10 @@ function processClass(namespace, clazz) {
 
                 constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                     const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
-                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, alternativeParameterName);
+                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
                 });
             }
-            constructorSignatures += "\n@return {" + name + "}";
+            constructorSignatures += "\n@return {" + namespace + "." + name + "}";
         });
     }
 
@@ -80,27 +80,27 @@ function processClass(namespace, clazz) {
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
         + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(clazz)
-        + processClassProperties(clazz)
-        + processClassMethods(clazz)
+        + processClassProperties(namespace, clazz)
+        + processClassMethods(namespace, clazz)
         + "}";
     converted += ";\n";
 
     return converted;
 }
 
-function processClassProperties(clazz) {
+function processClassProperties(namespace, clazz) {
     if (!clazz.property) return "";
 
     let properties = "";
     clazz.property.forEach(function (property) {
-        let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property);
+        let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property, namespace);
         properties += processDocumentation(property, propertySignature);
         properties += "this['" + property.$.name + "'] = null;\n";
     });
     return properties;
 }
 
-function processClassMethods(clazz) {
+function processClassMethods(namespace, clazz) {
     if (!clazz.method) return "";
 
     let classMethods = "";
@@ -109,7 +109,7 @@ function processClassMethods(clazz) {
         let methodParameters = [];
         if (method.parameters && method.parameters[0].parameter) {
             method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                methodSignature += getDocblockSignatureForParameter("@param", parameter);
+                methodSignature += getDocblockSignatureForParameter("@param", parameter, namespace);
                 if (parameter.$.name !== "...") {
                     methodParameters[parameterIdx] = transformJsKeywords(parameter.$.name, "", "_");
                 }

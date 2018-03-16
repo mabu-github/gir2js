@@ -1,4 +1,4 @@
-exports.getParameterType = function(parameter) {
+exports.getParameterType = function(parameter, namespace) {
     if (!parameter.type[0].$) {
         console.warn("Found non introspectable type");
         return "__non_introspectable_type__";
@@ -40,7 +40,11 @@ exports.getParameterType = function(parameter) {
         } else if (parameterType.startsWith("g")) {
             throw new TypeError("Cannot handle glib type " + parameterType);
         }
-        convertedParameterType = parameterType;
+        if (parameterType.indexOf(".") > -1) {
+            convertedParameterType = parameterType;
+        } else {
+            convertedParameterType = namespace + "." + parameterType;
+        }
     }
     return convertedParameterType;
 };

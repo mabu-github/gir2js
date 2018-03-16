@@ -7,9 +7,9 @@ exports.processConstants = function(namespace) {
 
     let constants = "";
     namespace.constant.forEach(function (constant) {
-        constants += processDocumentation(constant, getDocblockSignatureForParameter("@type", constant));
-        constants += fullyQualifiedEnumName = namespace.$.name + "." + constant.$.name + " = ";
-        if (getParameterType(constant) === "string") {
+        constants += processDocumentation(constant, getDocblockSignatureForParameter("@type", constant, namespace.$.name));
+        constants += namespace.$.name + "." + constant.$.name + " = ";
+        if (getParameterType(constant, namespace.$.name) === "string") {
             constants += '"' + constant.$.value + '"';
         } else {
             constants += constant.$.value;

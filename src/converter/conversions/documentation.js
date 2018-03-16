@@ -18,15 +18,15 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
     return converted;
 };
 
-exports.getDocblockSignatureForParameter = function(docTag, parameter, alternativeParameterName=undefined) {
+exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
     let docblockSignature = "";
     docblockSignature += "\n" + docTag + " {";
     if (parameter.type) {
-        docblockSignature += getParameterType(parameter);
+        docblockSignature += getParameterType(parameter, namespace);
     } else if (parameter.varargs) {
         docblockSignature += "...*";
     } else if (parameter.array) {
-        docblockSignature += "Array.<" + getParameterType(parameter.array[0]) + ">";
+        docblockSignature += "Array.<" + getParameterType(parameter.array[0], namespace) + ">";
     } else {
         throw new TypeError("Expected typed parameter or varargs");
     }
