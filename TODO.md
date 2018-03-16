@@ -38,9 +38,6 @@ Process elements in namespace:
 * interface
 * record
 
-Handle return types correctly:
-* take care of namespace: Gtk.Action instead of Action 
-
 Check against schema elements:
 * [GIR Reference](https://github.com/GNOME/gobject-introspection/blob/master/docs/reference/gi-gir-reference.xml)
 * [GIR Schema](https://github.com/shana/bindinator/blob/master/scheme/gir.xsd)
@@ -57,3 +54,9 @@ Try to find out how mapping works by using seed:
 Handle basic types in getParameterType():
 * [Glib Basic Types](https://developer.gnome.org/glib/stable/glib-Basic-Types.html)
 * is GStr also a normal string in javascript?
+* take care of namespace: Gtk.Action instead of Action (all kind of types)
+** return types
+** parameter types
+** property types
+
+Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script accordingly.
