@@ -4,6 +4,7 @@ exports.createSeedRuntimeInformation = function() {
     seed += "Seed = {};\n";
     seed += "Seed.print = function(string) {};\n";
     seed += "Seed.argv = [];\n";
+    seed += "Seed.quit = function() {};\n";
 
     seed += "/** Native module imports, e.g. imports.readline */";
     seed += "var imports = {};\n";
