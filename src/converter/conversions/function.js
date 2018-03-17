@@ -5,7 +5,9 @@ const getDocblockSignatureForParameter = require("./documentation").getDocblockS
 const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
 const getDocblockReturnValue = require("./documentation").getDocblockReturnValue;
 
-function processFunctions(namespace, functions) {
+function processFunctions(namespace, functions, withoutClass) {
+    if (!functions) return "";
+
     let classMethods = "";
     functions.forEach(function (method) {
         let methodSignature = "";
@@ -20,7 +22,12 @@ function processFunctions(namespace, functions) {
         }
         methodSignature += getDocblockReturnValue(method, namespace);
         classMethods += processDocumentation(method, methodSignature);
-        classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
+        if (withoutClass) {
+            classMethods += namespace;
+        } else {
+            classMethods += "this";
+        }
+        classMethods += "." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
     });
 
     return classMethods;

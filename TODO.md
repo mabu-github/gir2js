@@ -36,7 +36,7 @@ Process elements in namespace:
 * (/) constant
 ** (/) respect constant type
 * (/) enumeration
-* function
+* (/) function
 * interface
 * record
 

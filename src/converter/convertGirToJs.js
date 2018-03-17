@@ -9,6 +9,7 @@ const
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
     processClasses = require('./conversions/class.js').processClasses,
+    processFunctions = require('./conversions/function.js').processFunctions,
     createSeedRuntimeInformation = require("./runtime/seed.js").createSeedRuntimeInformation;
 
 const girFile = process.argv[2];
@@ -28,6 +29,7 @@ function processGir(gir) {
         converted += "var " + name + " = {};\n";
         converted += processConstants(namespace);
         converted += processEnumerations(namespace);
+        converted += processFunctions(name, namespace.function, true);
         converted += processClasses(namespace);
     });
     return converted;

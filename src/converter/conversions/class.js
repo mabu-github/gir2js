@@ -73,11 +73,11 @@ function processClassProperties(namespace, clazz) {
 function processClassMethods(namespace, clazz) {
     if (!clazz.method) return "";
 
-    return processFunctions(namespace, clazz.method);
+    return processFunctions(namespace, clazz.method, false);
 }
 
 function processClassFunctions(namespace, clazz) {
     if (!clazz.function) return "";
 
-    return processFunctions(namespace, clazz.function);
+    return processFunctions(namespace, clazz.function, false);
 }
