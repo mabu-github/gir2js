@@ -19,7 +19,7 @@ Process elements in namespace:
 *** (/) class methods
 **** (/) class method parameter documentation
 **** (/) class method return type
-*** class functions
+*** (/) class functions
 *** (/) class signals
 **** a signal can probably do more than connect()
 **** add signal method documentation (e.g. to all connect calls etc.)
