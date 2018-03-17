@@ -31,10 +31,19 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace
         throw new TypeError("Expected typed parameter or varargs");
     }
     docblockSignature += "}";
-    if (!alternativeParameterName) {
+    if (alternativeParameterName === undefined) {
         docblockSignature += " " + transformJsKeywords(parameter.$.name, "", "_");
     } else {
         docblockSignature += " " + alternativeParameterName;
     }
-    return docblockSignature;
+    return docblockSignature + "\n";
+};
+
+exports.getDocblockReturnValue = function(method, namespace) {
+    if (!method['return-value']
+        || (/* void */ method['return-value'][0].type && method['return-value'][0].type[0].$.name === "none")) {
+        return "";
+    }
+
+    return exports.getDocblockSignatureForParameter("@return", method['return-value'][0], namespace, "");
 };

@@ -2,6 +2,7 @@ exports.processClasses = processClasses;
 
 const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
+const getDocblockReturnValue = require("./documentation").getDocblockReturnValue;
 const processSignals = require("./signals").processSignals;
 const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
 
@@ -84,6 +85,7 @@ function processClassMethods(namespace, clazz) {
                 }
             });
         }
+        methodSignature += getDocblockReturnValue(method);
         classMethods += processDocumentation(method, methodSignature);
         classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
     });
