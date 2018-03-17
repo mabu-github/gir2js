@@ -2,9 +2,8 @@ exports.processClasses = processClasses;
 
 const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
-const getDocblockReturnValue = require("./documentation").getDocblockReturnValue;
 const processSignals = require("./signals").processSignals;
-const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
+const processFunctions = require("./function").processFunctions;
 
 function processClasses(namespace) {
     if (!namespace.class) return "";
@@ -74,26 +73,11 @@ function processClassProperties(namespace, clazz) {
 function processClassMethods(namespace, clazz) {
     if (!clazz.method) return "";
 
-    let classMethods = "";
-    clazz.method.forEach(function (method) {
-        let methodSignature = "";
-        let methodParameters = [];
-        if (method.parameters && method.parameters[0].parameter) {
-            method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                methodSignature += getDocblockSignatureForParameter("@param", parameter, namespace);
-                if (parameter.$.name !== "...") {
-                    methodParameters[parameterIdx] = transformJsKeywords(parameter.$.name, "", "_");
-                }
-            });
-        }
-        methodSignature += getDocblockReturnValue(method, namespace);
-        classMethods += processDocumentation(method, methodSignature);
-        classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
-    });
-
-    return classMethods;
+    return processFunctions(namespace, clazz.method);
 }
 
 function processClassFunctions(namespace, clazz) {
+    if (!clazz.function) return "";
 
+    return processFunctions(namespace, clazz.function);
 }
