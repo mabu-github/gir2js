@@ -52,6 +52,7 @@ function processClass(namespace, clazz) {
         + processSignals(clazz)
         + processClassProperties(namespace, clazz)
         + processClassMethods(namespace, clazz)
+        + processClassFunctions(namespace, clazz)
         + "}";
     converted += ";\n";
 
@@ -85,10 +86,14 @@ function processClassMethods(namespace, clazz) {
                 }
             });
         }
-        methodSignature += getDocblockReturnValue(method);
+        methodSignature += getDocblockReturnValue(method, namespace);
         classMethods += processDocumentation(method, methodSignature);
         classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
     });
 
     return classMethods;
+}
+
+function processClassFunctions(namespace, clazz) {
+
 }
