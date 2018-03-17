@@ -36,6 +36,9 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace
     } else {
         docblockSignature += " " + alternativeParameterName;
     }
+    if (parameter.doc) {
+        docblockSignature += " " + parameter.doc[0]._;
+    }
     return docblockSignature + "\n";
 };
 

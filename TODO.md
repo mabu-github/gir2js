@@ -17,7 +17,7 @@ Process elements in namespace:
 **** (/) handle parameter types that are not utf8->string or class
 *** handle constructor parameters parameter object, e.g. new Gtk.Window.(^{^ type: Gtk.WindowType.TOPLEVEL });
 *** (/) class methods
-**** class method parameter documentation
+**** (/) class method parameter documentation
 **** (/) class method return type
 *** class functions
 *** (/) class signals
