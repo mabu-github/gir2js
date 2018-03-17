@@ -6,12 +6,9 @@ const
     path = require('path'),
     beautify = require('js-beautify').js_beautify,
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
-    processDocumentation = require('./conversions/documentation.js').processDocumentation,
-    getDocblockSignatureForParameter = require('./conversions/documentation.js').getDocblockSignatureForParameter,
-    transformJsKeywords = require('./conversions/jsKeywords.js').transformJsKeywords,
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
-    processSignals = require('./conversions/signals.js').processSignals,
+    processClasses = require('./conversions/class.js').processClasses,
     createSeedRuntimeInformation = require("./runtime/seed.js").createSeedRuntimeInformation;
 
 const girFile = process.argv[2];
@@ -34,92 +31,6 @@ function processGir(gir) {
         converted += processClasses(namespace);
     });
     return converted;
-}
-
-function processClasses(namespace) {
-    if (!namespace.class) return "";
-
-    let converted = "";
-    namespace.class.forEach(function (clazz) {
-        converted += processClass(namespace.$.name, clazz);
-    });
-    return converted;
-}
-
-function processClass(namespace, clazz) {
-    let numConstructorParameters = 0;
-    let constructorSignatures = "";
-    const name = clazz.$.name;
-
-    // first constructor belongs to JavaScript internals,
-    // starting from second belongs to class definition
-    if (clazz.constructor.length !== 1) {
-        clazz.constructor.forEach(function (constructor, constructorIdx) {
-            if (constructorIdx === 0) return;
-            constructorSignatures += "\n\n@signature";
-            if (constructor.parameters) {
-                numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
-
-                constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                    const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
-                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
-                });
-            }
-            constructorSignatures += "\n@return {" + namespace + "." + name + "}";
-        });
-    }
-
-    let constructorParameters = [];
-    for (let i = 0; i < numConstructorParameters; i++) {
-        constructorParameters[i] = "arg" + i;
-    }
-
-    let converted = "\n";
-    converted += processDocumentation(clazz, constructorSignatures);
-    converted += namespace + "." + name + " = ";
-    converted += "function (" + constructorParameters.join(", ") + ")" + "{"
-        + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
-        + processSignals(clazz)
-        + processClassProperties(namespace, clazz)
-        + processClassMethods(namespace, clazz)
-        + "}";
-    converted += ";\n";
-
-    return converted;
-}
-
-function processClassProperties(namespace, clazz) {
-    if (!clazz.property) return "";
-
-    let properties = "";
-    clazz.property.forEach(function (property) {
-        let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property, namespace);
-        properties += processDocumentation(property, propertySignature);
-        properties += "this['" + property.$.name + "'] = null;\n";
-    });
-    return properties;
-}
-
-function processClassMethods(namespace, clazz) {
-    if (!clazz.method) return "";
-
-    let classMethods = "";
-    clazz.method.forEach(function (method) {
-        let methodSignature = "";
-        let methodParameters = [];
-        if (method.parameters && method.parameters[0].parameter) {
-            method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                methodSignature += getDocblockSignatureForParameter("@param", parameter, namespace);
-                if (parameter.$.name !== "...") {
-                    methodParameters[parameterIdx] = transformJsKeywords(parameter.$.name, "", "_");
-                }
-            });
-        }
-        classMethods += processDocumentation(method, methodSignature);
-        classMethods += "this." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
-    });
-
-    return classMethods;
 }
 
 // write conversion
