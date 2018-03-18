@@ -54,10 +54,16 @@ function processClass(namespace, clazz) {
     }
 
     let converted = "\n";
-    converted += processDocumentation(clazz, constructorRecords);
-    converted += namespace + "." + name + " = ";
+    let classExtends = getParentClass(clazz, namespace);
+    let augmentsTag = "";
+    if (classExtends !== "") {
+        augmentsTag = "\n@augments " + classExtends;
+    }
+    converted += processDocumentation(clazz, augmentsTag + constructorRecords);
+    const fullyQualifiedName = namespace + "." + name;
+    converted += fullyQualifiedName + " = ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
-        + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
+        + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(clazz)
         + processClassProperties(namespace, clazz)
         + processClassMethods(namespace, clazz)
@@ -66,6 +72,18 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
+}
+
+function getParentClass(clazz, namespace) {
+    if (!clazz.$.parent) return "";
+
+    let parentClass = "";
+    if (clazz.$.parent.indexOf(".") < 0) {
+        parentClass += namespace + ".";
+    }
+    parentClass += clazz.$.parent;
+
+    return parentClass;
 }
 
 function processClassProperties(namespace, clazz) {

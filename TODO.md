@@ -39,6 +39,7 @@ Process elements in namespace:
 * (/) function
 * interface
 * record
+* (/) handle parent type
 
 Try to find out how mapping works by using seed:
 * [Seed Examples](https://github.com/GNOME/seed-examples)
