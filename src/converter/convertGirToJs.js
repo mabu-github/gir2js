@@ -9,8 +9,8 @@ const
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
     processClasses = require('./conversions/class.js').processClasses,
-    processFunctions = require('./conversions/function.js').processFunctions,
-    createSeedRuntimeInformation = require("./runtime/seed.js").createSeedRuntimeInformation;
+    processFunctions = require('./conversions/function.js').processFunctions
+    execFile = require('child_process').execFile;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -57,8 +57,16 @@ fs.writeFile(path.dirname(jsFile) + "/GLibJsIncompatibleTypes.js", beautify(type
 });
 
 // put seed runtime file to output
-fs.writeFile(path.dirname(jsFile) + "/Seed.js", beautify(createSeedRuntimeInformation(), {indent_size: 4}), function(err) {
-    if(err) {
+execFile(__dirname + "/runtime/describeSeed.js", function(err, data) {
+    if (err) {
         console.log(err);
+        return;
     }
+
+    fs.writeFile(path.dirname(jsFile) + "/Seed.js", beautify(data.toString(), {indent_size: 4}), function(err) {
+        if(err) {
+            console.log(err);
+        }
+    });
 });
+
