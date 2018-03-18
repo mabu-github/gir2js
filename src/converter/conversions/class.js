@@ -34,14 +34,14 @@ function processClass(namespace, clazz) {
                 if (constructor.parameters[0].parameter.length > 0) {
                     let constructorRecordParams = [];
                     constructorRecords += "\n\n@signature";
-                    constructorRecords += "\n@param arg0 {{";
+                    constructorRecords += "\n@param {{";
                     constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                         const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
                         constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
                         constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
                     });
                     constructorRecords += constructorRecordParams.join(", ");
-                    constructorRecords += "}}";
+                    constructorRecords += "}} arg0";
                 }
             }
             constructorSignatures += "\n@return {" + namespace + "." + name + "}";
