@@ -1,4 +1,10 @@
 exports.getParameterType = function(parameter, namespace) {
+    if (parameter.varargs) {
+        return "...*";
+    }
+    if (parameter.array) {
+        return "Array.<" + exports.getParameterType(parameter.array[0], namespace) + ">";
+    }
     if (!parameter.type[0].$) {
         console.warn("Found non introspectable type");
         return "__non_introspectable_type__";
@@ -52,6 +58,7 @@ exports.getParameterType = function(parameter, namespace) {
 exports.getTypesWithoutJsEquivalent = function() {
     return [
         '__non_introspectable_type__',
+        '__non_introspectable_varargs_type__',
         'gpointer',
         'gconstpointer',
         'gintptr',

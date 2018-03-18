@@ -21,15 +21,7 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
 exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
     let docblockSignature = "";
     docblockSignature += "\n" + docTag + " {";
-    if (parameter.type) {
-        docblockSignature += getParameterType(parameter, namespace);
-    } else if (parameter.varargs) {
-        docblockSignature += "...*";
-    } else if (parameter.array) {
-        docblockSignature += "Array.<" + getParameterType(parameter.array[0], namespace) + ">";
-    } else {
-        throw new TypeError("Expected typed parameter or varargs");
-    }
+    docblockSignature += getParameterType(parameter, namespace);
     docblockSignature += "}";
     if (alternativeParameterName === undefined) {
         docblockSignature += " " + transformJsKeywords(parameter.$.name, "", "_");

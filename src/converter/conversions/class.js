@@ -4,6 +4,7 @@ const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
+const getParameterType = require("./glibBasicTypes").getParameterType;
 
 function processClasses(namespace) {
     if (!namespace.class) return "";
@@ -18,6 +19,7 @@ function processClasses(namespace) {
 function processClass(namespace, clazz) {
     let numConstructorParameters = 0;
     let constructorSignatures = "";
+    let constructorRecords = "";
     const name = clazz.$.name;
 
     // first constructor belongs to JavaScript internals,
@@ -29,10 +31,18 @@ function processClass(namespace, clazz) {
             if (constructor.parameters) {
                 numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
 
-                constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                    const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
-                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
-                });
+                if (constructor.parameters[0].parameter.length > 0) {
+                    let constructorRecordParams = [];
+                    constructorRecords += "\n\n@signature";
+                    constructorRecords += "\n@param arg0 {{";
+                    constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
+                        const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
+                        constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
+                        constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
+                    });
+                    constructorRecords += constructorRecordParams.join(", ");
+                    constructorRecords += "}}";
+                }
             }
             constructorSignatures += "\n@return {" + namespace + "." + name + "}";
         });
@@ -44,7 +54,7 @@ function processClass(namespace, clazz) {
     }
 
     let converted = "\n";
-    converted += processDocumentation(clazz, constructorSignatures);
+    converted += processDocumentation(clazz, constructorRecords);
     converted += namespace + "." + name + " = ";
     converted += "function (" + constructorParameters.join(", ") + ")" + "{"
         + "/** " + constructorSignatures + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
