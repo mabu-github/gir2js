@@ -5,7 +5,7 @@ exports.processEnumerations = function(namespace) {
 
     let enumerations = "";
     namespace.enumeration.forEach(function (enumeration) {
-        enumerations += processDocumentation(enumeration);
+        enumerations += processDocumentation(enumeration, "\n\n@enum {number}");
         const fullyQualifiedEnumName = namespace.$.name + "." + enumeration.$.name;
         enumerations += fullyQualifiedEnumName + " = {";
         enumeration.member.forEach(function (enumMember) {
