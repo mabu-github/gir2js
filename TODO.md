@@ -58,6 +58,3 @@ Why is there an empty docblock in Gtk.WindowAccessible.c_new()?
 
 Improve seed runtime info file:
 * [Seed runtime documentation](https://people.gnome.org/~racarr/seed/runtime.html)
-
-describeSeed.js:
-* exceptions like "imports", "ARGV" not evaluated

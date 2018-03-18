@@ -43,57 +43,43 @@
 
         Object.getOwnPropertyNames(object).forEach(function(prop) {
             const sub = eval(hierarchy + prop);
-            if (handleExceptions(prop, hierarchy) !== "") {
-                return;
-            }
+            const exceptions = handleExceptions(prop, hierarchy);
 
-            if (sub !== undefined && sub.toString() === "[object Object]") {
-                if (funCreateVar) {
-                    funCreateVar(hierarchy + prop);
-                }
-            } else {
-                funCreateProperties(prop, object, hierarchy);
+            if (exceptions === ""
+                && sub !== undefined
+                && sub.toString() === "[object Object]"
+                && funCreateVar) {
+                funCreateVar(hierarchy + prop);
             }
+            funCreateProperties(prop, object, hierarchy);
 
-            if (sub !== undefined && sub.toString() === "[object Object]") {
+            if (exceptions === "" && sub !== undefined && sub.toString() === "[object Object]") {
                 applyToProperties(sub, hierarchy + prop + ".", funCreateProperties);
             }
         });
     }
 
-    if (Seed) {
-        var console = {};
-        console.log = function(arg) {
-            print(arg);
-        }
-    }
-
     applyToProperties(this, "", function (property, ctx, hierarchy) {
         const prop = eval(hierarchy + property);
 
-        let prefix = "";
-        if (ctx.toString() === "[object GlobalObject]") {
-            prefix = "";
-        }
-
         const exception = handleExceptions(property, hierarchy);
         if (exception !== "") {
-            console.log(exception);
+            print(exception);
             return;
         }
 
         if (prop === undefined) {
-            console.log(hierarchy + property + " = undefined;");
+            print(hierarchy + property + " = undefined;");
         } else if (typeof(prop) === "function") {
-            console.log(hierarchy + property + " = function () {};");
+            print(hierarchy + property + " = function () {};");
         } else if (Array.isArray(prop)) {
-            console.log(hierarchy + property + " = [];");
+            print(hierarchy + property + " = [];");
         } else if (prop.toString() === "[object Object]") {
-            console.log(hierarchy + property + " = {};");
+            print(hierarchy + property + " = {};");
         } else {
-            console.log(hierarchy + property + " = null;")
+            print(hierarchy + property + " = null;")
         }
     }, function(property) {
-        console.log("var " + property + " = {};");
+        print("var " + property + ";");
     });
 })();
