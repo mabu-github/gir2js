@@ -7,12 +7,12 @@ const
     beautify = require('js-beautify').js_beautify,
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
-    processConstants = require('./conversions/constant.js').processConstants,
     processClasses = require('./conversions/class.js').processClasses,
     processFunctions = require('./conversions/function.js').processFunctions,
     execFile = require('child_process').execFile,
     GirFile = require('./gir/GirFile').GirFile,
-    Template = require('./templates/Template').Template;
+    Template = require('./templates/Template').Template,
+    getDocblockSignatureForParameter2 = require("./conversions/documentation").getDocblockSignatureForParameter2;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -30,8 +30,20 @@ function processGir(gir) {
         const name = namespace.getName();
         const data = namespace.getData();
 
+        // namespace
         converted += Template.renderFile(Template.TPL_NAMESPACE, {namespace: name});
-        converted += processConstants(data);
+
+        // constants
+        namespace.getConstants().forEach(function (constant) {
+            converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
+                documentation: constant.getDocumentation().split("\n"),
+                signature: getDocblockSignatureForParameter2("@type", constant, name).split("\n"),
+                prefix: name,
+                variable: constant.getName(),
+                assignment: constant.getValue()
+            });
+        });
+
         converted += processEnumerations(data.enumeration, name);
         converted += processEnumerations(data.bitfield, name);
         converted += processFunctions(name, data.function, true);

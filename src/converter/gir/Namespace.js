@@ -1,4 +1,5 @@
 const Class = require('./Class').Class;
+const Constant = require('./Constant').Constant;
 
 /**
  * @param {*} namespace
@@ -40,6 +41,19 @@ const Namespace = function(namespace) {
      */
     this.getData = function() {
         return namespace;
+    };
+
+    /**
+     * @return {Array.<Constant>}
+     */
+    this.getConstants = function() {
+        if (!namespace.constant)
+            return [];
+
+        const self = this;
+        return namespace.constant.map(function(constant) {
+            return new Constant(constant, self);
+        });
     };
 
     /**

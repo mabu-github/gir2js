@@ -18,12 +18,6 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
     return converted;
 };
 
-exports.processDocumentation2 = function(type) {
-    if (!type.doc) return "";
-
-    return type.doc[0]._;
-};
-
 exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
     let docblockSignature = "";
     docblockSignature += "\n" + docTag + " {";
@@ -36,6 +30,22 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace
     }
     if (parameter.doc) {
         docblockSignature += " " + parameter.doc[0]._;
+    }
+    return docblockSignature + "\n";
+};
+
+exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
+    let docblockSignature = "";
+    docblockSignature += "\n" + docTag + " {";
+    docblockSignature += getParameterType(parameter.getData(), namespace);
+    docblockSignature += "}";
+    if (alternativeParameterName === undefined) {
+        docblockSignature += " " + transformJsKeywords(parameter.getName(), "", "_");
+    } else {
+        docblockSignature += " " + alternativeParameterName;
+    }
+    if (parameter.getDocumentation()) {
+        docblockSignature += " " + parameter.getDocumentation();
     }
     return docblockSignature + "\n";
 };
