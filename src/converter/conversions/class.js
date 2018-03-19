@@ -59,10 +59,15 @@ function processClass(namespace, clazz) {
     if (classExtends !== "") {
         augmentsTag = "\n@augments " + classExtends;
     }
+    constructorRecords = "\n\n@signature\n@param {{";
+    constructorRecords += getClassProperties(namespace, clazz).map(function(property) {
+        return "[" + getValidJsPropertyName(property.name) + "]" + ": " + property.type;
+    }).join(",\n");
+    constructorRecords += "}} constructorProperties\n";
     converted += processDocumentation(clazz, augmentsTag + constructorRecords);
     const fullyQualifiedName = namespace + "." + name;
     converted += fullyQualifiedName + " = ";
-    converted += "function (" + constructorParameters.join(", ") + ")" + "{"
+    converted += "function (constructorProperties)" + "{"
         + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(clazz)
         + processClassProperties(namespace, clazz)
@@ -72,6 +77,10 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
+}
+
+function getValidJsPropertyName(name) {
+    return name.replace(/-/g, '_');
 }
 
 function getParentClass(clazz, namespace) {
@@ -93,9 +102,20 @@ function processClassProperties(namespace, clazz) {
     clazz.property.forEach(function (property) {
         let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property, namespace);
         properties += processDocumentation(property, propertySignature);
-        properties += "this['" + property.$.name + "'] = null;\n";
+        properties += "this." + getValidJsPropertyName(property.$.name) + " = null;\n";
     });
     return properties;
+}
+
+/**
+ * Returns array of {name: string, type: string}
+ */
+function getClassProperties(namespace, clazz) {
+    if (!clazz.property) return [];
+
+    return clazz.property.map(function(property) {
+        return {name: property.$.name, type: getParameterType(property, namespace)};
+    });
 }
 
 function processClassMethods(namespace, clazz) {
