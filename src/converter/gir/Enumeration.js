@@ -37,17 +37,44 @@ const Enumeration = function(enumeration, namespace) {
     };
 
     /**
-     * @return {string} Printable value for JS Code. "value" for strings, the value as is otherwise.
+     * @return {Array.<EnumerationMember>}
      */
-    this.getValue = function() {
-        let value = "";
-        if (_getParameterType(enumeration, namespace.getName()) === "string") {
-            value = '"' + enumeration.$.value + '"';
-        } else {
-            value = enumeration.$.value;
-        }
-        return value;
+    this.getMembers = function() {
+        return enumeration.member.map(function(enumMember) {
+            return new EnumerationMember(enumMember, namespace);
+        })
     }
 };
 
+/**
+ * @param {*} enumMember
+ * @param {Namespace} namespace
+ * @constructor
+ */
+const EnumerationMember = function(enumMember, namespace) {
+
+    /**
+     * @return {string}
+     */
+    this.getName = function() {
+        return enumMember.$.name.toUpperCase();
+    };
+
+    /**
+     * @return {string} Printable value for JS Code. "value" for strings, the value as is otherwise.
+     */
+    this.getValue = function() {
+        return enumMember.$.value;
+    };
+
+    /**
+     * @return {string}
+     */
+    this.getDocumentation = function() {
+        if (!enumMember.doc) return "";
+        return enumMember.doc[0]._;
+    };
+};
+
 exports.Enumeration = Enumeration;
+exports.EnumerationMember = EnumerationMember;

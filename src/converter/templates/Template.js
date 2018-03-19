@@ -11,6 +11,7 @@ let Template = {
     TPL_NAMESPACE: __dirname + "/namespace.mustache",
     TPL_VARIABLE_ASSIGNMENT: __dirname + "/variableAssignment.mustache",
     TPL_TYPED_DOC_TAG: __dirname + "/typedDocTag.mustache",
+    TPL_LITERAL_OBJECT: __dirname + "/literalObject.mustache",
 
     templates: {},
 
@@ -21,6 +22,15 @@ let Template = {
         }
 
         return Mustache.render(this.templates[file], view)
+    },
+
+    /**
+     * @typedef {{name: string, definition: string, documentation: string}} _PropertyType
+     * @param {Array.<_PropertyType>} properties
+     */
+    literalObject: function(properties) {
+        properties[properties.length-1].last = true;
+        return this.renderFile(this.TPL_LITERAL_OBJECT, {properties: properties});
     }
 };
 

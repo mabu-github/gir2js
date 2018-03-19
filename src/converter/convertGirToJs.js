@@ -48,19 +48,20 @@ function processGir(gir) {
         // enumerations, bitfields
         const enumerationsAndBitfields = namespace.getEnumerations().concat(namespace.getBitfields());
         enumerationsAndBitfields.forEach(function (enumeration) {
-            let enumMembers = "{";
-            enumeration.getData().member.forEach(function (enumMember) {
-                enumMembers += processDocumentation(enumMember);
-                enumMembers += enumMember.$.name.toUpperCase() + ":  " + enumMember.$.value + ",";
+            let enumMembers = enumeration.getMembers().map(function (enumMember) {
+                return {
+                    name: enumMember.getName(),
+                    definition: enumMember.getValue(),
+                    documentation: enumMember.getDocumentation().split("\n")
+                };
             });
-            enumMembers += "}";
 
             converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
                 documentation: enumeration.getDocumentation().split("\n"),
                 signature: getUnnamedDocblockParameter("enum", "number", enumeration.getName()).split("\n"),
                 prefix: name,
                 variable: enumeration.getName(),
-                assignment: enumMembers
+                assignment: Template.literalObject(enumMembers)
             });
         });
 
