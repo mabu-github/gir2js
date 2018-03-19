@@ -1,7 +1,9 @@
 const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
+const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
 const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
 const getDocblockReturnValue = require("./documentation").getDocblockReturnValue;
+const Template = require("../templates/Template").Template;
 
 function processFunctions(namespace, functions, withoutClass) {
     if (!functions) return "";
@@ -43,22 +45,28 @@ function processFunctions2(namespace, functions, withoutClass) {
         let method = func.getData();
         let methodSignature = "";
         let methodParameters = [];
-        if (method.parameters && method.parameters[0].parameter) {
-            method.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                methodSignature += getDocblockSignatureForParameter("@param", parameter, namespace);
-                if (parameter.$.name !== "...") {
-                    methodParameters[parameterIdx] = transformJsKeywords(parameter.$.name, "", "_");
-                }
-            });
-        }
+
+        func.getParameters().forEach(function (parameter, parameterIdx) {
+            methodSignature += getDocblockSignatureForParameter2("param", parameter, namespace);
+            if (parameter.getName() !== "...") {
+                methodParameters[parameterIdx] = {name: transformJsKeywords(parameter.getName(), "", "_")};
+            }
+        });
         methodSignature += getDocblockReturnValue(method, namespace);
-        classMethods += processDocumentation(method, methodSignature);
+        let prefix = "";
         if (withoutClass) {
-            classMethods += namespace;
+            prefix = namespace;
         } else {
-            classMethods += "this";
+            prefix = "this";
         }
-        classMethods += "." + method.$.name + " = function(" + methodParameters.join(", ") + ") {};\n";
+
+        classMethods += Template.method({
+            documentation: func.getDocumentation().split("\n"),
+            signature: methodSignature.split("\n"),
+            prefix: prefix,
+            method: func.getName(),
+            parameters: methodParameters
+        });
     });
 
     return classMethods;

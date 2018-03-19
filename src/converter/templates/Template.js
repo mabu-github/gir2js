@@ -49,7 +49,9 @@ let Template = {
      * @return {string}
      */
     method: function(view) {
-        view.parameters[view.parameters.length-1].last = true;
+        if (view.parameters.length >= 1) {
+            view.parameters[view.parameters.length-1].last = true;
+        }
         return this.renderFile(this.TPL_METHOD, view);
     }
 };
