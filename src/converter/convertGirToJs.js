@@ -6,13 +6,13 @@ const
     path = require('path'),
     beautify = require('js-beautify').js_beautify,
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
-    processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processClasses = require('./conversions/class.js').processClasses,
     processFunctions = require('./conversions/function.js').processFunctions,
     execFile = require('child_process').execFile,
     GirFile = require('./gir/GirFile').GirFile,
     Template = require('./templates/Template').Template,
     getDocblockSignatureForParameter2 = require("./conversions/documentation").getDocblockSignatureForParameter2,
+    getUnnamedDocblockParameter = require("./conversions/documentation").getUnnamedDocblockParameter,
     processDocumentation = require("./conversions/documentation").processDocumentation;
 
 const girFile = process.argv[2];
@@ -38,23 +38,30 @@ function processGir(gir) {
         namespace.getConstants().forEach(function (constant) {
             converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
                 documentation: constant.getDocumentation().split("\n"),
-                signature: getDocblockSignatureForParameter2("type", constant, name).split("\n"),
+                signature: getUnnamedDocblockParameter("type", constant.getType(), constant.getName()).split("\n"),
                 prefix: name,
                 variable: constant.getName(),
                 assignment: constant.getValue()
             });
         });
 
-        const enumerationsAndBitfields = data.enumeration.concat(data.bitfield);
+        // enumerations, bitfields
+        const enumerationsAndBitfields = namespace.getEnumerations().concat(namespace.getBitfields());
         enumerationsAndBitfields.forEach(function (enumeration) {
-            converted += processDocumentation(enumeration, "\n\n@enum {number}");
-            const fullyQualifiedEnumName = name + "." + enumeration.$.name;
-            converted += fullyQualifiedEnumName + " = {";
-            enumeration.member.forEach(function (enumMember) {
-                converted += processDocumentation(enumMember);
-                converted += enumMember.$.name.toUpperCase() + ":  " + enumMember.$.value + ",";
+            let enumMembers = "{";
+            enumeration.getData().member.forEach(function (enumMember) {
+                enumMembers += processDocumentation(enumMember);
+                enumMembers += enumMember.$.name.toUpperCase() + ":  " + enumMember.$.value + ",";
             });
-            converted += "};";
+            enumMembers += "}";
+
+            converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
+                documentation: enumeration.getDocumentation().split("\n"),
+                signature: getUnnamedDocblockParameter("enum", "number", enumeration.getName()).split("\n"),
+                prefix: name,
+                variable: enumeration.getName(),
+                assignment: enumMembers
+            });
         });
 
         converted += processFunctions(name, data.function, true);

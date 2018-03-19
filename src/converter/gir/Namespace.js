@@ -1,5 +1,6 @@
 const Class = require('./Class').Class;
 const Constant = require('./Constant').Constant;
+const Enumeration = require('./Enumeration').Enumeration;
 
 /**
  * @param {*} namespace
@@ -53,6 +54,32 @@ const Namespace = function(namespace) {
         const self = this;
         return namespace.constant.map(function(constant) {
             return new Constant(constant, self);
+        });
+    };
+
+    /**
+     * @return {Array.<Enumeration>}
+     */
+    this.getEnumerations = function() {
+        if (!namespace.enumeration)
+            return [];
+
+        const self = this;
+        return namespace.enumeration.map(function(enumeration) {
+            return new Enumeration(enumeration, self);
+        });
+    };
+
+    /**
+     * @return {Array.<Enumeration>}
+     */
+    this.getBitfields = function() {
+        if (!namespace.bitfield)
+            return [];
+
+        const self = this;
+        return namespace.bitfield.map(function(bitfield) {
+            return new Enumeration(bitfield, self);
         });
     };
 

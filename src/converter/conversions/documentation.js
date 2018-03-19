@@ -44,6 +44,15 @@ exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespac
     });
 };
 
+exports.getUnnamedDocblockParameter = function(docTag, type) {
+    return Template.renderFile(Template.TPL_TYPED_DOC_TAG, {
+        tag: docTag,
+        type: type,
+        parameter: "",
+        documentation: ""
+    });
+};
+
 exports.getDocblockReturnValue = function(method, namespace) {
     if (!method['return-value']
         || (/* void */ method['return-value'][0].type && method['return-value'][0].type[0].$.name === "none")) {
