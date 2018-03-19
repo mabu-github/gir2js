@@ -12,6 +12,7 @@ let Template = {
     TPL_VARIABLE_ASSIGNMENT: __dirname + "/variableAssignment.mustache",
     TPL_TYPED_DOC_TAG: __dirname + "/typedDocTag.mustache",
     TPL_LITERAL_OBJECT: __dirname + "/literalObject.mustache",
+    TPL_METHOD: __dirname + "/method.mustache",
 
     templates: {},
 
@@ -40,6 +41,16 @@ let Template = {
      */
     namespace: function(name) {
         return this.renderFile(this.TPL_NAMESPACE, {namespace: name});
+    },
+
+    /**
+     * @typedef {{name: string}} _ParameterType
+     * @param {{documentation: Array.<string>, signature: Array.<string>, prefix: string, method: string, parameters: Array<_ParameterType>}} view
+     * @return {string}
+     */
+    method: function(view) {
+        view.parameters[view.parameters.length-1].last = true;
+        return this.renderFile(this.TPL_METHOD, view);
     }
 };
 
