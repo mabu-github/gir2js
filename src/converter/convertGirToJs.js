@@ -8,6 +8,7 @@ const
     getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
     processClasses = require('./conversions/class.js').processClasses,
     processFunctions = require('./conversions/function.js').processFunctions,
+    processFunctions2 = require('./conversions/function.js').processFunctions2,
     execFile = require('child_process').execFile,
     GirFile = require('./gir/GirFile').GirFile,
     Template = require('./templates/Template').Template,
@@ -65,7 +66,8 @@ function processGir(gir) {
             });
         });
 
-        converted += processFunctions(name, data.function, true);
+        converted += processFunctions2(name, namespace.getFunctions(), true);
+
         converted += processClasses(namespace);
     });
     return converted;

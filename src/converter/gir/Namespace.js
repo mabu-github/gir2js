@@ -1,6 +1,7 @@
 const Class = require('./Class').Class;
 const Constant = require('./Constant').Constant;
 const Enumeration = require('./Enumeration').Enumeration;
+const Function = require('./Function').Function;
 
 /**
  * @param {*} namespace
@@ -80,6 +81,19 @@ const Namespace = function(namespace) {
         const self = this;
         return namespace.bitfield.map(function(bitfield) {
             return new Enumeration(bitfield, self);
+        });
+    };
+
+    /**
+     * @return {Array.<Function>}
+     */
+    this.getFunctions = function() {
+        if (!namespace.function)
+            return [];
+
+        const self = this;
+        return namespace.function.map(function(func) {
+            return new Function(func, self);
         });
     };
 
