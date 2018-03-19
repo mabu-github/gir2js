@@ -17,7 +17,7 @@ Process elements in namespace:
 **** (/) handle parameter types that are not utf8->string or class
 *** (/) handle constructor parameters parameter object, e.g. new Gtk.Window.(^{^ type: Gtk.WindowType.TOPLEVEL });
 *** (/) constructor parameter object properties are not taken from signature but from object properties
-*** add constructor parameter object properties from parents
+*** (/) add constructor parameter object properties from parents
 *** (/) class methods
 **** (/) class method parameter documentation
 **** (/) class method return type
@@ -63,3 +63,6 @@ Improve seed runtime info file:
 * [Seed runtime documentation](https://people.gnome.org/~racarr/seed/runtime.html)
 
 Handle parent classes outside of own class namespace.
+
+Structure:
+* conversion/ should only write code and use the structures in gir/
