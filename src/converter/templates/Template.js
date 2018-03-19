@@ -5,9 +5,12 @@ Mustache.escape = function(value) {
     return value;
 };
 
+Mustache.tags = ['<%', '%>'];
+
 let Template = {
     TPL_NAMESPACE: __dirname + "/namespace.mustache",
     TPL_VARIABLE_ASSIGNMENT: __dirname + "/variableAssignment.mustache",
+    TPL_TYPED_DOC_TAG: __dirname + "/typedDocTag.mustache",
 
     templates: {},
 

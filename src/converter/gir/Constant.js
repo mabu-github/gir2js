@@ -37,7 +37,7 @@ const Constant = function(constant, namespace) {
     };
 
     /**
-     * @return {string} "value" for strings, the value as is otherwise
+     * @return {string} Printable value for JS Code. "value" for strings, the value as is otherwise.
      */
     this.getValue = function() {
         let value = "";

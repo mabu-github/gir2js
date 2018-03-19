@@ -1,6 +1,7 @@
 const
     getParameterType = require('./glibBasicTypes.js').getParameterType,
-    transformJsKeywords = require('./jsKeywords.js').transformJsKeywords;
+    transformJsKeywords = require('./jsKeywords.js').transformJsKeywords,
+    Template = require('../templates/Template').Template;
 
 exports.processDocumentation = function(type, appendAdditionalDocumentation=undefined) {
     if (!type.doc && !appendAdditionalDocumentation) return "";
@@ -34,20 +35,13 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace
     return docblockSignature + "\n";
 };
 
-exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
-    let docblockSignature = "";
-    docblockSignature += "\n" + docTag + " {";
-    docblockSignature += getParameterType(parameter.getData(), namespace);
-    docblockSignature += "}";
-    if (alternativeParameterName === undefined) {
-        docblockSignature += " " + transformJsKeywords(parameter.getName(), "", "_");
-    } else {
-        docblockSignature += " " + alternativeParameterName;
-    }
-    if (parameter.getDocumentation()) {
-        docblockSignature += " " + parameter.getDocumentation();
-    }
-    return docblockSignature + "\n";
+exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespace) {
+    return Template.renderFile(Template.TPL_TYPED_DOC_TAG, {
+        tag: docTag,
+        type: getParameterType(parameter.getData(), namespace),
+        parameter: transformJsKeywords(parameter.getName(), "", "_"),
+        documentation: parameter.getDocumentation()
+    });
 };
 
 exports.getDocblockReturnValue = function(method, namespace) {

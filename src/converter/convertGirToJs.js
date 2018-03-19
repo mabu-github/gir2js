@@ -12,7 +12,8 @@ const
     execFile = require('child_process').execFile,
     GirFile = require('./gir/GirFile').GirFile,
     Template = require('./templates/Template').Template,
-    getDocblockSignatureForParameter2 = require("./conversions/documentation").getDocblockSignatureForParameter2;
+    getDocblockSignatureForParameter2 = require("./conversions/documentation").getDocblockSignatureForParameter2,
+    processDocumentation = require("./conversions/documentation").processDocumentation;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -37,15 +38,25 @@ function processGir(gir) {
         namespace.getConstants().forEach(function (constant) {
             converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
                 documentation: constant.getDocumentation().split("\n"),
-                signature: getDocblockSignatureForParameter2("@type", constant, name).split("\n"),
+                signature: getDocblockSignatureForParameter2("type", constant, name).split("\n"),
                 prefix: name,
                 variable: constant.getName(),
                 assignment: constant.getValue()
             });
         });
 
-        converted += processEnumerations(data.enumeration, name);
-        converted += processEnumerations(data.bitfield, name);
+        const enumerationsAndBitfields = data.enumeration.concat(data.bitfield);
+        enumerationsAndBitfields.forEach(function (enumeration) {
+            converted += processDocumentation(enumeration, "\n\n@enum {number}");
+            const fullyQualifiedEnumName = name + "." + enumeration.$.name;
+            converted += fullyQualifiedEnumName + " = {";
+            enumeration.member.forEach(function (enumMember) {
+                converted += processDocumentation(enumMember);
+                converted += enumMember.$.name.toUpperCase() + ":  " + enumMember.$.value + ",";
+            });
+            converted += "};";
+        });
+
         converted += processFunctions(name, data.function, true);
         converted += processClasses(namespace);
     });
