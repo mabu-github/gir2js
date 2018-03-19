@@ -63,10 +63,10 @@ function processClass(namespace, clazz) {
     }
 
     let converted = "\n";
-    let classExtends = getParentClass(data, namespace);
+
     let augmentsTag = "";
-    if (classExtends !== "") {
-        augmentsTag = "\n@augments " + classExtends;
+    if (clazz.getParent() !== null) {
+        augmentsTag = "\n@augments " + clazz.getParent().getFullyQualifiedName();
     }
     constructorRecords = "\n\n@signature\n@param {{";
     constructorRecords += clazz.getAllProperties().map(function(property) {
@@ -86,18 +86,6 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
-}
-
-function getParentClass(clazz, namespace) {
-    if (!clazz.$.parent) return "";
-
-    let parentClass = "";
-    if (clazz.$.parent.indexOf(".") < 0) {
-        parentClass += namespace + ".";
-    }
-    parentClass += clazz.$.parent;
-
-    return parentClass;
 }
 
 function processClassProperties(namespace, clazz) {

@@ -14,6 +14,13 @@ const Class = function(clazz, namespace) {
     };
 
     /**
+     * @return {string}
+     */
+    this.getFullyQualifiedName = function() {
+        return namespace.getName() + "." + this.getName();
+    };
+
+    /**
      * @return {*}
      */
     this.getData = function() {
@@ -28,8 +35,18 @@ const Class = function(clazz, namespace) {
             return null;
 
         if (clazz.$.parent.indexOf(".") > -1) {
-            console.warn("Cannot handle parent type outside of current namespace.");
-            return null;
+            console.warn("Cannot handle parent type '" + clazz.$.parent + "' outside of current namespace.");
+            return {
+                getFullyQualifiedName: function() {
+                    return clazz.$.parent;
+                },
+                getParent: function() {
+                    return null;
+                },
+                getOwnProperties: function() {
+                    return [];
+                }
+            };
         }
 
         return namespace.getClassByName(clazz.$.parent);
