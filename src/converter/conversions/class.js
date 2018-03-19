@@ -69,8 +69,8 @@ function processClass(namespace, clazz) {
         augmentsTag = "\n@augments " + classExtends;
     }
     constructorRecords = "\n\n@signature\n@param {{";
-    constructorRecords += getClassProperties(namespace, data).map(function(property) {
-        return "[" + getValidJsPropertyName(property.name) + "]" + ": " + property.type;
+    constructorRecords += clazz.getOwnProperties().map(function(property) {
+        return "[" + property.getName() + "]" + ": " + property.getType();
     }).join(",\n");
     constructorRecords += "}} constructorProperties\n";
     converted += processDocumentation(data, augmentsTag + constructorRecords);
@@ -110,17 +110,6 @@ function processClassProperties(namespace, clazz) {
         properties += "this." + getValidJsPropertyName(property.$.name) + " = null;\n";
     });
     return properties;
-}
-
-/**
- * Returns array of {name: string, type: string}
- */
-function getClassProperties(namespace, clazz) {
-    if (!clazz.property) return [];
-
-    return clazz.property.map(function(property) {
-        return {name: property.$.name, type: getParameterType(property, namespace)};
-    });
 }
 
 function processClassMethods(namespace, clazz) {

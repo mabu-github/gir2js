@@ -49,8 +49,9 @@ const Namespace = function(namespace) {
         if (!namespace.class)
             return [];
 
+        const self = this;
         return namespace.class.map(function(clazz) {
-            return new Class(clazz, namespace);
+            return new Class(clazz, self);
         });
     };
 

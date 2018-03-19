@@ -24,7 +24,7 @@ const Property = function(property, namespace) {
     /**
      * @return {string}
      */
-    this.getParameterType = function() {
+    this.getType = function() {
         return _getParameterType(property, namespace.getName())
     };
 };
