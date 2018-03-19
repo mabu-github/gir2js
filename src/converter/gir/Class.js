@@ -36,17 +36,7 @@ const Class = function(clazz, namespace) {
 
         if (clazz.$.parent.indexOf(".") > -1) {
             console.warn("Cannot handle parent type '" + clazz.$.parent + "' outside of current namespace.");
-            return {
-                getFullyQualifiedName: function() {
-                    return clazz.$.parent;
-                },
-                getParent: function() {
-                    return null;
-                },
-                getOwnProperties: function() {
-                    return [];
-                }
-            };
+            return new ClassOutsideNamespace(clazz);
         }
 
         return namespace.getClassByName(clazz.$.parent);
@@ -94,4 +84,22 @@ const Class = function(clazz, namespace) {
     };
 };
 
+/**
+ * @augments Class
+ * @constructor
+ */
+const ClassOutsideNamespace = function(clazz) {
+    this.getFullyQualifiedName = function() {
+        return clazz.$.parent;
+    };
+    this.getParent = function() {
+        return null;
+    };
+    this.getOwnProperties = function() {
+        return [];
+    }
+};
+ClassOutsideNamespace.prototype = new Class(null, null);
+
 exports.Class = Class;
+exports.ClassOutsideNamespace = ClassOutsideNamespace;
