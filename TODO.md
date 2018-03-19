@@ -66,3 +66,5 @@ Handle parent classes outside of own class namespace.
 
 Structure:
 * conversion/ should only write code and use the structures in gir/
+
+Do not use renderFile directly. Use methods in Template.js

@@ -27,10 +27,19 @@ let Template = {
     /**
      * @typedef {{name: string, definition: string, documentation: string}} _PropertyType
      * @param {Array.<_PropertyType>} properties
+     * @return string
      */
     literalObject: function(properties) {
         properties[properties.length-1].last = true;
         return this.renderFile(this.TPL_LITERAL_OBJECT, {properties: properties});
+    },
+
+    /**
+     * @param {string} name
+     * @return {string}
+     */
+    namespace: function(name) {
+        return this.renderFile(this.TPL_NAMESPACE, {namespace: name});
     }
 };
 

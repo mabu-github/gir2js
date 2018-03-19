@@ -32,7 +32,7 @@ function processGir(gir) {
         const data = namespace.getData();
 
         // namespace
-        converted += Template.renderFile(Template.TPL_NAMESPACE, {namespace: name});
+        converted += Template.namespace(name);
 
         // constants
         namespace.getConstants().forEach(function (constant) {
