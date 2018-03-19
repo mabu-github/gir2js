@@ -31,7 +31,8 @@ function processGir(gir) {
 
         converted += "var " + name + " = {};\n";
         converted += processConstants(data);
-        converted += processEnumerations(data);
+        converted += processEnumerations(data.enumeration, name);
+        converted += processEnumerations(data.bitfield, name);
         converted += processFunctions(name, data.function, true);
         converted += processClasses(namespace);
     });

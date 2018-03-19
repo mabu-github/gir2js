@@ -2,7 +2,7 @@
 
 Process elements in namespace:
 * alias
-* bitfield
+* (/) bitfield
 * callback
 * class
 ** (/) constructor
