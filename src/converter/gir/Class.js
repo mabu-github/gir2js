@@ -71,7 +71,7 @@ const Class = function(clazz, namespace) {
         let properties = [];
         const classes = [this].concat(this.getParents());
         classes.forEach(function(clazz) {
-            properties.concat(clazz.getOwnProperties());
+            properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
     };

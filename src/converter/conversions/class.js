@@ -69,7 +69,7 @@ function processClass(namespace, clazz) {
         augmentsTag = "\n@augments " + classExtends;
     }
     constructorRecords = "\n\n@signature\n@param {{";
-    constructorRecords += clazz.getOwnProperties().map(function(property) {
+    constructorRecords += clazz.getAllProperties().map(function(property) {
         return "[" + property.getName() + "]" + ": " + property.getType();
     }).join(",\n");
     constructorRecords += "}} constructorProperties\n";
