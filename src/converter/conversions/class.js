@@ -14,21 +14,27 @@ const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 function processClasses(namespace) {
     let converted = "";
     namespace.getClasses().forEach(function (clazz) {
-        converted += processClass(namespace.getName(), clazz.getData());
+        converted += processClass(namespace.getName(), clazz);
     });
     return converted;
 }
 
+/**
+ * @param {string} namespace
+ * @param {Class} clazz
+ * @returns {string}
+ */
 function processClass(namespace, clazz) {
     let numConstructorParameters = 0;
     let constructorSignatures = "";
     let constructorRecords = "";
-    const name = clazz.$.name;
+    const name = clazz.getName();
+    const data = clazz.getData();
 
     // first constructor belongs to JavaScript internals,
     // starting from second belongs to class definition
-    if (clazz.constructor.length !== 1) {
-        clazz.constructor.forEach(function (constructor, constructorIdx) {
+    if (data.constructor.length !== 1) {
+        data.constructor.forEach(function (constructor, constructorIdx) {
             if (constructorIdx === 0) return;
             constructorSignatures += "\n\n@signature";
             if (constructor.parameters) {
@@ -57,25 +63,25 @@ function processClass(namespace, clazz) {
     }
 
     let converted = "\n";
-    let classExtends = getParentClass(clazz, namespace);
+    let classExtends = getParentClass(data, namespace);
     let augmentsTag = "";
     if (classExtends !== "") {
         augmentsTag = "\n@augments " + classExtends;
     }
     constructorRecords = "\n\n@signature\n@param {{";
-    constructorRecords += getClassProperties(namespace, clazz).map(function(property) {
+    constructorRecords += getClassProperties(namespace, data).map(function(property) {
         return "[" + getValidJsPropertyName(property.name) + "]" + ": " + property.type;
     }).join(",\n");
     constructorRecords += "}} constructorProperties\n";
-    converted += processDocumentation(clazz, augmentsTag + constructorRecords);
+    converted += processDocumentation(data, augmentsTag + constructorRecords);
     const fullyQualifiedName = namespace + "." + name;
     converted += fullyQualifiedName + " = ";
     converted += "function (constructorProperties)" + "{"
         + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
-        + processSignals(clazz)
-        + processClassProperties(namespace, clazz)
-        + processClassMethods(namespace, clazz)
-        + processClassFunctions(namespace, clazz)
+        + processSignals(data)
+        + processClassProperties(namespace, data)
+        + processClassMethods(namespace, data)
+        + processClassFunctions(namespace, data)
         + "}";
     converted += ";\n";
 
