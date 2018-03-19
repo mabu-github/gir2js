@@ -23,6 +23,7 @@
   "bin": "src/converter/convertGirToJs",
   "dependencies": {
     "js-beautify": "^1.7.5",
+    "mustache": "^2.3.0",
     "xml2js": "^0.4.19"
   }
 }

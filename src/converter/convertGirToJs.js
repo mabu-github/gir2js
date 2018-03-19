@@ -11,7 +11,8 @@ const
     processClasses = require('./conversions/class.js').processClasses,
     processFunctions = require('./conversions/function.js').processFunctions,
     execFile = require('child_process').execFile,
-    GirFile = require('./gir/GirFile').GirFile;
+    GirFile = require('./gir/GirFile').GirFile,
+    Template = require('./templates/Template').Template;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -29,7 +30,7 @@ function processGir(gir) {
         const name = namespace.getName();
         const data = namespace.getData();
 
-        converted += "var " + name + " = {};\n";
+        converted += Template.renderFile(Template.TPL_NAMESPACE, {namespace: name});
         converted += processConstants(data);
         converted += processEnumerations(data.enumeration, name);
         converted += processEnumerations(data.bitfield, name);

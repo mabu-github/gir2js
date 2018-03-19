@@ -18,6 +18,12 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
     return converted;
 };
 
+exports.processDocumentation2 = function(type) {
+    if (!type.doc) return "";
+
+    return type.doc[0]._;
+};
+
 exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
     let docblockSignature = "";
     docblockSignature += "\n" + docTag + " {";
