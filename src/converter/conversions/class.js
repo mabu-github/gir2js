@@ -5,6 +5,7 @@ const getDocblockSignatureForParameter = require("./documentation").getDocblockS
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
 const getParameterType = require("./glibBasicTypes").getParameterType;
+const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 
 function processClasses(namespace) {
     if (!namespace.class) return "";
@@ -77,10 +78,6 @@ function processClass(namespace, clazz) {
     converted += ";\n";
 
     return converted;
-}
-
-function getValidJsPropertyName(name) {
-    return name.replace(/-/g, '_');
 }
 
 function getParentClass(clazz, namespace) {
