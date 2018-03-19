@@ -7,12 +7,14 @@ const processFunctions = require("./function").processFunctions;
 const getParameterType = require("./glibBasicTypes").getParameterType;
 const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 
+/**
+ * @param {Namespace} namespace
+ * @returns {string}
+ */
 function processClasses(namespace) {
-    if (!namespace.class) return "";
-
     let converted = "";
-    namespace.class.forEach(function (clazz) {
-        converted += processClass(namespace.$.name, clazz);
+    namespace.getClasses().forEach(function (clazz) {
+        converted += processClass(namespace.getName(), clazz.getData());
     });
     return converted;
 }

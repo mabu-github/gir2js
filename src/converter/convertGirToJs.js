@@ -9,8 +9,9 @@ const
     processEnumerations = require('./conversions/enumeration.js').processEnumerations,
     processConstants = require('./conversions/constant.js').processConstants,
     processClasses = require('./conversions/class.js').processClasses,
-    processFunctions = require('./conversions/function.js').processFunctions
-    execFile = require('child_process').execFile;
+    processFunctions = require('./conversions/function.js').processFunctions,
+    execFile = require('child_process').execFile,
+    GirFile = require('./gir/GirFile').GirFile;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -23,13 +24,15 @@ console.log(jsFile);
 
 function processGir(gir) {
     let converted = "";
-    const repository = gir['repository'];
-    repository['namespace'].forEach(function (namespace) {
-        const name = namespace.$.name;
+    let girFile = new GirFile(gir);
+    girFile.getNamespaces().forEach(function (namespace) {
+        const name = namespace.getName();
+        const data = namespace.getData();
+
         converted += "var " + name + " = {};\n";
-        converted += processConstants(namespace);
-        converted += processEnumerations(namespace);
-        converted += processFunctions(name, namespace.function, true);
+        converted += processConstants(data);
+        converted += processEnumerations(data);
+        converted += processFunctions(name, data.function, true);
         converted += processClasses(namespace);
     });
     return converted;
