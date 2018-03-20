@@ -1,80 +1,54 @@
-const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
-const _getValidJsPropertyName = require('../conversions/property').getValidJsPropertyName;
+const NamedElement = require('./NamedElement').NamedElement;
+const NamedTypedElement = require('./NamedTypedElement').NamedTypedElement;
 
-/**
- * @param {*} enumeration
- * @param {Namespace} namespace
- * @constructor
- */
-const Enumeration = function(enumeration, namespace) {
-    /**
-     * @return {string}
-     */
-    this.getName = function() {
-        return _getValidJsPropertyName(enumeration.$.name);
-    };
 
+class Enumeration extends NamedTypedElement {
     /**
-     * @return {string}
+     * @param {*} enumeration
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getDocumentation = function() {
-        if (!enumeration.doc) return "";
-        return enumeration.doc[0]._;
-    };
-
-    /**
-     * @return {*}
-     */
-    this.getData = function() {
-        return enumeration;
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getType = function() {
-        return _getParameterType(enumeration, namespace.getName())
-    };
+    constructor(enumeration, namespace) {
+        super(enumeration, namespace);
+        this._enumeration = enumeration;
+    }
 
     /**
      * @return {Array.<EnumerationMember>}
      */
-    this.getMembers = function() {
-        return enumeration.member.map(function(enumMember) {
-            return new EnumerationMember(enumMember, namespace);
+    getMembers() {
+        const self = this;
+        return this._enumeration.member.map(function(enumMember) {
+            return new EnumerationMember(enumMember, self.getNamespace());
         })
     }
-};
+}
 
-/**
- * @param {*} enumMember
- * @param {Namespace} namespace
- * @constructor
- */
-const EnumerationMember = function(enumMember, namespace) {
+class EnumerationMember extends NamedElement {
+    /**
+     * @param {*} enumMember
+     * @param {Namespace} namespace
+     * @constructor
+     */
+    constructor(enumMember, namespace) {
+        super(enumMember, namespace);
+        this._enumMember = enumMember;
+    }
 
     /**
      * @return {string}
      */
-    this.getName = function() {
-        return enumMember.$.name.toUpperCase();
-    };
+    getName() {
+        return super.getName().toUpperCase();
+    }
 
     /**
      * @return {string} Printable value for JS Code. "value" for strings, the value as is otherwise.
      */
-    this.getValue = function() {
-        return enumMember.$.value;
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getDocumentation = function() {
-        if (!enumMember.doc) return "";
-        return enumMember.doc[0]._;
-    };
-};
+    getValue() {
+        return this._enumMember.$.value;
+    }
+}
 
 exports.Enumeration = Enumeration;
 exports.EnumerationMember = EnumerationMember;
