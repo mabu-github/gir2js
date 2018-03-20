@@ -3,6 +3,17 @@ const Property = require('./Property').Property;
 const Function = require('./Function').Function;
 const NamedElement = require('./NamedElement').NamedElement;
 
+/**
+ * @param {*} functions
+ * @param {Namespace} namespace
+ * @returns {Array.<Function>}
+ */
+function mapFunctions(functions, namespace) {
+    return functions.map(function(func) {
+        return new Function(func, namespace);
+    });
+}
+
 class Class extends NamedElement {
     /**
      * @param {*} clazz
@@ -24,10 +35,7 @@ class Class extends NamedElement {
         if (this._clazz.constructor.length === 1)
             return [];
 
-        const self = this;
-        return this._clazz.constructor.slice(1).map(function (constructor) {
-            return new Constructor(constructor, self.getNamespace());
-        });
+        return mapFunctions(this._clazz.constructor.slice(1), this.getNamespace());
     }
 
 
@@ -91,19 +99,43 @@ class Class extends NamedElement {
     /**
      * @return {Array.<Function>}
      */
-    getFunctions() {
-        let functions = [];
+    getInstanceMethods() {
+        if (!this._clazz.method)
+            return [];
 
-        if (this._clazz.method) { // instance method
-            functions = functions.concat(this._clazz.method);
-        }
-        if (this._clazz.function) // static method
-            functions = functions.concat(this._clazz.function);
+        return mapFunctions(this._clazz.method, this.getNamespace());
+    }
 
-        const self = this;
-        return functions.map(function(func) {
-            return new Function(func, self);
-        });
+    /**
+     * @return {Array.<Function>}
+     */
+    getStaticMethods() {
+        if (!this._clazz.function)
+            return [];
+
+        return mapFunctions(this._clazz.function, this.getNamespace());
+    }
+
+    /**
+     * @return {Array.<Function>}
+     */
+    getVirtualMethods() {
+        if (!this._clazz['virtual-method'])
+            return [];
+
+        return mapFunctions(this._clazz['virtual-method'], this.getNamespace());
+    }
+
+    /**
+     * @return {Array.<Function>}
+     */
+    getAllFunctions() {
+        return []
+            .concat(this.getConstructors())
+            .concat(this.getInstanceMethods())
+            .concat(this.getStaticMethods())
+            .concat(this.getVirtualMethods())
+            ;
     }
 }
 

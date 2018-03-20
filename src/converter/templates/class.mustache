@@ -7,6 +7,12 @@
   * <%.%>
 <%/constructorSignature%>
   */
-<%prefix%>.<%class%> = function(<%#constructorParameters%><%name%><%^last%>, <%/last%><%/constructorParameters%>) {
+<%prefix%>.<%class%> = function() {
+    /**
+<%#documentation%>
+      * <%.%>
+<%/documentation%>
+      */
+    this.c_new = function(<%#constructorParameters%><%name%><%^last%>, <%/last%><%/constructorParameters%>) {}:
     <%classBody%>
 };

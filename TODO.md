@@ -28,7 +28,7 @@ Process elements in namespace:
 **** autocompletion for signals does not work
 *** (/) class properties
 *** class fields
-*** class virtual-methods
+*** (/) class virtual-methods
 *** implements
 ** (/) methods
 ** (/) properties

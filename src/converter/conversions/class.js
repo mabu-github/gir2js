@@ -32,6 +32,10 @@ function processClass(namespace, clazz) {
     const name = clazz.getName();
     const data = clazz.getData();
 
+    if (clazz.getConstructors().length > 1) {
+        console.log("multiple constructors");
+    }
+
     clazz.getConstructors().forEach(function (constructorClass) {
         const constructor = constructorClass.getData();
 
@@ -78,7 +82,7 @@ function processClass(namespace, clazz) {
         + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(data)
         + processClassProperties(namespace, clazz)
-        + processFunctions(namespace, clazz.getFunctions(), false)
+        + processFunctions(namespace, clazz.getAllFunctions(), false)
         + "}";
     converted += ";\n";
 

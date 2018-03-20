@@ -15,6 +15,15 @@ class Constructor {
     getData() {
         return this._constructor;
     }
+
+    /**
+     * @return {Array.<Parameter>}
+     */
+    getParameters() {
+        if (constructor.parameters) {
+
+        }
+    }
 }
 
 exports.Constructor = Constructor;
