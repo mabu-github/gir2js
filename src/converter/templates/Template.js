@@ -57,10 +57,18 @@ let Template = {
 
     /**
      * @param {{documentation: Array.<string>, signature: Array.<string>, prefix: string, variable: string, assignment: string}} view
-     * @returns {*}
+     * @return {string}
      */
     variableAssignment: function(view) {
         return this.renderFile(this.TPL_VARIABLE_ASSIGNMENT, view);
+    },
+
+    /**
+     * @param {{tag: string, type: string, parameter: string, documentation: Array.<string>}} view
+     * @return {string}
+     */
+    typedDocTag: function(view) {
+        return this.renderFile(this.TPL_TYPED_DOC_TAG, view);
     }
 };
 

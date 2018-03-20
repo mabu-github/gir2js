@@ -36,7 +36,7 @@ exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace
 };
 
 exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespace) {
-    return Template.renderFile(Template.TPL_TYPED_DOC_TAG, {
+    return Template.typedDocTag({
         tag: docTag,
         type: getParameterType(parameter.getData(), namespace),
         parameter: transformJsKeywords(parameter.getName(), "", "_"),
@@ -45,7 +45,7 @@ exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespac
 };
 
 exports.getUnnamedDocblockParameter = function(docTag, type) {
-    return Template.renderFile(Template.TPL_TYPED_DOC_TAG, {
+    return Template.typedDocTag({
         tag: docTag,
         type: type,
         parameter: "",
