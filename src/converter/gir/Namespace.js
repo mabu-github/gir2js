@@ -1,123 +1,114 @@
+const NamedElement = require("./NamedElement").NamedElement;
 const Class = require('./Class').Class;
 const Constant = require('./Constant').Constant;
 const Enumeration = require('./Enumeration').Enumeration;
 const Function = require('./Function').Function;
 
-/**
- * @param {*} namespace
- * @constructor
- */
-const Namespace = function(namespace) {
-
+class Namespace extends NamedElement {
     /**
-     * @type {boolean}
+     * @param {*} namespace
+     * @constructor
      */
-    let initialized = false;
+    constructor(namespace) {
+        super(namespace, namespace);
 
-    /**
-     * @dict
-     * @type {Object.<string, Class>}
-     */
-    let classesByName = {};
+        /**
+         * @type {boolean}
+         * */
+        this._initialized = false;
 
-    this.init = function() {
-        if (initialized === true)
+        /**
+         * @dict
+         * @type {Object.<string, Class>}
+         */
+        this._classesByName = {};
+    }
+
+    init() {
+        if (this._initialized === true)
             return;
 
+        const self = this;
         this.getClasses().forEach(function(clazz) {
-            classesByName[clazz.getName()] = clazz;
+            self._classesByName[clazz.getName()] = clazz;
         });
 
-        this.initialized = true;
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getName = function() {
-        return namespace.$.name;
-    };
-
-    /**
-     * @return {*}
-     */
-    this.getData = function() {
-        return namespace;
+        this._initialized = true;
     };
 
     /**
      * @return {Array.<Constant>}
      */
-    this.getConstants = function() {
-        if (!namespace.constant)
+    getConstants() {
+        if (!this.getNamespace().constant)
             return [];
 
         const self = this;
-        return namespace.constant.map(function(constant) {
+        return this.getNamespace().constant.map(function(constant) {
             return new Constant(constant, self);
         });
-    };
+    }
 
     /**
      * @return {Array.<Enumeration>}
      */
-    this.getEnumerations = function() {
-        if (!namespace.enumeration)
+    getEnumerations() {
+        if (!this.getNamespace().enumeration)
             return [];
 
         const self = this;
-        return namespace.enumeration.map(function(enumeration) {
+        return this.getNamespace().enumeration.map(function(enumeration) {
             return new Enumeration(enumeration, self);
         });
-    };
+    }
 
     /**
      * @return {Array.<Enumeration>}
      */
-    this.getBitfields = function() {
-        if (!namespace.bitfield)
+    getBitfields() {
+        if (!this.getNamespace().bitfield)
             return [];
 
         const self = this;
-        return namespace.bitfield.map(function(bitfield) {
+        return this.getNamespace().bitfield.map(function(bitfield) {
             return new Enumeration(bitfield, self);
         });
-    };
+    }
 
     /**
      * @return {Array.<Function>}
      */
-    this.getFunctions = function() {
-        if (!namespace.function)
+    getFunctions() {
+        if (!this.getNamespace().function)
             return [];
 
         const self = this;
-        return namespace.function.map(function(func) {
+        return this.getNamespace().function.map(function(func) {
             return new Function(func, self);
         });
-    };
+    }
 
     /**
      * @return {Array.<Class>}
      */
-    this.getClasses = function() {
-        if (!namespace.class)
+    getClasses() {
+        if (!this.getNamespace().class)
             return [];
 
         const self = this;
-        return namespace.class.map(function(clazz) {
+        return this.getNamespace().class.map(function(clazz) {
             return new Class(clazz, self);
         });
-    };
+    }
 
     /**
      * @param {string} name
      * @returns {Class}
      */
-    this.getClassByName = function(name) {
+    getClassByName(name) {
         this.init();
-        return classesByName[name];
-    };
-};
+        return this._classesByName[name];
+    }
+}
 
 exports.Namespace = Namespace;
