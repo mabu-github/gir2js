@@ -90,10 +90,10 @@ const Class = function(clazz, namespace) {
     this.getFunctions = function() {
         let functions = [];
 
-        if (clazz.method) {
+        if (clazz.method) { // instance method
             functions = functions.concat(clazz.method);
         }
-        if (clazz.function)
+        if (clazz.function) // static method
             functions = functions.concat(clazz.function);
 
         const self = this;
