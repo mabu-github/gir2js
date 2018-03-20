@@ -21,6 +21,13 @@ class NamedElement {
     /**
      * @return {string}
      */
+    getNamespaceName() {
+        return this._namespace.getName();
+    }
+
+    /**
+     * @return {string}
+     */
     getFullyQualifiedName() {
         return this._namespace.getName() + "." + this.getName();
     }

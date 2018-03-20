@@ -1,8 +1,7 @@
 const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
-const _getValidJsPropertyName = require('../conversions/property').getValidJsPropertyName;
-const NamedElement = require('./NamedElement').NamedElement;
+const NamedTypedElement = require('./NamedTypedElement').NamedTypedElement;
 
-class Property extends NamedElement {
+class Property extends NamedTypedElement {
     /**
      * @param {*} property
      * @param {Namespace} namespace
@@ -10,15 +9,6 @@ class Property extends NamedElement {
      */
     constructor(property, namespace) {
         super(property, namespace);
-        this._property = property;
-        this._namespace = namespace;
-    }
-
-    /**
-     * @return {string}
-     */
-    getType() {
-        return _getParameterType(this._property, this._namespace.getName());
     }
 }
 
