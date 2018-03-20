@@ -23,7 +23,7 @@ function renderFile(file, view) {
     return Mustache.render(templates[file], view)
 }
 
-let Template = {
+const Template = {
     /**
      * @typedef {{name: string, definition: string, documentation: string}} _PropertyType
      * @param {Array.<_PropertyType>} properties
@@ -31,7 +31,7 @@ let Template = {
      */
     literalObject: function(properties) {
         properties[properties.length-1].last = true;
-        return this.renderFile(TPL_LITERAL_OBJECT, {properties: properties});
+        return renderFile(TPL_LITERAL_OBJECT, {properties: properties});
     },
 
     /**
@@ -39,7 +39,7 @@ let Template = {
      * @return {string}
      */
     namespace: function(name) {
-        return this.renderFile(TPL_NAMESPACE, {namespace: name});
+        return renderFile(TPL_NAMESPACE, {namespace: name});
     },
 
     /**
@@ -51,7 +51,7 @@ let Template = {
         if (view.parameters.length >= 1) {
             view.parameters[view.parameters.length-1].last = true;
         }
-        return this.renderFile(TPL_METHOD, view);
+        return renderFile(TPL_METHOD, view);
     },
 
     /**
@@ -59,7 +59,7 @@ let Template = {
      * @return {string}
      */
     variableAssignment: function(view) {
-        return this.renderFile(TPL_VARIABLE_ASSIGNMENT, view);
+        return renderFile(TPL_VARIABLE_ASSIGNMENT, view);
     },
 
     /**
@@ -67,7 +67,7 @@ let Template = {
      * @return {string}
      */
     typedDocTag: function(view) {
-        return this.renderFile(TPL_TYPED_DOC_TAG, view);
+        return renderFile(TPL_TYPED_DOC_TAG, view);
     }
 };
 
