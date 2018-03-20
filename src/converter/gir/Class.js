@@ -1,36 +1,17 @@
 const Property = require('./Property').Property;
 const Function = require('./Function').Function;
+const NamedElement = require('./NamedElement').NamedElement;
 
-class Class {
+class Class extends NamedElement {
     /**
      * @param {*} clazz
      * @param {Namespace} namespace
      * @constructor
      */
     constructor(clazz, namespace) {
+        super(clazz, namespace);
         this._clazz = clazz;
         this._namespace = namespace;
-    }
-
-    /**
-     * @return {string}
-     */
-    getName() {
-        return this._clazz.$.name;
-    }
-
-    /**
-     * @return {string}
-     */
-    getFullyQualifiedName() {
-        return this._namespace.getName() + "." + this.getName();
-    }
-
-    /**
-     * @return {*}
-     */
-    getData() {
-        return this._clazz;
     }
 
     /**
@@ -109,9 +90,6 @@ class Class {
     }
 }
 
-/**
- * @augments Class
- */
 class ClassOutsideNamespace extends Class {
     /**
      * @param {string} fullyQualifiedName
