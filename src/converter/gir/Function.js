@@ -1,44 +1,29 @@
+const NamedElement = require("./NamedElement").NamedElement;
 const Parameter = require("./Parameter").Parameter;
 
-/**
- * @param {*} func
- * @param {Namespace} namespace
- * @constructor
- */
-const Function = function(func, namespace) {
+class Function extends NamedElement {
     /**
-     * @return {string}
+     * @param {*} func
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getName = function() {
-        return func.$.name;
-    };
-
-    /**
-     * @return {*}
-     */
-    this.getData = function() {
-        return func;
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getDocumentation = function() {
-        if (!func.doc) return "";
-        return func.doc[0]._;
-    };
+    constructor(func, namespace) {
+        super(func, namespace);
+        this._func = func;
+    }
 
     /**
      * @return {Array.<Parameter>}
      */
-    this.getParameters = function() {
-        if (!(func.parameters && func.parameters[0].parameter))
+    getParameters() {
+        if (!(this._func.parameters && this._func.parameters[0].parameter))
             return [];
 
-        return func.parameters[0].parameter.map(function(parameter) {
-            return new Parameter(parameter, namespace);
+        const self = this;
+        return this._func.parameters[0].parameter.map(function(parameter) {
+            return new Parameter(parameter, self.getNamespace());
         });
-    };
-};
+    }
+}
 
 exports.Function = Function;
