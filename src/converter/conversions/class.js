@@ -26,22 +26,14 @@ function processClasses(namespace) {
  * @returns {string}
  */
 function processClass(namespace, clazz) {
-    let numConstructorParameters = 0;
-    let constructorSignatures = "";
     let constructorRecords = "";
     const name = clazz.getName();
     const data = clazz.getData();
-
-    if (clazz.getConstructors().length > 1) {
-        console.log("multiple constructors");
-    }
 
     clazz.getConstructors().forEach(function (constructorClass) {
         const constructor = constructorClass.getData();
 
         if (constructor.parameters) {
-            numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
-
             if (constructor.parameters[0].parameter.length > 0) {
                 let constructorRecordParams = [];
                 constructorRecords += "\n\n@signature";
@@ -55,11 +47,6 @@ function processClass(namespace, clazz) {
             }
         }
     });
-
-    let constructorParameters = [];
-    for (let i = 0; i < numConstructorParameters; i++) {
-        constructorParameters[i] = "arg" + i;
-    }
 
     let converted = "\n";
 
