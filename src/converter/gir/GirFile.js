@@ -1,21 +1,23 @@
 const Namespace = require('./Namespace').Namespace;
 
-/**
- * @param {*} girFile
- * @constructor
- */
-const GirFile = function(girFile) {
-    const repository = girFile.repository;
-    const namespaces = repository.namespace;
+class GirFile {
+    /**
+     * @param {*} girFile
+     * @constructor
+     */
+    constructor(girFile) {
+        this._girFile = girFile;
+    }
 
     /**
      * @return {Array.<Namespace>}
      */
-    this.getNamespaces = function () {
+    getNamespaces() {
+        const namespaces = this._girFile.repository.namespace;
         return namespaces.map(function(namespace) {
             return new Namespace(namespace);
         });
-    };
-};
+    }
+}
 
 exports.GirFile = GirFile;
