@@ -32,7 +32,7 @@ function processClass(namespace, clazz) {
     const name = clazz.getName();
     const data = clazz.getData();
 
-    clazz.getConstructors().forEach(function (constructorClass, constructorIdx) {
+    clazz.getConstructors().forEach(function (constructorClass) {
         const constructor = constructorClass.getData();
 
         constructorSignatures += "\n\n@signature";
