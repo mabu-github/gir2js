@@ -7,24 +7,23 @@ Mustache.escape = function(value) {
 
 Mustache.tags = ['<%', '%>'];
 
+const TPL_NAMESPACE = __dirname + "/namespace.mustache";
+const TPL_VARIABLE_ASSIGNMENT = __dirname + "/variableAssignment.mustache";
+const TPL_TYPED_DOC_TAG = __dirname + "/typedDocTag.mustache";
+const TPL_LITERAL_OBJECT = __dirname + "/literalObject.mustache";
+const TPL_METHOD = __dirname + "/method.mustache";
+
+let templates = {};
+function renderFile(file, view) {
+    if (!templates[file]) {
+        templates[file] = readFile(file).toString();
+        Mustache.parse(templates[file]);
+    }
+
+    return Mustache.render(templates[file], view)
+}
+
 let Template = {
-    TPL_NAMESPACE: __dirname + "/namespace.mustache",
-    TPL_VARIABLE_ASSIGNMENT: __dirname + "/variableAssignment.mustache",
-    TPL_TYPED_DOC_TAG: __dirname + "/typedDocTag.mustache",
-    TPL_LITERAL_OBJECT: __dirname + "/literalObject.mustache",
-    TPL_METHOD: __dirname + "/method.mustache",
-
-    templates: {},
-
-    renderFile: function(file, view) {
-        if (!this.templates[file]) {
-            this.templates[file] = readFile(file).toString();
-            Mustache.parse(this.templates[file]);
-        }
-
-        return Mustache.render(this.templates[file], view)
-    },
-
     /**
      * @typedef {{name: string, definition: string, documentation: string}} _PropertyType
      * @param {Array.<_PropertyType>} properties
@@ -32,7 +31,7 @@ let Template = {
      */
     literalObject: function(properties) {
         properties[properties.length-1].last = true;
-        return this.renderFile(this.TPL_LITERAL_OBJECT, {properties: properties});
+        return this.renderFile(TPL_LITERAL_OBJECT, {properties: properties});
     },
 
     /**
@@ -40,7 +39,7 @@ let Template = {
      * @return {string}
      */
     namespace: function(name) {
-        return this.renderFile(this.TPL_NAMESPACE, {namespace: name});
+        return this.renderFile(TPL_NAMESPACE, {namespace: name});
     },
 
     /**
@@ -52,7 +51,7 @@ let Template = {
         if (view.parameters.length >= 1) {
             view.parameters[view.parameters.length-1].last = true;
         }
-        return this.renderFile(this.TPL_METHOD, view);
+        return this.renderFile(TPL_METHOD, view);
     },
 
     /**
@@ -60,7 +59,7 @@ let Template = {
      * @return {string}
      */
     variableAssignment: function(view) {
-        return this.renderFile(this.TPL_VARIABLE_ASSIGNMENT, view);
+        return this.renderFile(TPL_VARIABLE_ASSIGNMENT, view);
     },
 
     /**
@@ -68,7 +67,7 @@ let Template = {
      * @return {string}
      */
     typedDocTag: function(view) {
-        return this.renderFile(this.TPL_TYPED_DOC_TAG, view);
+        return this.renderFile(TPL_TYPED_DOC_TAG, view);
     }
 };
 
