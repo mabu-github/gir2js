@@ -33,7 +33,7 @@ function processGir(gir) {
 
         // constants
         namespace.getConstants().forEach(function (constant) {
-            converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
+            converted += Template.variableAssignment({
                 documentation: constant.getDocumentation().split("\n"),
                 signature: getUnnamedDocblockParameter("type", constant.getType(), constant.getName()).split("\n"),
                 prefix: name,
@@ -53,7 +53,7 @@ function processGir(gir) {
                 };
             });
 
-            converted += Template.renderFile(Template.TPL_VARIABLE_ASSIGNMENT, {
+            converted += Template.variableAssignment({
                 documentation: enumeration.getDocumentation().split("\n"),
                 signature: getUnnamedDocblockParameter("enum", "number", enumeration.getName()).split("\n"),
                 prefix: name,
