@@ -1,4 +1,5 @@
 const Property = require('./Property').Property;
+const Function = require('./Function').Function;
 
 /**
  * @param {*} clazz
@@ -81,6 +82,24 @@ const Class = function(clazz, namespace) {
             properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
+    };
+
+    /**
+     * @return {Array.<Function>}
+     */
+    this.getFunctions = function() {
+        let functions = [];
+
+        if (clazz.method) {
+            functions = functions.concat(clazz.method);
+        }
+        if (clazz.function)
+            functions = functions.concat(clazz.function);
+
+        const self = this;
+        return functions.map(function(func) {
+            return new Function(func, self);
+        });
     };
 };
 

@@ -68,3 +68,5 @@ Structure:
 * conversion/ should only write code and use the structures in gir/
 
 Do not use renderFile directly. Use methods in Template.js
+
+Docblock formatting when doc and/or signature missing. When both missing, omit block.
