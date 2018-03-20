@@ -3,7 +3,7 @@ exports.processClasses = processClasses;
 const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const processSignals = require("./signals").processSignals;
-const processFunctions2 = require("./function").processFunctions2;
+const processFunctions = require("./function").processFunctions;
 const getParameterType = require("./glibBasicTypes").getParameterType;
 const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 
@@ -80,7 +80,7 @@ function processClass(namespace, clazz) {
         + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(data)
         + processClassProperties(namespace, data)
-        + processFunctions2(namespace, clazz.getFunctions(), false)
+        + processFunctions(namespace, clazz.getFunctions(), false)
         + "}";
     converted += ";\n";
 

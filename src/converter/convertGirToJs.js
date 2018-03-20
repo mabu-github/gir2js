@@ -1,20 +1,16 @@
 #!/usr/bin/env node
 
-const
-    xml2js = require('xml2js'),
-    fs = require('fs'),
-    path = require('path'),
-    beautify = require('js-beautify').js_beautify,
-    getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent,
-    processClasses = require('./conversions/class.js').processClasses,
-    processFunctions = require('./conversions/function.js').processFunctions,
-    processFunctions2 = require('./conversions/function.js').processFunctions2,
-    execFile = require('child_process').execFile,
-    GirFile = require('./gir/GirFile').GirFile,
-    Template = require('./templates/Template').Template,
-    getDocblockSignatureForParameter2 = require("./conversions/documentation").getDocblockSignatureForParameter2,
-    getUnnamedDocblockParameter = require("./conversions/documentation").getUnnamedDocblockParameter,
-    processDocumentation = require("./conversions/documentation").processDocumentation;
+const xml2js = require('xml2js');
+const fs = require('fs');
+const path = require('path');
+const beautify = require('js-beautify').js_beautify;
+const getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent;
+const processClasses = require('./conversions/class.js').processClasses;
+const processFunctions = require('./conversions/function.js').processFunctions;
+const execFile = require('child_process').execFile;
+const GirFile = require('./gir/GirFile').GirFile;
+const Template = require('./templates/Template').Template;
+const getUnnamedDocblockParameter = require("./conversions/documentation").getUnnamedDocblockParameter;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -66,7 +62,7 @@ function processGir(gir) {
             });
         });
 
-        converted += processFunctions2(name, namespace.getFunctions(), true);
+        converted += processFunctions(name, namespace.getFunctions(), true);
 
         converted += processClasses(namespace);
     });
