@@ -1,6 +1,5 @@
 exports.processClasses = processClasses;
 
-const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
@@ -24,37 +23,15 @@ function processClasses(namespace) {
  * @returns {string}
  */
 function processClass(namespace, clazz) {
-    const name = clazz.getName();
-    const data = clazz.getData();
-
-    let converted = "\n";
-
-    let augmentsTag = "";
-    if (clazz.getParent() !== null) {
-        augmentsTag = "\n@augments " + clazz.getParent().getFullyQualifiedName();
-    }
-    let constructorRecords = "\n\n@param {{";
-    constructorRecords += clazz.getAllProperties().map(function(property) {
-        return "[" + property.getName() + "]" + ": " + property.getType();
-    }).join(",\n");
-    constructorRecords += "}} constructorProperties\n";
-    converted += processDocumentation(data, augmentsTag + constructorRecords);
-    const fullyQualifiedName = namespace + "." + name;
-    converted += fullyQualifiedName + " = ";
-    converted += "function (constructorProperties)" + "{"
-        + processSignals(data)
-        + processClassProperties(namespace, clazz)
-        + processFunctions(namespace, clazz.getAllFunctions(), false)
-        + "}";
-    converted += ";\n";
-
     let constructorParameters = clazz.getAllProperties().map(function(property) {
         return {
             name: property.getName(),
             type: property.getType()
         };
     });
-    converted = Template.class({
+
+    const data = clazz.getData();
+    return Template.class({
         documentation: clazz.getDocumentation().split("\n"),
         constructorParameters: constructorParameters,
         extends: clazz.getParent().getFullyQualifiedName(),
@@ -64,8 +41,6 @@ function processClass(namespace, clazz) {
             + processClassProperties(namespace, clazz)
             + processFunctions(namespace, clazz.getAllFunctions(), false)
     });
-
-    return converted;
 }
 
 /**
