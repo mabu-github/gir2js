@@ -72,14 +72,13 @@ const Template = {
     },
 
     /**
-     * @typedef {{name: string}} _ParameterType
+     * @typedef {{name: string, type: string}} _ConstructorParameterType
      * @param {{
      *  documentation: Array.<string>,
-     *  constructorSignature: Array.<string>,
+     *  constructorParameters: Array<_ConstructorParameterType>
      *  prefix: string,
      *  class: string,
-     *  constructorParameters: Array<_ParameterType>
- *      classBody: string}} view
+     *  classBody: string}} view
      * @return {string}
      */
     class: function(view) {

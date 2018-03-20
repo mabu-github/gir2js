@@ -53,7 +53,7 @@ function processClass(namespace, clazz) {
     if (clazz.getParent() !== null) {
         augmentsTag = "\n@augments " + clazz.getParent().getFullyQualifiedName();
     }
-    constructorRecords = "\n\n@signature\n@param {{";
+    constructorRecords = "\n\n@param {{";
     constructorRecords += clazz.getAllProperties().map(function(property) {
         return "[" + property.getName() + "]" + ": " + property.getType();
     }).join(",\n");

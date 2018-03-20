@@ -3,10 +3,12 @@
   * <%.%>
 <%/documentation%>
   *
-<%#constructorSignature%>
-  * <%.%>
-<%/constructorSignature%>
+  * @param {{
+<%#constructorParameters%>
+  *   <%name%>: <%type%><%^last%>,<%/last%>
+<%/constructorParameters%>
+  *   }} constructorParameters
   */
-<%prefix%>.<%class%> = function() {
+<%prefix%>.<%class%> = function(constructorParameters) {
     <%classBody%>
 };
