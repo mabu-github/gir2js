@@ -28,19 +28,6 @@ function processClass(namespace, clazz) {
     const name = clazz.getName();
     const data = clazz.getData();
 
-    clazz.getConstructors().forEach(function (constructorClass) {
-        const constructor = constructorClass.getData();
-
-        if (constructor.parameters) {
-            if (constructor.parameters[0].parameter.length > 0) {
-                let constructorRecordParams = [];
-                constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                    constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
-                });
-            }
-        }
-    });
-
     let converted = "\n";
 
     let augmentsTag = "";
