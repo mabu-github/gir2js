@@ -10,14 +10,13 @@ class Constant extends NamedElement {
     constructor(constant, namespace) {
         super(constant, namespace);
         this._constant = constant;
-        this._namespace = namespace;
     }
 
     /**
      * @return {string}
      */
     getType() {
-        return _getParameterType(this._constant, this._namespace.getName())
+        return _getParameterType(this._constant, this.getNamespaceName())
     }
 
     /**
@@ -25,7 +24,7 @@ class Constant extends NamedElement {
      */
     getValue() {
         let value = "";
-        if (_getParameterType(this._constant, this._namespace.getName()) === "string") {
+        if (_getParameterType(this._constant, this.getNamespaceName()) === "string") {
             value = '"' + this._constant.$.value + '"';
         } else {
             value = this._constant.$.value;

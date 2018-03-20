@@ -11,7 +11,6 @@ class Class extends NamedElement {
     constructor(clazz, namespace) {
         super(clazz, namespace);
         this._clazz = clazz;
-        this._namespace = namespace;
     }
 
     /**
@@ -26,7 +25,7 @@ class Class extends NamedElement {
             return new ClassOutsideNamespace(this._clazz.$.parent);
         }
 
-        return this._namespace.getClassByName(this._clazz.$.parent);
+        return this.getNamespace().getClassByName(this._clazz.$.parent);
     }
 
     /**
@@ -55,7 +54,7 @@ class Class extends NamedElement {
 
         const self = this;
         return this._clazz.property.map(function(property) {
-            return new Property(property, self._namespace);
+            return new Property(property, self.getNamespace());
         });
     }
 

@@ -19,6 +19,13 @@ class NamedElement {
     }
 
     /**
+     * @return {Namespace}
+     */
+    getNamespace() {
+        return this._namespace;
+    }
+
+    /**
      * @return {string}
      */
     getNamespaceName() {
