@@ -1,7 +1,6 @@
 exports.processClasses = processClasses;
 
 const processDocumentation = require("./documentation").processDocumentation;
-const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
@@ -26,7 +25,6 @@ function processClasses(namespace) {
  * @returns {string}
  */
 function processClass(namespace, clazz) {
-    let constructorRecords = "";
     const name = clazz.getName();
     const data = clazz.getData();
 
@@ -49,7 +47,7 @@ function processClass(namespace, clazz) {
     if (clazz.getParent() !== null) {
         augmentsTag = "\n@augments " + clazz.getParent().getFullyQualifiedName();
     }
-    constructorRecords = "\n\n@param {{";
+    let constructorRecords = "\n\n@param {{";
     constructorRecords += clazz.getAllProperties().map(function(property) {
         return "[" + property.getName() + "]" + ": " + property.getType();
     }).join(",\n");
