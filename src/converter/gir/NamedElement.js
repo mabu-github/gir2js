@@ -1,3 +1,5 @@
+const _getValidJsIdentifierName = require('../conversions/property').getValidJsPropertyName;
+
 class NamedElement {
     /**
      * @param {*} data
@@ -13,7 +15,7 @@ class NamedElement {
      * @return {string}
      */
     getName() {
-        return this._data.$.name;
+        return _getValidJsIdentifierName(this._data.$.name);
     }
 
     /**

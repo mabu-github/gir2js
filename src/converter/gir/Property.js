@@ -17,13 +17,6 @@ class Property extends NamedElement {
     /**
      * @return {string}
      */
-    getName() {
-        return _getValidJsPropertyName(this._property.$.name);
-    }
-
-    /**
-     * @return {string}
-     */
     getType() {
         return _getParameterType(this._property, this._namespace.getName());
     }

@@ -1,53 +1,37 @@
 const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
-const _getValidJsPropertyName = require('../conversions/property').getValidJsPropertyName;
+const NamedElement = require('./NamedElement').NamedElement;
 
-/**
- * @param {*} constant
- * @param {Namespace} namespace
- * @constructor
- */
-const Constant = function(constant, namespace) {
+class Constant extends NamedElement {
     /**
-     * @return {string}
+     * @param {*} constant
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getName = function() {
-        return _getValidJsPropertyName(constant.$.name);
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getDocumentation = function() {
-        if (!constant.doc) return "";
-        return constant.doc[0]._;
-    };
-
-    /**
-     * @return {*}
-     */
-    this.getData = function() {
-        return constant;
-    };
+    constructor(constant, namespace) {
+        super(constant, namespace);
+        this._constant = constant;
+        this._namespace = namespace;
+    }
 
     /**
      * @return {string}
      */
-    this.getType = function() {
-        return _getParameterType(constant, namespace.getName())
-    };
+    getType() {
+        return _getParameterType(this._constant, this._namespace.getName())
+    }
 
     /**
      * @return {string} Printable value for JS Code. "value" for strings, the value as is otherwise.
      */
-    this.getValue = function() {
+    getValue() {
         let value = "";
-        if (_getParameterType(constant, namespace.getName()) === "string") {
-            value = '"' + constant.$.value + '"';
+        if (_getParameterType(this._constant, this._namespace.getName()) === "string") {
+            value = '"' + this._constant.$.value + '"';
         } else {
-            value = constant.$.value;
+            value = this._constant.$.value;
         }
         return value;
     }
-};
+}
 
 exports.Constant = Constant;
