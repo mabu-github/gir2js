@@ -53,6 +53,14 @@ let Template = {
             view.parameters[view.parameters.length-1].last = true;
         }
         return this.renderFile(this.TPL_METHOD, view);
+    },
+
+    /**
+     * @param {{documentation: Array.<string>, signature: Array.<string>, prefix: string, variable: string, assignment: string}} view
+     * @returns {*}
+     */
+    variableAssignment: function(view) {
+        return this.renderFile(this.TPL_VARIABLE_ASSIGNMENT, view);
     }
 };
 

@@ -2,10 +2,11 @@ exports.processClasses = processClasses;
 
 const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
+const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
 const getParameterType = require("./glibBasicTypes").getParameterType;
-const getValidJsPropertyName = require("./property").getValidJsPropertyName;
+const Template = require("../templates/Template").Template;
 
 /**
  * @param {Namespace} namespace
@@ -79,7 +80,7 @@ function processClass(namespace, clazz) {
     converted += "function (constructorProperties)" + "{"
         + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(data)
-        + processClassProperties(namespace, data)
+        + processClassProperties(namespace, clazz)
         + processFunctions(namespace, clazz.getFunctions(), false)
         + "}";
     converted += ";\n";
@@ -87,14 +88,21 @@ function processClass(namespace, clazz) {
     return converted;
 }
 
+/**
+ * @param {string} namespace
+ * @param {Class} clazz
+ * @returns {string}
+ */
 function processClassProperties(namespace, clazz) {
-    if (!clazz.property) return "";
-
     let properties = "";
-    clazz.property.forEach(function (property) {
-        let propertySignature = "\n" + getDocblockSignatureForParameter("@type", property, namespace);
-        properties += processDocumentation(property, propertySignature);
-        properties += "this." + getValidJsPropertyName(property.$.name) + " = null;\n";
+    clazz.getOwnProperties().forEach(function (property) {
+        properties += Template.variableAssignment({
+            documentation: property.getDocumentation().split("\n"),
+            signature: getDocblockSignatureForParameter2("type", property, namespace).split("\n"),
+            prefix: "this",
+            variable: property.getName(),
+            assignment: "null"
+        });
     });
     return properties;
 }

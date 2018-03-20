@@ -1,32 +1,32 @@
 const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
 const _getValidJsPropertyName = require('../conversions/property').getValidJsPropertyName;
+const NamedElement = require('./NamedElement').NamedElement;
 
-/**
- * @param {*} property
- * @param {Namespace} namespace
- * @constructor
- */
-const Property = function(property, namespace) {
+class Property extends NamedElement {
     /**
-     * @return {string}
+     * @param {*} property
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getName = function() {
-        return _getValidJsPropertyName(property.$.name);
-    };
-
-    /**
-     * @return {*}
-     */
-    this.getData = function() {
-        return property;
-    };
+    constructor(property, namespace) {
+        super(property, namespace);
+        this._property = property;
+        this._namespace = namespace;
+    }
 
     /**
      * @return {string}
      */
-    this.getType = function() {
-        return _getParameterType(property, namespace.getName())
-    };
-};
+    getName() {
+        return _getValidJsPropertyName(this._property.$.name);
+    }
+
+    /**
+     * @return {string}
+     */
+    getType() {
+        return _getParameterType(this._property, this._namespace.getName());
+    }
+}
 
 exports.Property = Property;
