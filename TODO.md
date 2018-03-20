@@ -70,5 +70,3 @@ Structure:
 Do not use renderFile directly. Use methods in Template.js
 
 Docblock formatting when doc and/or signature missing. When both missing, omit block.
-
-Use ES6 class notation throughout the project.
