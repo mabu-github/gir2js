@@ -39,7 +39,6 @@ function processClass(namespace, clazz) {
                 constructorRecords += "\n\n@signature";
                 constructorRecords += "\n@param {{";
                 constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                    const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
                     constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
                 });
                 constructorRecords += constructorRecordParams.join(", ");
