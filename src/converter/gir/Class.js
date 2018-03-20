@@ -1,3 +1,4 @@
+const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
 const Function = require('./Function').Function;
 const NamedElement = require('./NamedElement').NamedElement;
@@ -12,6 +13,23 @@ class Class extends NamedElement {
         super(clazz, namespace);
         this._clazz = clazz;
     }
+
+    /**
+     * @return {Array.<Constructor>}
+     */
+    getConstructors() {
+        // first constructor belongs to JavaScript internals,
+        // starting from second belongs to class definition
+
+        if (this._clazz.constructor.length === 1)
+            return [];
+
+        const self = this;
+        return this._clazz.constructor.slice(1).map(function (constructor) {
+            return new Constructor(constructor, self.getNamespace());
+        });
+    }
+
 
     /**
      * @return {?Class}

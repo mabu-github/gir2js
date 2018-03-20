@@ -12,6 +12,7 @@ const TPL_VARIABLE_ASSIGNMENT = __dirname + "/variableAssignment.mustache";
 const TPL_TYPED_DOC_TAG = __dirname + "/typedDocTag.mustache";
 const TPL_LITERAL_OBJECT = __dirname + "/literalObject.mustache";
 const TPL_METHOD = __dirname + "/method.mustache";
+const TPL_CLASS = __dirname + "/class.mustache";
 
 let templates = {};
 function renderFile(file, view) {
@@ -68,7 +69,25 @@ const Template = {
      */
     typedDocTag: function(view) {
         return renderFile(TPL_TYPED_DOC_TAG, view);
-    }
+    },
+
+    /**
+     * @typedef {{name: string}} _ParameterType
+     * @param {{
+     *  documentation: Array.<string>,
+     *  constructorSignature: Array.<string>,
+     *  prefix: string,
+     *  class: string,
+     *  constructorParameters: Array<_ParameterType>
+ *      classBody: string}} view
+     * @return {string}
+     */
+    class: function(view) {
+        if (view.constructorParameters.length >= 1) {
+            view.constructorParameters[view.constructorParameters.length-1].last = true;
+        }
+        return renderFile(TPL_CLASS, view);
+    },
 };
 
 exports.Template = Template;

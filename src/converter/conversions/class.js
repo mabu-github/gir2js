@@ -32,31 +32,28 @@ function processClass(namespace, clazz) {
     const name = clazz.getName();
     const data = clazz.getData();
 
-    // first constructor belongs to JavaScript internals,
-    // starting from second belongs to class definition
-    if (data.constructor.length !== 1) {
-        data.constructor.forEach(function (constructor, constructorIdx) {
-            if (constructorIdx === 0) return;
-            constructorSignatures += "\n\n@signature";
-            if (constructor.parameters) {
-                numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
+    clazz.getConstructors().forEach(function (constructorClass, constructorIdx) {
+        const constructor = constructorClass.getData();
 
-                if (constructor.parameters[0].parameter.length > 0) {
-                    let constructorRecordParams = [];
-                    constructorRecords += "\n\n@signature";
-                    constructorRecords += "\n@param {{";
-                    constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
-                        const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
-                        constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
-                        constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
-                    });
-                    constructorRecords += constructorRecordParams.join(", ");
-                    constructorRecords += "}} arg0";
-                }
+        constructorSignatures += "\n\n@signature";
+        if (constructor.parameters) {
+            numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
+
+            if (constructor.parameters[0].parameter.length > 0) {
+                let constructorRecordParams = [];
+                constructorRecords += "\n\n@signature";
+                constructorRecords += "\n@param {{";
+                constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
+                    const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
+                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
+                    constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
+                });
+                constructorRecords += constructorRecordParams.join(", ");
+                constructorRecords += "}} arg0";
             }
-            constructorSignatures += "\n@return {" + namespace + "." + name + "}";
-        });
-    }
+        }
+        constructorSignatures += "\n@return {" + namespace + "." + name + "}";
+    });
 
     let constructorParameters = [];
     for (let i = 0; i < numConstructorParameters; i++) {
