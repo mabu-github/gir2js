@@ -1,4 +1,3 @@
-const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
 const NamedTypedElement = require('./NamedTypedElement').NamedTypedElement;
 
 class Property extends NamedTypedElement {

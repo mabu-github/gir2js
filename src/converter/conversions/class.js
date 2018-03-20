@@ -30,14 +30,13 @@ function processClass(namespace, clazz) {
         };
     });
 
-    const data = clazz.getData();
     return Template.class({
         documentation: clazz.getDocumentation().split("\n"),
         constructorParameters: constructorParameters,
         extends: clazz.getParent().getFullyQualifiedName(),
         prefix: clazz.getNamespaceName(),
         class: clazz.getName(),
-        classBody: processSignals(data)
+        classBody: processSignals(clazz)
             + processClassProperties(namespace, clazz)
             + processFunctions(namespace, clazz.getAllFunctions(), false)
     });

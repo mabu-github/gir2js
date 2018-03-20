@@ -1,16 +1,22 @@
 const processDocumentation = require('./documentation.js').processDocumentation;
 const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 
+/**
+ * @param {Class} clazz
+ * @returns {string}
+ */
 exports.processSignals = function(clazz) {
-    if (!clazz['glib:signal']) return "";
-
     let signalProto = "{ connect: function(connectTo) {}, disconnect: function(disconnectFrom) {}, emit: function() {} }";
 
-    let signals = "this.signal = {";
-    signals += clazz['glib:signal'].map(function (signal) {
-        return processDocumentation(signal) + getValidJsPropertyName(signal.$.name) + ": " + signalProto;
-    }).join(",\n");
-    signals += "};\n";
+    let signals = "";
+    const classSignals = clazz.getSignals();
+    if (classSignals.length > 0) {
+        signals = "this.signal = {";
+        signals += classSignals.map(function (signal) {
+            return processDocumentation(signal.getData()) + getValidJsPropertyName(signal.getName()) + ": " + signalProto;
+        }).join(",\n");
+        signals += "};\n";
+    }
 
     return signals;
 };

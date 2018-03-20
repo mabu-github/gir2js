@@ -1,3 +1,4 @@
+const Signal = require("./Signal").Signal;
 const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
 const Function = require('./Function').Function;
@@ -94,6 +95,19 @@ class Class extends NamedElement {
             properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
+    }
+
+    /**
+     * @return {Array.<Signal>}
+     */
+    getSignals() {
+        if (!this._clazz['glib:signal'])
+            return [];
+
+        const self = this;
+        return this._clazz['glib:signal'].map(function(signal) {
+            return new Signal(signal, self.getNamespace());
+        });
     }
 
     /**
