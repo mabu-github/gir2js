@@ -39,7 +39,6 @@ function processClass(namespace, clazz) {
     clazz.getConstructors().forEach(function (constructorClass) {
         const constructor = constructorClass.getData();
 
-        constructorSignatures += "\n\n@signature";
         if (constructor.parameters) {
             numConstructorParameters = Math.max(numConstructorParameters, constructor.parameters[0].parameter.length);
 
@@ -49,14 +48,12 @@ function processClass(namespace, clazz) {
                 constructorRecords += "\n@param {{";
                 constructor.parameters[0].parameter.forEach(function (parameter, parameterIdx) {
                     const alternativeParameterName = "arg" + parameterIdx + " " + parameter.$.name;
-                    constructorSignatures += getDocblockSignatureForParameter("@param", parameter, namespace, alternativeParameterName);
                     constructorRecordParams[parameterIdx] = parameter.$.name + ": " + getParameterType(parameter, namespace);
                 });
                 constructorRecords += constructorRecordParams.join(", ");
                 constructorRecords += "}} arg0";
             }
         }
-        constructorSignatures += "\n@return {" + namespace + "." + name + "}";
     });
 
     let constructorParameters = [];
@@ -79,7 +76,6 @@ function processClass(namespace, clazz) {
     const fullyQualifiedName = namespace + "." + name;
     converted += fullyQualifiedName + " = ";
     converted += "function (constructorProperties)" + "{"
-        + "/** " + constructorSignatures + augmentsTag + "\n*/" + "this.c_new = function (" + constructorParameters.join(", ") + ") {};\n"
         + processSignals(data)
         + processClassProperties(namespace, clazz)
         + processFunctions(namespace, clazz.getAllFunctions(), false)
