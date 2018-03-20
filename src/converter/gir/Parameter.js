@@ -1,30 +1,14 @@
-/**
- * @param {*} parameter
- * @param {Namespace} namespace
- * @constructor
- */
-const Parameter = function(parameter, namespace) {
-    /**
-     * @return {string}
-     */
-    this.getName = function() {
-        return parameter.$.name;
-    };
+const NamedElement = require("./NamedElement").NamedElement;
 
+class Parameter extends NamedElement {
     /**
-     * @return {*}
+     * @param {*} parameter
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getData = function() {
-        return parameter;
-    };
-
-    /**
-     * @return {string}
-     */
-    this.getDocumentation = function() {
-        if (!parameter.doc) return "";
-        return parameter.doc[0]._;
-    };
-};
+    constructor(parameter, namespace) {
+        super(parameter, namespace);
+    }
+}
 
 exports.Parameter = Parameter;
