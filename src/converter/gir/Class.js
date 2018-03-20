@@ -1,52 +1,57 @@
 const Property = require('./Property').Property;
 const Function = require('./Function').Function;
 
-/**
- * @param {*} clazz
- * @param {Namespace} namespace
- * @constructor
- */
-const Class = function(clazz, namespace) {
+class Class {
     /**
-     * @return {string}
+     * @param {*} clazz
+     * @param {Namespace} namespace
+     * @constructor
      */
-    this.getName = function() {
-        return clazz.$.name;
-    };
+    constructor(clazz, namespace) {
+        this._clazz = clazz;
+        this._namespace = namespace;
+    }
 
     /**
      * @return {string}
      */
-    this.getFullyQualifiedName = function() {
-        return namespace.getName() + "." + this.getName();
-    };
+    getName() {
+        return this._clazz.$.name;
+    }
+
+    /**
+     * @return {string}
+     */
+    getFullyQualifiedName() {
+        return this._namespace.getName() + "." + this.getName();
+    }
 
     /**
      * @return {*}
      */
-    this.getData = function() {
-        return clazz;
-    };
+    getData() {
+        return this._clazz;
+    }
 
     /**
      * @return {?Class}
      */
-    this.getParent = function() {
-        if (!clazz.$.parent)
+    getParent() {
+        if (!this._clazz.$.parent)
             return null;
 
-        if (clazz.$.parent.indexOf(".") > -1) {
-            console.warn("Cannot handle parent type '" + clazz.$.parent + "' outside of current namespace.");
-            return new ClassOutsideNamespace(clazz);
+        if (this._clazz.$.parent.indexOf(".") > -1) {
+            console.warn("Cannot handle parent type '" + this._clazz.$.parent + "' outside of current namespace.");
+            return new ClassOutsideNamespace(this._clazz.$.parent);
         }
 
-        return namespace.getClassByName(clazz.$.parent);
-    };
+        return this._namespace.getClassByName(this._clazz.$.parent);
+    }
 
     /**
      * @return {Array.<Class>}
      */
-    this.getParents = function() {
+    getParents() {
         let parents = [];
 
         let current = this;
@@ -59,66 +64,75 @@ const Class = function(clazz, namespace) {
         }
 
         return parents;
-    };
+    }
 
     /**
      * @return {Array.<Property>}
      */
-    this.getOwnProperties = function() {
-        if (!clazz.property) return [];
+    getOwnProperties() {
+        if (!this._clazz.property) return [];
 
-        return clazz.property.map(function(property) {
-            return new Property(property, namespace);
+        const self = this;
+        return this._clazz.property.map(function(property) {
+            return new Property(property, self._namespace);
         });
-    };
+    }
 
     /**
      * @return {Array.<Property>}
      */
-    this.getAllProperties = function() {
+    getAllProperties() {
         let properties = [];
         const classes = [this].concat(this.getParents());
         classes.forEach(function(clazz) {
             properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
-    };
+    }
 
     /**
      * @return {Array.<Function>}
      */
-    this.getFunctions = function() {
+    getFunctions() {
         let functions = [];
 
-        if (clazz.method) { // instance method
-            functions = functions.concat(clazz.method);
+        if (this._clazz.method) { // instance method
+            functions = functions.concat(this._clazz.method);
         }
-        if (clazz.function) // static method
-            functions = functions.concat(clazz.function);
+        if (this._clazz.function) // static method
+            functions = functions.concat(this._clazz.function);
 
         const self = this;
         return functions.map(function(func) {
             return new Function(func, self);
         });
-    };
-};
+    }
+}
 
 /**
  * @augments Class
- * @constructor
  */
-const ClassOutsideNamespace = function(clazz) {
-    this.getFullyQualifiedName = function() {
-        return clazz.$.parent;
-    };
-    this.getParent = function() {
+class ClassOutsideNamespace extends Class {
+    /**
+     * @param {string} fullyQualifiedName
+     * @constructor
+     */
+    constructor(fullyQualifiedName) {
+        super(null, null);
+        this._name = fullyQualifiedName;
+    }
+
+    getFullyQualifiedName() {
+        return this._name;
+    }
+
+    getParent() {
         return null;
-    };
-    this.getOwnProperties = function() {
+    }
+
+    getOwnProperties() {
         return [];
     }
-};
-ClassOutsideNamespace.prototype = new Class(null, null);
+}
 
 exports.Class = Class;
-exports.ClassOutsideNamespace = ClassOutsideNamespace;
