@@ -4,7 +4,6 @@ const processDocumentation = require("./documentation").processDocumentation;
 const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
-const getParameterType = require("./glibBasicTypes").getParameterType;
 const Template = require("../templates/Template").Template;
 
 /**
@@ -48,6 +47,23 @@ function processClass(namespace, clazz) {
         + processFunctions(namespace, clazz.getAllFunctions(), false)
         + "}";
     converted += ";\n";
+
+    let constructorParameters = clazz.getAllProperties().map(function(property) {
+        return {
+            name: property.getName(),
+            type: property.getType()
+        };
+    });
+    converted = Template.class({
+        documentation: clazz.getDocumentation().split("\n"),
+        constructorParameters: constructorParameters,
+        extends: clazz.getParent().getFullyQualifiedName(),
+        prefix: clazz.getNamespaceName(),
+        class: clazz.getName(),
+        classBody: processSignals(data)
+            + processClassProperties(namespace, clazz)
+            + processFunctions(namespace, clazz.getAllFunctions(), false)
+    });
 
     return converted;
 }

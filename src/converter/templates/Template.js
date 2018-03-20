@@ -78,6 +78,7 @@ const Template = {
      *  constructorParameters: Array<_ConstructorParameterType>
      *  prefix: string,
      *  class: string,
+     *  extends: ?string,
      *  classBody: string}} view
      * @return {string}
      */

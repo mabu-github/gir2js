@@ -3,12 +3,15 @@
   * <%.%>
 <%/documentation%>
   *
+<%#extends%>
+  * @augments <%.%>
+<%/extends%>
   * @param {{
 <%#constructorParameters%>
-  *   <%name%>: <%type%><%^last%>,<%/last%>
+  *   [<%name%>]: <%type%><%^last%>,<%/last%>
 <%/constructorParameters%>
-  *   }} constructorParameters
+  *   }} constructorProperties
   */
-<%prefix%>.<%class%> = function(constructorParameters) {
+<%prefix%>.<%class%> = function(constructorProperties) {
     <%classBody%>
 };
