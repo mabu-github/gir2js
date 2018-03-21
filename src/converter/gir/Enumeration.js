@@ -17,10 +17,7 @@ class Enumeration extends NamedTypedElement {
      * @return {Array.<EnumerationMember>}
      */
     getMembers() {
-        const self = this;
-        return this._enumeration.member.map(function(enumMember) {
-            return new EnumerationMember(enumMember, self.getNamespace());
-        })
+        return this._enumeration.member.map(enumMember => new EnumerationMember(enumMember, this.getNamespace()));
     }
 }
 

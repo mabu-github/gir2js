@@ -20,10 +20,7 @@ class Function extends NamedElement {
         if (!(this._func.parameters && this._func.parameters[0].parameter))
             return [];
 
-        const self = this;
-        return this._func.parameters[0].parameter.map(function(parameter) {
-            return new Parameter(parameter, self.getNamespace());
-        });
+        return this._func.parameters[0].parameter.map(parameter => new Parameter(parameter, this.getNamespace()));
     }
 
     /**

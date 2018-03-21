@@ -10,9 +10,7 @@ const NamedElement = require('./NamedElement').NamedElement;
  * @return {Array.<Function>}
  */
 function mapFunctions(functions, namespace) {
-    return functions.map(function(func) {
-        return new Function(func, namespace);
-    });
+    return functions.map(func => new Function(func, namespace));
 }
 
 class Class extends NamedElement {
@@ -117,10 +115,7 @@ class Class extends NamedElement {
     getOwnProperties() {
         if (!this._clazz.property) return [];
 
-        const self = this;
-        return this._clazz.property.map(function(property) {
-            return new Property(property, self.getNamespace());
-        });
+        return this._clazz.property.map(property => new Property(property, this.getNamespace()));
     }
 
     /**
@@ -131,7 +126,7 @@ class Class extends NamedElement {
         const classes = [this]
             .concat(this.getParents())
             .concat(this.getImplementedInterfaces());
-        classes.forEach(function(clazz) {
+        classes.forEach(clazz => {
             properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
@@ -144,10 +139,7 @@ class Class extends NamedElement {
         if (!this._clazz['glib:signal'])
             return [];
 
-        const self = this;
-        return this._clazz['glib:signal'].map(function(signal) {
-            return new Signal(signal, self.getNamespace());
-        });
+        return this._clazz['glib:signal'].map(signal => new Signal(signal, this.getNamespace()));
     }
 
     /**

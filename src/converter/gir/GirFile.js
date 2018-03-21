@@ -14,9 +14,7 @@ class GirFile {
      */
     getNamespaces() {
         const namespaces = this._girFile.repository.namespace;
-        return namespaces.map(function(namespace) {
-            return new Namespace(namespace);
-        });
+        return namespaces.map(namespace => new Namespace(namespace));
     }
 }
 
