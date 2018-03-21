@@ -1,4 +1,6 @@
-const _getValidJsIdentifierName = require('../conversions/property').getValidJsPropertyName;
+function getValidJsIdentifierName(name) {
+    return name.replace(/-/g, '_');
+}
 
 class NamedElement {
     /**
@@ -15,7 +17,7 @@ class NamedElement {
      * @return {string}
      */
     getName() {
-        return _getValidJsIdentifierName(this._data.$.name);
+        return getValidJsIdentifierName(this._data.$.name);
     }
 
     /**
