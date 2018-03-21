@@ -1,3 +1,4 @@
+const Interface_ = require("./Interface_").Interface_;
 const Signal = require("./Signal").Signal;
 const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
@@ -71,6 +72,18 @@ class Class extends NamedElement {
         }
 
         return parents;
+    }
+
+    /**
+     * @return {Array.<Interface_>}
+     */
+    getImplementedInterfaces() {
+        if (!this._clazz.implements)
+            return [];
+
+        return this._clazz.implements.map(interface_ => {
+            return new Interface_(interface_.$.name);
+        });
     }
 
     /**

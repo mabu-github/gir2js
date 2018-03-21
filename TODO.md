@@ -1,15 +1,13 @@
 # TODOs
 
 Process elements in namespace:
-* alias
-* class
 *** signals
 **** a signal can probably do more than connect()
 **** add signal method documentation (e.g. to all connect calls etc.)
-*** class fields
-*** implements
-* interface
 * record
+* alias
+* class -> class fields
+* interface
 
 Handle basic types in getParameterType():
 * is GStr also a normal string in javascript?
@@ -29,3 +27,5 @@ Handle parent classes outside of own class namespace.
 
 Documentation from GIR file needs to be processed to be valid in docblock. There are @ signs and some
   kind of links in it that need conversion.
+
+Interfaces like Gtk.Orientable are missing.

@@ -97,6 +97,7 @@ const Template = {
      *  prefix: string,
      *  class: string,
      *  extends: ?string,
+     *  implements: Array.<string>,
      *  classBody: string}} view
      * @return {string}
      */

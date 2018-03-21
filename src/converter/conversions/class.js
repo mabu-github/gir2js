@@ -32,6 +32,7 @@ function processClass(namespace, clazz) {
         documentation: clazz.getDocumentation().split("\n"),
         constructorParameters: constructorParameters,
         extends: clazz.getParent().getFullyQualifiedName(),
+        implements: clazz.getImplementedInterfaces().map(interface_ => interface_.getName()),
         prefix: clazz.getNamespaceName(),
         class: clazz.getName(),
         classBody: processSignals(clazz)

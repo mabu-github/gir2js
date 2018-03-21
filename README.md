@@ -27,6 +27,9 @@ find /usr/share -iname *.gir -type f
 
 ## Helpful manuals that help in development
 
+GObject Introspection
+* [Magic of GObject Introspection](https://people.gnome.org/~federico/blog/magic-of-gobject-introspection.html)
+
 GIR Schema
 * [GIR Reference](https://github.com/GNOME/gobject-introspection/blob/master/docs/reference/gi-gir-reference.xml)
 * [GIR Schema](https://github.com/shana/bindinator/blob/master/scheme/gir.xsd)
