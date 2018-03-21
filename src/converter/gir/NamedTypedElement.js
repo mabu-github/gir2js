@@ -45,6 +45,7 @@ function getParameterType(parameter, namespace) {
     } else {
         if (exports.getTypesWithoutJsEquivalent().includes(parameterType)) {
             console.warn("Could not convert " + parameterType + " to JavaScript");
+            return parameterType;
         } else if (parameterType.startsWith("g")) {
             throw new TypeError("Cannot handle glib type " + parameterType);
         }

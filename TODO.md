@@ -30,5 +30,3 @@ Handle parent classes outside of own class namespace.
 
 Documentation from GIR file needs to be processed to be valid in docblock. There are @ signs and some
   kind of links in it that need conversion.
-
-@param {Gtk.gpointer} is wrong. Should be incompatible type WITHOUT Gtk. namespace prefix.
