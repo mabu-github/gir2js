@@ -99,6 +99,7 @@ const Template = {
      * @return {string}
      */
     class: function(view) {
+        view.documentationAvailable = !!view.documentation.join("\n");
         if (view.constructorParameters.length >= 1) {
             view.constructorParameters[view.constructorParameters.length-1].last = true;
         }
