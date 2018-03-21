@@ -4,14 +4,9 @@ const xml2js = require('xml2js');
 const fs = require('fs');
 const path = require('path');
 const beautify = require('js-beautify').js_beautify;
-const getTypesWithoutJsEquivalent = require('./conversions/glibBasicTypes.js').getTypesWithoutJsEquivalent;
-const processClasses = require('./conversions/class.js').processClasses;
-const processFunctions = require('./conversions/function.js').processFunctions;
+const getTypesWithoutJsEquivalent = require('./gir/NamedTypedElement').getTypesWithoutJsEquivalent;
+const processGir = require('./conversions/gir.js').processGir;
 const execFile = require('child_process').execFile;
-const GirFile = require('./gir/GirFile').GirFile;
-const Template = require('./templates/Template').Template;
-const getDocblockTypeTag = require("./conversions/documentation").getDocblockTypeTag;
-const getDocblockEnumTag = require("./conversions/documentation").getDocblockEnumTag;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -21,54 +16,6 @@ if (!jsFile.startsWith("/")) {
 
 console.log(girFile);
 console.log(jsFile);
-
-function processGir(gir) {
-    let converted = "";
-    let girFile = new GirFile(gir);
-    girFile.getNamespaces().forEach(function (namespace) {
-        const name = namespace.getName();
-        const data = namespace.getData();
-
-        // namespace
-        converted += Template.namespace(name);
-
-        // constants
-        namespace.getConstants().forEach(function (constant) {
-            converted += Template.variableAssignment({
-                documentation: constant.getDocumentation().split("\n"),
-                signature: getDocblockTypeTag(constant),
-                prefix: name,
-                variable: constant.getName(),
-                assignment: constant.getValue()
-            });
-        });
-
-        // enumerations, bitfields
-        const enumerationsAndBitfields = namespace.getEnumerations().concat(namespace.getBitfields());
-        enumerationsAndBitfields.forEach(function (enumeration) {
-            let enumMembers = enumeration.getMembers().map(function (enumMember) {
-                return {
-                    name: enumMember.getName(),
-                    definition: enumMember.getValue(),
-                    documentation: enumMember.getDocumentation().split("\n")
-                };
-            });
-
-            converted += Template.variableAssignment({
-                documentation: enumeration.getDocumentation().split("\n"),
-                signature: getDocblockEnumTag(),
-                prefix: name,
-                variable: enumeration.getName(),
-                assignment: Template.literalObject(enumMembers)
-            });
-        });
-
-        converted += processFunctions(name, namespace.getFunctions(), true);
-
-        converted += processClasses(namespace);
-    });
-    return converted;
-}
 
 // write conversion
 parser = new xml2js.Parser();

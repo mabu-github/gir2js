@@ -1,4 +1,3 @@
-const _getParameterType = require('../conversions/glibBasicTypes').getParameterType;
 const NamedTypedElement = require('./NamedTypedElement').NamedTypedElement;
 
 class Constant extends NamedTypedElement {
@@ -17,7 +16,7 @@ class Constant extends NamedTypedElement {
      */
     getValue() {
         let value = "";
-        if (_getParameterType(this._constant, this.getNamespaceName()) === "string") {
+        if (this.getType() === "string") {
             value = '"' + this._constant.$.value + '"';
         } else {
             value = this._constant.$.value;
