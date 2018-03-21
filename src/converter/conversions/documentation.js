@@ -1,21 +1,5 @@
 const Template = require('../templates/Template').Template;
 
-function processDocumentation(type, appendAdditionalDocumentation=undefined) {
-    if (!type.doc && !appendAdditionalDocumentation) return "";
-
-    let converted = "";
-    converted += "/**\n";
-    if (type.doc) {
-        converted += type.doc[0]._;
-    }
-    if (appendAdditionalDocumentation) {
-        converted += appendAdditionalDocumentation;
-    }
-    converted += "\n*/";
-
-    return converted;
-}
-
 function getDocblockSignatureForParameter(docTag, parameter) {
     return Template.typedDocTag({
         tag: docTag,
@@ -52,7 +36,6 @@ function getDocblockEnumTag() {
     });
 }
 
-exports.processDocumentation = processDocumentation;
 exports.getDocblockSignatureForParameter = getDocblockSignatureForParameter;
 exports.getDocblockReturnTag = getDocblockReturnTag;
 exports.getDocblockTypeTag = getDocblockTypeTag;
