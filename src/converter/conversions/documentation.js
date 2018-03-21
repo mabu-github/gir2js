@@ -1,5 +1,9 @@
 const Template = require('../templates/Template').Template;
 
+/**
+ * @param {Parameter} parameter
+ * @return {string}
+ */
 function getDocblockParameterTag(parameter) {
     return Template.typedDocTag({
         tag: "param",
@@ -9,6 +13,10 @@ function getDocblockParameterTag(parameter) {
     });
 }
 
+/**
+ * @param {ReturnType} parameter
+ * @return {string}
+ */
 function getDocblockReturnTag(parameter) {
     return Template.typedDocTag({
         tag: "return",
@@ -18,6 +26,10 @@ function getDocblockReturnTag(parameter) {
     });
 }
 
+/**
+ * @param {NamedTypedElement} typedElement
+ * @return {string}
+ */
 function getDocblockTypeTag(typedElement) {
     return Template.typedDocTag({
         tag: "type",
@@ -27,6 +39,9 @@ function getDocblockTypeTag(typedElement) {
     });
 }
 
+/**
+ * @return {string}
+ */
 function getDocblockEnumTag() {
     return Template.typedDocTag({
         tag: "enum",

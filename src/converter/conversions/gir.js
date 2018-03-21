@@ -1,6 +1,10 @@
 const GirFile = require('../gir/GirFile').GirFile;
 const processNamespace = require('./namespace').processNamespace;
 
+/**
+ * @param {*} gir
+ * @return {string}
+ */
 function processGir(gir) {
     let converted = "";
     let girFile = new GirFile(gir);

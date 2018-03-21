@@ -6,6 +6,7 @@ const Template = require('../templates/Template').Template;
 
 /**
  * @param {Namespace} namespace
+ * @return {string}
  */
 function processNamespace(namespace) {
     let converted = "";
