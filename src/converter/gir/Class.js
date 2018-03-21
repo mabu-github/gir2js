@@ -1,4 +1,3 @@
-const Interface_ = require("./Interface_").Interface_;
 const Signal = require("./Signal").Signal;
 const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
@@ -40,7 +39,6 @@ class Class extends NamedElement {
         return mapFunctions(this._clazz.constructor.slice(1), this.getNamespace());
     }
 
-
     /**
      * @return {?Class}
      */
@@ -54,6 +52,20 @@ class Class extends NamedElement {
         }
 
         return this.getNamespace().getClassByName(this._clazz.$.parent);
+    }
+
+    /**
+     * @return {?string}
+     */
+    getFullyQualifiedParentName() {
+        if (!this._clazz.$.parent)
+            return null;
+
+        if (this._clazz.$.parent.indexOf(".") === -1) {
+            return this.getNamespaceName() + "." + this._clazz.$.parent;
+        }
+
+        return this._clazz.$.parent;
     }
 
     /**
@@ -75,15 +87,28 @@ class Class extends NamedElement {
     }
 
     /**
-     * @return {Array.<Interface_>}
+     * @return {Array.<Class>}
      */
     getImplementedInterfaces() {
+        const self = this;
+        return this.getImplementedInterfaceNames().map(interfaceName => {
+            if (interfaceName.indexOf(".") > -1) {
+                console.warn("Cannot handle parent interface type '" + interfaceName + "' outside of current namespace.");
+                return new ClassOutsideNamespace(interfaceName);
+            }
+
+            return self.getNamespace().getInterfaceByName(interfaceName);
+        });
+    }
+
+    /**
+     * @return {Array.<string>}
+     */
+    getImplementedInterfaceNames() {
         if (!this._clazz.implements)
             return [];
 
-        return this._clazz.implements.map(interface_ => {
-            return new Interface_(interface_.$.name);
-        });
+        return this._clazz.implements.map(interface_ => interface_.$.name);
     }
 
     /**
@@ -103,7 +128,9 @@ class Class extends NamedElement {
      */
     getAllProperties() {
         let properties = [];
-        const classes = [this].concat(this.getParents());
+        const classes = [this]
+            .concat(this.getParents())
+            .concat(this.getImplementedInterfaces());
         classes.forEach(function(clazz) {
             properties = properties.concat(clazz.getOwnProperties());
         });

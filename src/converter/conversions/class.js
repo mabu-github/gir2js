@@ -4,13 +4,15 @@ const processFunctions = require("./function").processFunctions;
 const Template = require("../templates/Template").Template;
 
 /**
+ * @param {Array.<Class>} classes
  * @param {Namespace} namespace
+ * @param {boolean} abstract
  * @return {string}
  */
-function processClasses(namespace) {
+function processClasses(classes, namespace, abstract) {
     let converted = "";
-    namespace.getClasses().forEach(function (clazz) {
-        converted += processClass(namespace.getName(), clazz);
+    classes.forEach(function (clazz) {
+        converted += processClass(namespace.getName(), clazz, abstract);
     });
     return converted;
 }
@@ -18,9 +20,10 @@ function processClasses(namespace) {
 /**
  * @param {string} namespace
  * @param {Class} clazz
+ * @param {boolean} abstract
  * @return {string}
  */
-function processClass(namespace, clazz) {
+function processClass(namespace, clazz, abstract) {
     let constructorParameters = clazz.getAllProperties().map(function(property) {
         return {
             name: property.getName(),
@@ -31,8 +34,9 @@ function processClass(namespace, clazz) {
     return Template.class({
         documentation: clazz.getDocumentation().split("\n"),
         constructorParameters: constructorParameters,
-        extends: clazz.getParent().getFullyQualifiedName(),
-        implements: clazz.getImplementedInterfaces().map(interface_ => interface_.getName()),
+        extends: clazz.getFullyQualifiedParentName(),
+        implements: clazz.getImplementedInterfaceNames(),
+        abstract: abstract,
         prefix: clazz.getNamespaceName(),
         class: clazz.getName(),
         classBody: processSignals(clazz)

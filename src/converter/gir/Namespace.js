@@ -1,3 +1,4 @@
+const Interface_ = require("./Interface_").Interface_;
 const NamedElement = require("./NamedElement").NamedElement;
 const Class = require('./Class').Class;
 const Constant = require('./Constant').Constant;
@@ -22,6 +23,12 @@ class Namespace extends NamedElement {
          * @type {Object.<string, Class>}
          */
         this._classesByName = {};
+
+        /**
+         * @dict
+         * @type {Object.<string, Class>}
+         */
+        this._interfacesByName = {};
     }
 
     init() {
@@ -34,6 +41,18 @@ class Namespace extends NamedElement {
         });
 
         this._initialized = true;
+    };
+
+    init2() {
+        if (this._initialized2 === true)
+            return;
+
+        const self = this;
+        this.getInterfaces().forEach(function(interface_) {
+            self._interfacesByName[interface_.getName()] = interface_;
+        });
+
+        this._initialized2 = true;
     };
 
     /**
@@ -102,6 +121,17 @@ class Namespace extends NamedElement {
     }
 
     /**
+     * @return {Array.<Interface_>}
+     */
+    getInterfaces() {
+        if (!this.getNamespace().interface)
+            return [];
+
+        const self = this;
+        return this.getNamespace().interface.map(interface_ => new Interface_(interface_, self));
+    }
+
+    /**
      * @return {Array.<Class>}
      */
     getClasses() {
@@ -121,6 +151,15 @@ class Namespace extends NamedElement {
     getClassByName(name) {
         this.init();
         return this._classesByName[name];
+    }
+
+    /**
+     * @param {string} name
+     * @return {Class}
+     */
+    getInterfaceByName(name) {
+        this.init2();
+        return this._interfacesByName[name];
     }
 }
 

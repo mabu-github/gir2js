@@ -1,14 +1,13 @@
-class Interface_ {
+const Class = require('./Class').Class;
+
+class Interface_ extends Class {
     /**
-     * @param {string} name
+     * @param {string} interface_
+     * @param {Namespace} namespace
      * @constructor
      */
-    constructor(name) {
-        this._name = name;
-    }
-
-    getName() {
-        return this._name;
+    constructor(interface_, namespace) {
+        super(interface_, namespace)
     }
 }
 
