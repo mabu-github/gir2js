@@ -15,14 +15,14 @@ function processFunctions(namespace, functions, withoutClass) {
         let methodParameters = [];
 
         func.getParameters().forEach(function (parameter, parameterIdx) {
-            methodSignature += getDocblockSignatureForParameter("param", parameter, namespace);
+            methodSignature += getDocblockSignatureForParameter("param", parameter);
             if (parameter.getName() !== "...") {
                 methodParameters[parameterIdx] = {name: parameter.getName()};
             }
         });
         let returnType = func.getReturnType();
         if (returnType !== null) {
-            methodSignature += getDocblockReturnTag(returnType, namespace);
+            methodSignature += getDocblockReturnTag(returnType);
         }
         let prefix = "";
         if (withoutClass) {

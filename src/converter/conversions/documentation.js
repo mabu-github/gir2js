@@ -16,7 +16,7 @@ function processDocumentation(type, appendAdditionalDocumentation=undefined) {
     return converted;
 }
 
-function getDocblockSignatureForParameter(docTag, parameter, namespace) {
+function getDocblockSignatureForParameter(docTag, parameter) {
     return Template.typedDocTag({
         tag: docTag,
         type: parameter.getType(),
@@ -25,7 +25,7 @@ function getDocblockSignatureForParameter(docTag, parameter, namespace) {
     });
 }
 
-function getDocblockReturnTag(parameter, namespace) {
+function getDocblockReturnTag(parameter) {
     return Template.typedDocTag({
         tag: "return",
         type: parameter.getType(),

@@ -50,7 +50,7 @@ function processClassProperties(namespace, clazz) {
     clazz.getOwnProperties().forEach(function (property) {
         properties += Template.variableAssignment({
             documentation: property.getDocumentation().split("\n"),
-            signature: getDocblockSignatureForParameter("type", property, namespace).split("\n"),
+            signature: getDocblockSignatureForParameter("type", property).split("\n"),
             prefix: "this",
             variable: property.getName(),
             assignment: "null"
