@@ -13,7 +13,7 @@ npm install
 ## How to execute
 
 ```
-./src/converter/convertGirToJs.js <path-to-gir-file> <path-to-js-output-file>
+./src/converter/convertGirToJs.js <path-to-js-output-directory> <path-to-gir-file>...
 ```
 
 ## How to find GIR files on your system
