@@ -2,7 +2,6 @@
 
 Process elements in namespace:
 * alias
-* callback
 * class
 *** signals
 **** a signal can probably do more than connect()

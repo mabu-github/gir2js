@@ -6,9 +6,10 @@ const Template = require("../templates/Template").Template;
  * @param {string} namespace
  * @param {Array.<Function>} functions
  * @param {boolean} withoutClass
+ * @param {boolean} callBackFunction
  * @return {string}
  */
-function processFunctions(namespace, functions, withoutClass) {
+function processFunctions(namespace, functions, withoutClass, callBackFunction=false) {
     let classMethods = "";
     functions.forEach(function (func) {
         let methodSignature = "";
@@ -31,13 +32,22 @@ function processFunctions(namespace, functions, withoutClass) {
             prefix = "this";
         }
 
-        classMethods += Template.method({
-            documentation: func.getDocumentation().split("\n"),
-            signature: methodSignature.split("\n"),
-            prefix: prefix,
-            method: func.getName(),
-            parameters: methodParameters
-        });
+        if (callBackFunction) {
+            classMethods += Template.callback({
+                documentation: func.getDocumentation().split("\n"),
+                signature: methodSignature.split("\n"),
+                prefix: prefix,
+                method: func.getName(),
+            });
+        } else {
+            classMethods += Template.method({
+                documentation: func.getDocumentation().split("\n"),
+                signature: methodSignature.split("\n"),
+                prefix: prefix,
+                method: func.getName(),
+                parameters: methodParameters
+            });
+        }
     });
 
     return classMethods;

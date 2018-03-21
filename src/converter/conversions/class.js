@@ -36,7 +36,7 @@ function processClass(namespace, clazz) {
         class: clazz.getName(),
         classBody: processSignals(clazz)
             + processClassProperties(namespace, clazz)
-            + processFunctions(namespace, clazz.getAllFunctions(), false)
+            + processFunctions(namespace, clazz.getAllFunctions(), false, false)
     });
 }
 

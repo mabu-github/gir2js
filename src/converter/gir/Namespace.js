@@ -89,6 +89,19 @@ class Namespace extends NamedElement {
     }
 
     /**
+     * @return {Array.<Function>}
+     */
+    getCallbackFunctions() {
+        if (!this.getNamespace().callback)
+            return [];
+
+        const self = this;
+        return this.getNamespace().callback.map(function(func) {
+            return new Function(func, self);
+        });
+    }
+
+    /**
      * @return {Array.<Class>}
      */
     getClasses() {
