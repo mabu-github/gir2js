@@ -65,6 +65,7 @@ const Template = {
      * @return {string}
      */
     callback: function(view) {
+        view.documentationAvailable = !!view.documentation.join("\n");
         return renderFile(TPL_CALLBACK, view);
     },
 
