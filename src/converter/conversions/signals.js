@@ -2,9 +2,9 @@ const Template = require("../templates/Template").Template;
 
 /**
  * @param {Class} clazz
- * @returns {string}
+ * @return {string}
  */
-exports.processSignals = function(clazz) {
+function processSignals(clazz) {
     let signalProto = "{ connect: function(connectTo) {}, disconnect: function(disconnectFrom) {}, emit: function() {} }";
 
     const classSignals = clazz.getSignals();
@@ -26,4 +26,6 @@ exports.processSignals = function(clazz) {
         variable: "signal",
         assignment: Template.literalObject(signals)
     });
-};
+}
+
+exports.processSignals = processSignals;

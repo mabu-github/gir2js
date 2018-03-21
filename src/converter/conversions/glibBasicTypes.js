@@ -1,4 +1,4 @@
-exports.getParameterType = function(parameter, namespace) {
+function getParameterType(parameter, namespace) {
     if (parameter.varargs) {
         return "...*";
     }
@@ -53,9 +53,9 @@ exports.getParameterType = function(parameter, namespace) {
         }
     }
     return convertedParameterType;
-};
+}
 
-exports.getTypesWithoutJsEquivalent = function() {
+function getTypesWithoutJsEquivalent() {
     return [
         '__non_introspectable_type__',
         '__non_introspectable_varargs_type__',
@@ -64,4 +64,7 @@ exports.getTypesWithoutJsEquivalent = function() {
         'gintptr',
         'guintptr'
     ];
-};
+}
+
+exports.getParameterType = getParameterType;
+exports.getTypesWithoutJsEquivalent = getTypesWithoutJsEquivalent;

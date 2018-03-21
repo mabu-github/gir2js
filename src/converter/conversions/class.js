@@ -1,5 +1,3 @@
-exports.processClasses = processClasses;
-
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
@@ -7,7 +5,7 @@ const Template = require("../templates/Template").Template;
 
 /**
  * @param {Namespace} namespace
- * @returns {string}
+ * @return {string}
  */
 function processClasses(namespace) {
     let converted = "";
@@ -20,7 +18,7 @@ function processClasses(namespace) {
 /**
  * @param {string} namespace
  * @param {Class} clazz
- * @returns {string}
+ * @return {string}
  */
 function processClass(namespace, clazz) {
     let constructorParameters = clazz.getAllProperties().map(function(property) {
@@ -45,7 +43,7 @@ function processClass(namespace, clazz) {
 /**
  * @param {string} namespace
  * @param {Class} clazz
- * @returns {string}
+ * @return {string}
  */
 function processClassProperties(namespace, clazz) {
     let properties = "";
@@ -60,3 +58,5 @@ function processClassProperties(namespace, clazz) {
     });
     return properties;
 }
+
+exports.processClasses = processClasses;

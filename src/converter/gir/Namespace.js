@@ -103,7 +103,7 @@ class Namespace extends NamedElement {
 
     /**
      * @param {string} name
-     * @returns {Class}
+     * @return {Class}
      */
     getClassByName(name) {
         this.init();

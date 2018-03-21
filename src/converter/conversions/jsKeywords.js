@@ -1,4 +1,4 @@
-exports.transformJsKeywords = function(token, prepend="", append="") {
+function transformJsKeywords(token, prepend="", append="") {
     const keywords = [
         'do',
         'if',
@@ -56,3 +56,5 @@ exports.transformJsKeywords = function(token, prepend="", append="") {
 
     return prepend + token + append;
 };
+
+exports.transformJsKeywords = transformJsKeywords;

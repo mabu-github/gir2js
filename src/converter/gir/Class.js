@@ -7,7 +7,7 @@ const NamedElement = require('./NamedElement').NamedElement;
 /**
  * @param {*} functions
  * @param {Namespace} namespace
- * @returns {Array.<Function>}
+ * @return {Array.<Function>}
  */
 function mapFunctions(functions, namespace) {
     return functions.map(function(func) {
