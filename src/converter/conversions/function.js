@@ -1,4 +1,4 @@
-const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
+const getDocblockParameterTag = require("./documentation").getDocblockParameterTag;
 const getDocblockReturnTag = require("./documentation").getDocblockReturnTag;
 const Template = require("../templates/Template").Template;
 
@@ -15,7 +15,7 @@ function processFunctions(namespace, functions, withoutClass) {
         let methodParameters = [];
 
         func.getParameters().forEach(function (parameter, parameterIdx) {
-            methodSignature += getDocblockSignatureForParameter("param", parameter);
+            methodSignature += getDocblockParameterTag(parameter);
             if (parameter.getName() !== "...") {
                 methodParameters[parameterIdx] = {name: parameter.getName()};
             }

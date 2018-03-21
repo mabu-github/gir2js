@@ -1,8 +1,8 @@
 const Template = require('../templates/Template').Template;
 
-function getDocblockSignatureForParameter(docTag, parameter) {
+function getDocblockParameterTag(parameter) {
     return Template.typedDocTag({
-        tag: docTag,
+        tag: "param",
         type: parameter.getType(),
         parameter: parameter.getName(),
         documentation: parameter.getDocumentation() + "\n"
@@ -36,7 +36,7 @@ function getDocblockEnumTag() {
     });
 }
 
-exports.getDocblockSignatureForParameter = getDocblockSignatureForParameter;
+exports.getDocblockParameterTag = getDocblockParameterTag;
 exports.getDocblockReturnTag = getDocblockReturnTag;
 exports.getDocblockTypeTag = getDocblockTypeTag;
 exports.getDocblockEnumTag = getDocblockEnumTag;
