@@ -76,6 +76,7 @@ const Template = {
      */
     variableAssignment: function(view) {
         view.docBlock = !(!view.documentation && !view.signature);
+        view.documentationAvailable = !!view.documentation && !!view.documentation.join("\n");
 
         return renderFile(TPL_VARIABLE_ASSIGNMENT, view);
     },
