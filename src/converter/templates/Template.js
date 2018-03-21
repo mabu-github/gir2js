@@ -26,12 +26,15 @@ function renderFile(file, view) {
 
 const Template = {
     /**
-     * @typedef {{name: string, definition: string, documentation: string}} _PropertyType
+     * @typedef {{name: string, definition: string, documentation: Array.<string>}} _PropertyType
      * @param {Array.<_PropertyType>} properties
      * @return string
      */
     literalObject: function(properties) {
         properties[properties.length-1].last = true;
+        properties.forEach(function (property) {
+            property.docBlock = !!property.documentation.join("\n");
+        });
         return renderFile(TPL_LITERAL_OBJECT, {properties: properties});
     },
 
@@ -60,6 +63,8 @@ const Template = {
      * @return {string}
      */
     variableAssignment: function(view) {
+        view.docBlock = !(!view.documentation && !view.signature);
+
         return renderFile(TPL_VARIABLE_ASSIGNMENT, view);
     },
 
@@ -86,6 +91,7 @@ const Template = {
         if (view.constructorParameters.length >= 1) {
             view.constructorParameters[view.constructorParameters.length-1].last = true;
         }
+
         return renderFile(TPL_CLASS, view);
     },
 };

@@ -1,5 +1,4 @@
-const processDocumentation = require('./documentation.js').processDocumentation;
-const getValidJsPropertyName = require("./property").getValidJsPropertyName;
+const Template = require("../templates/Template").Template;
 
 /**
  * @param {Class} clazz
@@ -8,15 +7,23 @@ const getValidJsPropertyName = require("./property").getValidJsPropertyName;
 exports.processSignals = function(clazz) {
     let signalProto = "{ connect: function(connectTo) {}, disconnect: function(disconnectFrom) {}, emit: function() {} }";
 
-    let signals = "";
     const classSignals = clazz.getSignals();
-    if (classSignals.length > 0) {
-        signals = "this.signal = {";
-        signals += classSignals.map(function (signal) {
-            return processDocumentation(signal.getData()) + getValidJsPropertyName(signal.getName()) + ": " + signalProto;
-        }).join(",\n");
-        signals += "};\n";
-    }
+    if (classSignals.length === 0)
+        return "";
 
-    return signals;
+    let signals = classSignals.map(function (signal) {
+        return {
+            documentation: signal.getDocumentation().split("\n"),
+            name: signal.getName(),
+            definition: signalProto
+        }
+    });
+
+    return Template.variableAssignment({
+        documentation: null,
+        signature: null,
+        prefix: "this",
+        variable: "signal",
+        assignment: Template.literalObject(signals)
+    });
 };
