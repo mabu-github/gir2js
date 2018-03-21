@@ -1,5 +1,4 @@
 const getParameterType = require('./glibBasicTypes.js').getParameterType;
-const transformJsKeywords = require('./jsKeywords.js').transformJsKeywords;
 const Template = require('../templates/Template').Template;
 
 function processDocumentation(type, appendAdditionalDocumentation=undefined) {
@@ -22,7 +21,7 @@ function getDocblockSignatureForParameter(docTag, parameter, namespace) {
     return Template.typedDocTag({
         tag: docTag,
         type: getParameterType(parameter.getData(), namespace),
-        parameter: transformJsKeywords(parameter.getName(), "", "_"),
+        parameter: parameter.getName(),
         documentation: parameter.getDocumentation() + "\n"
     });
 }

@@ -31,15 +31,9 @@ class EnumerationMember extends NamedElement {
      * @constructor
      */
     constructor(enumMember, namespace) {
+        enumMember.$.name = enumMember.$.name.toUpperCase();
         super(enumMember, namespace);
         this._enumMember = enumMember;
-    }
-
-    /**
-     * @return {string}
-     */
-    getName() {
-        return super.getName().toUpperCase();
     }
 
     /**

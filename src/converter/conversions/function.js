@@ -1,6 +1,5 @@
 const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const getDocblockReturnTag = require("./documentation").getDocblockReturnTag;
-const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
 const Template = require("../templates/Template").Template;
 
 /**
@@ -18,7 +17,7 @@ function processFunctions(namespace, functions, withoutClass) {
         func.getParameters().forEach(function (parameter, parameterIdx) {
             methodSignature += getDocblockSignatureForParameter("param", parameter, namespace);
             if (parameter.getName() !== "...") {
-                methodParameters[parameterIdx] = {name: transformJsKeywords(parameter.getName(), "", "_")};
+                methodParameters[parameterIdx] = {name: parameter.getName()};
             }
         });
         let returnType = func.getReturnType();
