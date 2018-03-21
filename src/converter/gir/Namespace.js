@@ -35,9 +35,8 @@ class Namespace extends NamedElement {
         if (this._initialized === true)
             return;
 
-        const self = this;
-        this.getClasses().forEach(function(clazz) {
-            self._classesByName[clazz.getName()] = clazz;
+        this.getClasses().forEach(clazz => {
+            this._classesByName[clazz.getName()] = clazz;
         });
 
         this._initialized = true;
@@ -47,9 +46,8 @@ class Namespace extends NamedElement {
         if (this._initialized2 === true)
             return;
 
-        const self = this;
-        this.getInterfaces().forEach(function(interface_) {
-            self._interfacesByName[interface_.getName()] = interface_;
+        this.getInterfaces().forEach(interface_ => {
+            this._interfacesByName[interface_.getName()] = interface_;
         });
 
         this._initialized2 = true;
@@ -62,10 +60,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().constant)
             return [];
 
-        const self = this;
-        return this.getNamespace().constant.map(function(constant) {
-            return new Constant(constant, self);
-        });
+        return this.getNamespace().constant.map(constant => new Constant(constant, this));
     }
 
     /**
@@ -75,10 +70,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().enumeration)
             return [];
 
-        const self = this;
-        return this.getNamespace().enumeration.map(function(enumeration) {
-            return new Enumeration(enumeration, self);
-        });
+        return this.getNamespace().enumeration.map(enumeration => new Enumeration(enumeration, this));
     }
 
     /**
@@ -88,10 +80,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().bitfield)
             return [];
 
-        const self = this;
-        return this.getNamespace().bitfield.map(function(bitfield) {
-            return new Enumeration(bitfield, self);
-        });
+        return this.getNamespace().bitfield.map(bitfield => new Enumeration(bitfield, this));
     }
 
     /**
@@ -101,10 +90,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().function)
             return [];
 
-        const self = this;
-        return this.getNamespace().function.map(function(func) {
-            return new Function(func, self);
-        });
+        return this.getNamespace().function.map(func => new Function(func, this));
     }
 
     /**
@@ -114,10 +100,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().callback)
             return [];
 
-        const self = this;
-        return this.getNamespace().callback.map(function(func) {
-            return new Function(func, self);
-        });
+        return this.getNamespace().callback.map(func => new Function(func, this));
     }
 
     /**
@@ -138,10 +121,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().class)
             return [];
 
-        const self = this;
-        return this.getNamespace().class.map(function(clazz) {
-            return new Class(clazz, self);
-        });
+        return this.getNamespace().class.map(clazz => new Class(clazz, this));
     }
 
     /**
