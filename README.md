@@ -8,6 +8,7 @@ Motivation: it is much easier to develop when autocompletion can be provided whe
 
 ```
 npm install
+sudo apt-get install seed-webkit2
 ```
 
 ## How to execute
