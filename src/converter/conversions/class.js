@@ -11,7 +11,7 @@ const Template = require("../templates/Template").Template;
  */
 function processClasses(classes, namespace, abstract) {
     let converted = "";
-    classes.forEach(function (clazz) {
+    classes.forEach(clazz => {
         converted += processClass(namespace.getName(), clazz, abstract);
     });
     return converted;
@@ -24,7 +24,7 @@ function processClasses(classes, namespace, abstract) {
  * @return {string}
  */
 function processClass(namespace, clazz, abstract) {
-    let constructorParameters = clazz.getAllProperties().map(function(property) {
+    let constructorParameters = clazz.getAllProperties().map(property => {
         return {
             name: property.getName(),
             type: property.getType()
@@ -52,7 +52,7 @@ function processClass(namespace, clazz, abstract) {
  */
 function processClassProperties(namespace, clazz) {
     let properties = "";
-    clazz.getOwnProperties().forEach(function (property) {
+    clazz.getOwnProperties().forEach(property => {
         properties += Template.variableAssignment({
             documentation: property.getDocumentation().split("\n"),
             signature: getDocblockTypeTag(property).split("\n"),

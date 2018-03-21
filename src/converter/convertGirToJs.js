@@ -16,12 +16,12 @@ if (!outputDir.startsWith("/")) {
 
 // write conversion
 parser = new xml2js.Parser();
-girFiles.forEach(function(girFile) {
-    fs.readFile(girFile, function(err, data) {
-        parser.parseString(data, function (err, result) {
+girFiles.forEach(girFile => {
+    fs.readFile(girFile, (err, data) => {
+        parser.parseString(data, (err, result) => {
             let converted = processGir(result);
             const jsFile = path.join(outputDir, path.basename(girFile).replace(/.gir/, ".js"));
-            fs.writeFile(jsFile, beautify(converted, {indent_size: 4}), function(err) {
+            fs.writeFile(jsFile, beautify(converted, {indent_size: 4}), err => {
                 if(err) {
                     console.log(err);
                 }
@@ -32,20 +32,20 @@ girFiles.forEach(function(girFile) {
 
 // write additional type file for types without javascript equivalent
 let types = "var " + getTypesWithoutJsEquivalent().join(";\nvar ") + ";\n";
-fs.writeFile(path.join(outputDir, "GLibJsIncompatibleTypes.js"), beautify(types, {indent_size: 4}), function(err) {
+fs.writeFile(path.join(outputDir, "GLibJsIncompatibleTypes.js"), beautify(types, {indent_size: 4}), err => {
     if(err) {
         console.log(err);
     }
 });
 
 // put seed runtime file to output
-execFile(path.join(__dirname, "runtime/describeSeed.js"), function(err, data) {
+execFile(path.join(__dirname, "runtime/describeSeed.js"), (err, data) => {
     if (err) {
         console.log(err);
         return;
     }
 
-    fs.writeFile(path.join(outputDir, "Seed.js"), beautify(data.toString(), {indent_size: 4}), function(err) {
+    fs.writeFile(path.join(outputDir, "Seed.js"), beautify(data.toString(), {indent_size: 4}), err => {
         if(err) {
             console.log(err);
         }

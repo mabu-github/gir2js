@@ -15,7 +15,7 @@ function processNamespace(namespace) {
     converted += Template.namespace(namespace.getName());
 
     // constants
-    namespace.getConstants().forEach(function (constant) {
+    namespace.getConstants().forEach(constant => {
         converted += Template.variableAssignment({
             documentation: constant.getDocumentation().split("\n"),
             signature: getDocblockTypeTag(constant),
@@ -27,8 +27,8 @@ function processNamespace(namespace) {
 
     // enumerations, bitfields
     const enumerationsAndBitfields = namespace.getEnumerations().concat(namespace.getBitfields());
-    enumerationsAndBitfields.forEach(function (enumeration) {
-        let enumMembers = enumeration.getMembers().map(function (enumMember) {
+    enumerationsAndBitfields.forEach(enumeration => {
+        let enumMembers = enumeration.getMembers().map(enumMember => {
             return {
                 name: enumMember.getName(),
                 definition: enumMember.getValue(),

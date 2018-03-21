@@ -11,11 +11,11 @@ const Template = require("../templates/Template").Template;
  */
 function processFunctions(namespace, functions, withoutClass, callBackFunction=false) {
     let classMethods = "";
-    functions.forEach(function (func) {
+    functions.forEach(func => {
         let methodSignature = "";
         let methodParameters = [];
 
-        func.getParameters().forEach(function (parameter, parameterIdx) {
+        func.getParameters().forEach((parameter, parameterIdx) => {
             methodSignature += getDocblockParameterTag(parameter);
             if (parameter.getName() !== "...") {
                 methodParameters[parameterIdx] = {name: parameter.getName()};

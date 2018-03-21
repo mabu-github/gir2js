@@ -11,7 +11,7 @@ function processSignals(clazz) {
     if (classSignals.length === 0)
         return "";
 
-    let signals = classSignals.map(function (signal) {
+    let signals = classSignals.map(signal => {
         return {
             documentation: signal.getDocumentation().split("\n"),
             name: signal.getName(),

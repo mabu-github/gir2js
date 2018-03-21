@@ -8,7 +8,7 @@ const processNamespace = require('./namespace').processNamespace;
 function processGir(gir) {
     let converted = "";
     let girFile = new GirFile(gir);
-    girFile.getNamespaces().forEach(function (namespace) {
+    girFile.getNamespaces().forEach(namespace => {
         converted += processNamespace(namespace);
     });
     return converted;
