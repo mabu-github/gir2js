@@ -32,8 +32,6 @@ Interfaces like Gtk.Orientable are missing.
 
 Check for duplicated method names (method, virtual-method -> at least in interface a method may appear multiple times).
 
-Use Fat Arrow Notation.
-
 Do Interface parameters have to be added to a class constructor? If yes, implement.
 
 Rename Namespace::init2() and init() -> initClassesByName(), initInterfacesByName()

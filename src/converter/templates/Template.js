@@ -33,7 +33,7 @@ const Template = {
      */
     literalObject: function(properties) {
         properties[properties.length-1].last = true;
-        properties.forEach(function (property) {
+        properties.forEach(property => {
             property.docBlock = !!property.documentation.join("\n");
         });
         return renderFile(TPL_LITERAL_OBJECT, {properties: properties});

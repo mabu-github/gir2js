@@ -105,7 +105,7 @@
             funCreateVar = undefined;
         }
 
-        Object.getOwnPropertyNames(object).forEach(function(prop) {
+        Object.getOwnPropertyNames(object).forEach(prop => {
             const sub = eval(hierarchy + prop);
             const exceptions = handleExceptions(prop, hierarchy);
 
