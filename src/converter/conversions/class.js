@@ -1,6 +1,6 @@
 exports.processClasses = processClasses;
 
-const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
+const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
 const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
 const Template = require("../templates/Template").Template;
@@ -52,7 +52,7 @@ function processClassProperties(namespace, clazz) {
     clazz.getOwnProperties().forEach(function (property) {
         properties += Template.variableAssignment({
             documentation: property.getDocumentation().split("\n"),
-            signature: getDocblockSignatureForParameter2("type", property, namespace).split("\n"),
+            signature: getDocblockSignatureForParameter("type", property, namespace).split("\n"),
             prefix: "this",
             variable: property.getName(),
             assignment: "null"

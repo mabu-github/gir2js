@@ -19,45 +19,38 @@ exports.processDocumentation = function(type, appendAdditionalDocumentation=unde
     return converted;
 };
 
-exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace, alternativeParameterName=undefined) {
-    let docblockSignature = "";
-    docblockSignature += "\n" + docTag + " {";
-    docblockSignature += getParameterType(parameter, namespace);
-    docblockSignature += "}";
-    if (alternativeParameterName === undefined) {
-        docblockSignature += " " + transformJsKeywords(parameter.$.name, "", "_");
-    } else {
-        docblockSignature += " " + alternativeParameterName;
-    }
-    if (parameter.doc) {
-        docblockSignature += " " + parameter.doc[0]._;
-    }
-    return docblockSignature + "\n";
-};
-
-exports.getDocblockSignatureForParameter2 = function(docTag, parameter, namespace) {
+exports.getDocblockSignatureForParameter = function(docTag, parameter, namespace) {
     return Template.typedDocTag({
         tag: docTag,
         type: getParameterType(parameter.getData(), namespace),
         parameter: transformJsKeywords(parameter.getName(), "", "_"),
-        documentation: parameter.getDocumentation()
+        documentation: parameter.getDocumentation() + "\n"
     });
 };
 
-exports.getUnnamedDocblockParameter = function(docTag, type) {
+exports.getDocblockReturnTag = function(parameter, namespace) {
     return Template.typedDocTag({
-        tag: docTag,
-        type: type,
+        tag: "return",
+        type: getParameterType(parameter.getData(), namespace),
+        parameter: "",
+        documentation: parameter.getDocumentation() + "\n"
+    });
+};
+
+exports.getDocblockTypeTag = function(typedElement) {
+    return Template.typedDocTag({
+        tag: "type",
+        type: typedElement.getType(),
         parameter: "",
         documentation: ""
     });
 };
 
-exports.getDocblockReturnValue = function(method, namespace) {
-    if (!method['return-value']
-        || (/* void */ method['return-value'][0].type && method['return-value'][0].type[0].$.name === "none")) {
-        return "";
-    }
-
-    return exports.getDocblockSignatureForParameter("@return", method['return-value'][0], namespace, "");
+exports.getDocblockEnumTag = function() {
+    return Template.typedDocTag({
+        tag: "enum",
+        type: "number",
+        parameter: "",
+        documentation: ""
+    });
 };

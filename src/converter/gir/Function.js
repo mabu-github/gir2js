@@ -1,3 +1,4 @@
+const ReturnType = require("./ReturnType").ReturnType;
 const NamedElement = require("./NamedElement").NamedElement;
 const Parameter = require("./Parameter").Parameter;
 
@@ -23,6 +24,20 @@ class Function extends NamedElement {
         return this._func.parameters[0].parameter.map(function(parameter) {
             return new Parameter(parameter, self.getNamespace());
         });
+    }
+
+    /**
+     * @return {?ReturnType}
+     */
+    getReturnType() {
+        if (!this._func['return-value']
+            || (/* void */ this._func['return-value'][0].type
+                && this._func['return-value'][0].type[0].$.name === "none")
+        ) {
+            return null;
+        }
+
+        return new ReturnType(this._func['return-value'][0], this.getNamespace());
     }
 }
 

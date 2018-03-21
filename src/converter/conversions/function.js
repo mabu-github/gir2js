@@ -1,28 +1,30 @@
-const getDocblockSignatureForParameter2 = require("./documentation").getDocblockSignatureForParameter2;
+const getDocblockSignatureForParameter = require("./documentation").getDocblockSignatureForParameter;
+const getDocblockReturnTag = require("./documentation").getDocblockReturnTag;
 const transformJsKeywords = require("./jsKeywords").transformJsKeywords;
-const getDocblockReturnValue = require("./documentation").getDocblockReturnValue;
 const Template = require("../templates/Template").Template;
 
 /**
  * @param {string} namespace
  * @param {Array.<Function>} functions
  * @param {boolean} withoutClass
- * @returns {string}
+ * @return {string}
  */
 function processFunctions(namespace, functions, withoutClass) {
     let classMethods = "";
     functions.forEach(function (func) {
-        let method = func.getData();
         let methodSignature = "";
         let methodParameters = [];
 
         func.getParameters().forEach(function (parameter, parameterIdx) {
-            methodSignature += getDocblockSignatureForParameter2("param", parameter, namespace);
+            methodSignature += getDocblockSignatureForParameter("param", parameter, namespace);
             if (parameter.getName() !== "...") {
                 methodParameters[parameterIdx] = {name: transformJsKeywords(parameter.getName(), "", "_")};
             }
         });
-        methodSignature += getDocblockReturnValue(method, namespace);
+        let returnType = func.getReturnType();
+        if (returnType !== null) {
+            methodSignature += getDocblockReturnTag(returnType, namespace);
+        }
         let prefix = "";
         if (withoutClass) {
             prefix = namespace;

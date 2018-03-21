@@ -10,7 +10,8 @@ const processFunctions = require('./conversions/function.js').processFunctions;
 const execFile = require('child_process').execFile;
 const GirFile = require('./gir/GirFile').GirFile;
 const Template = require('./templates/Template').Template;
-const getUnnamedDocblockParameter = require("./conversions/documentation").getUnnamedDocblockParameter;
+const getDocblockTypeTag = require("./conversions/documentation").getDocblockTypeTag;
+const getDocblockEnumTag = require("./conversions/documentation").getDocblockEnumTag;
 
 const girFile = process.argv[2];
 let jsFile = process.argv[3];
@@ -35,7 +36,7 @@ function processGir(gir) {
         namespace.getConstants().forEach(function (constant) {
             converted += Template.variableAssignment({
                 documentation: constant.getDocumentation().split("\n"),
-                signature: getUnnamedDocblockParameter("type", constant.getType(), constant.getName()).split("\n"),
+                signature: getDocblockTypeTag(constant),
                 prefix: name,
                 variable: constant.getName(),
                 assignment: constant.getValue()
@@ -55,7 +56,7 @@ function processGir(gir) {
 
             converted += Template.variableAssignment({
                 documentation: enumeration.getDocumentation().split("\n"),
-                signature: getUnnamedDocblockParameter("enum", "number", enumeration.getName()).split("\n"),
+                signature: getDocblockEnumTag(),
                 prefix: name,
                 variable: enumeration.getName(),
                 assignment: Template.literalObject(enumMembers)
