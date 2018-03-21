@@ -1,4 +1,3 @@
-const getParameterType = require('./glibBasicTypes.js').getParameterType;
 const Template = require('../templates/Template').Template;
 
 function processDocumentation(type, appendAdditionalDocumentation=undefined) {
@@ -20,7 +19,7 @@ function processDocumentation(type, appendAdditionalDocumentation=undefined) {
 function getDocblockSignatureForParameter(docTag, parameter, namespace) {
     return Template.typedDocTag({
         tag: docTag,
-        type: getParameterType(parameter.getData(), namespace),
+        type: parameter.getType(),
         parameter: parameter.getName(),
         documentation: parameter.getDocumentation() + "\n"
     });
@@ -29,7 +28,7 @@ function getDocblockSignatureForParameter(docTag, parameter, namespace) {
 function getDocblockReturnTag(parameter, namespace) {
     return Template.typedDocTag({
         tag: "return",
-        type: getParameterType(parameter.getData(), namespace),
+        type: parameter.getType(),
         parameter: "",
         documentation: parameter.getDocumentation() + "\n"
     });

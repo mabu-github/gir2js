@@ -1,4 +1,4 @@
-const NamedElement = require("./NamedElement").NamedElement;
+const NamedTypedElement = require("./NamedTypedElement").NamedTypedElement;
 
 function transformJsKeywords(token, prepend="", append="") {
     const keywords = [
@@ -59,7 +59,7 @@ function transformJsKeywords(token, prepend="", append="") {
     return prepend + token + append;
 }
 
-class Parameter extends NamedElement {
+class Parameter extends NamedTypedElement {
     /**
      * @param {*} parameter
      * @param {Namespace} namespace
