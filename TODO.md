@@ -7,7 +7,6 @@ Process elements in namespace:
 * record
 * alias
 * class -> class fields
-* interface
 
 Handle basic types in getParameterType():
 * is GStr also a normal string in javascript?
@@ -38,3 +37,6 @@ Rename Namespace::init2() and init() -> initClassesByName(), initInterfacesByNam
 
 Autocompletion for interfaces does not work (signals, properties, methods).
 Need to mix the signals and properties of interfaces manually into the definition.
+
+Autocompletion for signals does not work for inherited classes and mixins (gi interfaces). Implement as shown
+in test/ide/mixin.js to provide autocompletion.
