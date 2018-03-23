@@ -43,5 +43,3 @@ in test/ide/mixin.js to provide autocompletion.
 
 Do not display empty constructor parameters in docblock when there are none -> just don't display constructorParameters.
 E.g. Gtk.AccelGroupPrivate.
-
-Gtk.Border attributes missing: left, right, bottom, top
