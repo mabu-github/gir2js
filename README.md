@@ -38,6 +38,7 @@ GIR Schema
 JS-DOC Typehints:
 * [Webstorm Type Validation](https://blog.jetbrains.com/webstorm/2012/10/validating-javascript-code-with-jsdoc-types-annotations/)
 * [Closure Compiler JS Annotations](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler)
+* [Closure Compiler Types in Typesystem](https://github.com/google/closure-compiler/wiki/Types-in-the-Closure-Type-System)
 * [JS Doc](http://usejsdoc.org/index.html)
 * [Article about Typehinting in JS](https://strongloop.com/strongblog/type-hinting-in-javascript/)
 
