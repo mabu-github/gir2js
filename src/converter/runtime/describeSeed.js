@@ -80,13 +80,13 @@
         if (prop === "imports") {
             let imports = "";
             imports += "/** Native module imports, e.g. imports.readline */\n";
-            imports += "var imports = {};";
-            imports += "/** Import search path */";
-            imports += "imports.searchPath = [];";
-            imports += "/** GObject-Introspection imports, e.g. imports.gi.Gtk */";
-            imports += "imports.gi = {};";
-            imports += "/** Set import version to be required, e.g. imports.gi.versions.Gtk = '3.0' */";
-            imports += "imports.gi.versions = {};";
+            imports += "var imports = {};\n";
+            imports += "/** Import search path */\n";
+            imports += "imports.searchPath = [];\n";
+            imports += "/** GObject-Introspection imports, e.g. imports.gi.Gtk */\n";
+            imports += "imports.gi = {};\n";
+            imports += "/** Set import version to be required, e.g. imports.gi.versions.Gtk = '3.0' */\n";
+            imports += "imports.gi.versions = {};\n";
             return imports;
         }
 
