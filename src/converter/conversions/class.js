@@ -40,9 +40,29 @@ function processClass(namespace, clazz, abstract) {
         prefix: clazz.getNamespaceName(),
         class: clazz.getName(),
         classBody: processSignals(clazz)
+            + processClassFields(namespace, clazz)
             + processClassProperties(namespace, clazz)
             + processFunctions(namespace, clazz.getAllFunctions(), false, false)
     });
+}
+
+/**
+ * @param {string} namespace
+ * @param {Class} clazz
+ * @return {string}
+ */
+function processClassFields(namespace, clazz) {
+    let fields = "";
+    clazz.getFields().filter(field => field.isUsable()).forEach(field => {
+        fields += Template.variableAssignment({
+            documentation: field.getDocumentation().split("\n"),
+            signature: getDocblockTypeTag(field).split("\n"),
+            prefix: "this",
+            variable: field.getName(),
+            assignment: "null"
+        });
+    });
+    return fields;
 }
 
 /**

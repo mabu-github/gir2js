@@ -1,3 +1,4 @@
+const Field = require("./Field").Field;
 const Signal = require("./Signal").Signal;
 const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
@@ -130,6 +131,16 @@ class Class extends NamedElement {
             properties = properties.concat(clazz.getOwnProperties());
         });
         return properties;
+    }
+
+    /**
+     * @return {Array.<Field>}
+     */
+    getFields() {
+        if (!this._clazz.field)
+            return [];
+
+        return this._clazz.field.map(field => new Field(field, this.getNamespace()));
     }
 
     /**
