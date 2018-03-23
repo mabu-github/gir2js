@@ -1,5 +1,20 @@
+const escapeStringRegexp = require('escape-string-regexp');
+
 function getValidJsIdentifierName(name) {
     return name.replace(/-/g, '_');
+}
+
+function processDocumentation(doc, namespace) {
+    namespace = escapeStringRegexp(namespace);
+    return doc
+        .replace(
+            new RegExp("#(" + namespace + ")([\\w\\d]*)::?([-_\\w\\d]*)"),
+            function (str, namespace, clazz, method) {
+                return "{@link " + namespace + "." + clazz + "#" + getValidJsIdentifierName(method) + "}";
+            }
+        )
+        .replace(new RegExp("#(" + namespace + ")([\\w\\d]*)"), "{@link $1.$2}")
+        ;
 }
 
 class NamedElement {
@@ -53,7 +68,7 @@ class NamedElement {
      */
     getDocumentation() {
         if (!this._data.doc) return "";
-        return this._data.doc[0]._;
+        return processDocumentation(this._data.doc[0]._, this.getNamespaceName());
     };
 }
 
