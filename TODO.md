@@ -4,16 +4,10 @@ Process elements in namespace:
 *** signals
 **** a signal can probably do more than connect()
 **** add signal method documentation (e.g. to all connect calls etc.)
-* record
 * alias
-* class -> class fields
 
 Handle basic types in getParameterType():
 * is GStr also a normal string in javascript?
-* take care of namespace: Gtk.Action instead of Action (all kind of types)
-** return types
-** parameter types
-** property types
 * is conversion valid? find example
 ** gpointer -> string (closest equivalent to byte data), or better ArrayBuffer?
 
@@ -22,7 +16,7 @@ Make ./test/converter/convertGirFilesToJs.sh work by fixing conversion script ac
 Improve seed runtime info file:
 * [Seed runtime documentation](https://people.gnome.org/~racarr/seed/runtime.html)
 
-Handle parent classes outside of own class namespace.
+Handle parent classes outside of own class namespace (e.g. for getting all constructor parameters).
 
 Documentation from GIR file needs to be processed to be valid in docblock.
 * # links to foreign namespace
@@ -37,3 +31,5 @@ Need to mix the signals and properties of interfaces manually into the definitio
 
 Autocompletion for signals does not work for inherited classes and mixins (gi interfaces). Implement as shown
 in test/ide/mixin.js to provide autocompletion.
+
+Handle parameter type callback.
