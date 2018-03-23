@@ -110,8 +110,7 @@ class Namespace extends NamedElement {
         if (!this.getNamespace().interface)
             return [];
 
-        const self = this;
-        return this.getNamespace().interface.map(interface_ => new Interface_(interface_, self));
+        return this.getNamespace().interface.map(interface_ => new Interface_(interface_, this));
     }
 
     /**
@@ -140,6 +139,13 @@ class Namespace extends NamedElement {
     getInterfaceByName(name) {
         this.init2();
         return this._interfacesByName[name];
+    }
+
+    getRecords() {
+        if (!this.getNamespace().record)
+            return [];
+
+        return this.getNamespace().record.map(record => new Class(record, this));
     }
 }
 

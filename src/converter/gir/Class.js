@@ -1,4 +1,3 @@
-const Field = require("./Field").Field;
 const Signal = require("./Signal").Signal;
 const Constructor = require("./Constructor").Constructor;
 const Property = require('./Property').Property;
@@ -111,16 +110,6 @@ class Class extends NamedElement {
     }
 
     /**
-     * @return {Array.<Field>}
-     */
-    getFields() {
-        if (!this._clazz.field)
-            return [];
-
-        return this._clazz.field.map(field => new Field(field, this.getNamespace()));
-    }
-
-    /**
      * @return {Array.<Property>}
      */
     getOwnProperties() {
@@ -193,6 +182,13 @@ class Class extends NamedElement {
             .concat(this.getStaticMethods())
             .concat(this.getVirtualMethods())
             ;
+    }
+
+    /**
+     * @return {boolean}
+     */
+    isUsable() {
+        return (!this._clazz.$.disguised || this._clazz.$.disguised !== "1");
     }
 }
 

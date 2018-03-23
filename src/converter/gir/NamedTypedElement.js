@@ -7,6 +7,10 @@ function getParameterType(parameter, namespace) {
     if (parameter.array) {
         return "Array.<" + getParameterType(parameter.array[0], namespace) + ">";
     }
+    if (parameter.callback) {
+        console.warn("Cannot process callback parameter");
+        return "__non_introspectable_type__";
+    }
     if (!parameter.type[0].$) {
         console.warn("Found non introspectable type");
         return "__non_introspectable_type__";

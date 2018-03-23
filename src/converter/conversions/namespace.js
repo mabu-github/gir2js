@@ -50,6 +50,7 @@ function processNamespace(namespace) {
 
     converted += processClasses(namespace.getInterfaces(), namespace, true);
     converted += processClasses(namespace.getClasses(), namespace, false);
+    converted += processClasses(namespace.getRecords(), namespace, false);
 
     return converted;
 }
