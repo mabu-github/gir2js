@@ -33,3 +33,5 @@ Autocompletion for signals does not work for inherited classes and mixins (gi in
 in test/ide/mixin.js to provide autocompletion.
 
 Handle parameter type callback.
+
+Add python as a language conversion target.
