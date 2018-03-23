@@ -1,5 +1,26 @@
 {
-    connect: function(connectTo) {},
-    disconnect: function(disconnectFrom) {},
-    emit: function() {}
+    /**
+      * Connects a GCallback function to a signal for a particular object.
+      * The handler will be called before the default handler of the signal.
+      * @param {function(...*)} the callback to connect
+      * @return {number} the handler ID, of type gulong (always greater than 0 for successful connections)
+      */
+    connect: function(signalHandler) {},
+    /**
+      * Connects a GCallback function to a signal for a particular object.
+      * The handler will be called after the default handler of the signal.
+      * @param {function(...*)} the callback to connect
+      * @return {number} the handler ID, of type gulong (always greater than 0 for successful connections)
+      */
+    connect_after: function(signalHandler) {},
+    /**
+      * Disconnects a handler from an instance so it will not be called during any future or currently ongoing emissions of the signal it has been connected to.
+      * @param {number} handlerId Handler id of the handler to be disconnected.
+      */
+    disconnect: function(handlerId) {},
+    /**
+      * Emits a signal.
+      * @param {[*]} detail
+      */
+    emit: function(detail) {}
 }

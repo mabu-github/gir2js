@@ -1,9 +1,6 @@
 # TODOs
 
 Process elements in namespace:
-*** signals
-**** a signal can probably do more than connect()
-**** add signal method documentation (e.g. to all connect calls etc.)
 * alias
 
 Handle basic types in getParameterType():
