@@ -33,8 +33,6 @@ Check for duplicated method names (method, virtual-method -> at least in interfa
 
 Do Interface parameters have to be added to a class constructor? If yes, implement.
 
-Rename Namespace::init2() and init() -> initClassesByName(), initInterfacesByName()
-
 Autocompletion for interfaces does not work (signals, properties, methods).
 Need to mix the signals and properties of interfaces manually into the definition.
 

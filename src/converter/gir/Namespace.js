@@ -16,7 +16,7 @@ class Namespace extends NamedElement {
         /**
          * @type {boolean}
          * */
-        this._initialized = false;
+        this._initializedClassesByName = false;
 
         /**
          * @dict
@@ -31,26 +31,26 @@ class Namespace extends NamedElement {
         this._interfacesByName = {};
     }
 
-    init() {
-        if (this._initialized === true)
+    initClassesByName() {
+        if (this._initializedClassesByName === true)
             return;
 
         this.getClasses().forEach(clazz => {
             this._classesByName[clazz.getName()] = clazz;
         });
 
-        this._initialized = true;
+        this._initializedClassesByName = true;
     };
 
-    init2() {
-        if (this._initialized2 === true)
+    initInterfacesByName() {
+        if (this._initializedInterfacesByName === true)
             return;
 
         this.getInterfaces().forEach(interface_ => {
             this._interfacesByName[interface_.getName()] = interface_;
         });
 
-        this._initialized2 = true;
+        this._initializedInterfacesByName = true;
     };
 
     /**
@@ -128,7 +128,7 @@ class Namespace extends NamedElement {
      * @return {Class}
      */
     getClassByName(name) {
-        this.init();
+        this.initClassesByName();
         return this._classesByName[name];
     }
 
@@ -137,7 +137,7 @@ class Namespace extends NamedElement {
      * @return {Class}
      */
     getInterfaceByName(name) {
-        this.init2();
+        this.initInterfacesByName();
         return this._interfacesByName[name];
     }
 
