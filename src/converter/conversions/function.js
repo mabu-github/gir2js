@@ -7,9 +7,10 @@ const Template = require("../templates/Template").Template;
  * @param {Array.<Function>} functions
  * @param {boolean} withoutClass
  * @param {boolean} callBackFunction
+ * @param {function(NamedElement):string} callbackName
  * @return {string}
  */
-function processFunctions(namespace, functions, withoutClass, callBackFunction=false) {
+function processFunctions(namespace, functions, withoutClass, callBackFunction, callbackName) {
     let classMethods = "";
     functions.forEach(func => {
         let methodSignature = "";
@@ -36,8 +37,7 @@ function processFunctions(namespace, functions, withoutClass, callBackFunction=f
             classMethods += Template.callback({
                 documentation: func.getDocumentation().split("\n"),
                 signature: methodSignature.split("\n"),
-                prefix: prefix,
-                method: func.getName(),
+                callbackName: callbackName(func)
             });
         } else {
             classMethods += Template.method({

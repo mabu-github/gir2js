@@ -54,15 +54,31 @@ function processClass(namespace, clazz, abstract) {
 function processClassFields(namespace, clazz) {
     let fields = "";
     clazz.getFields().filter(field => field.isUsable()).forEach(field => {
+        fields += processFunctions(namespace, field.getCallbackFunctions(), true, true, function(field) {
+            return getCallbackTypenameForField(clazz.getData(), field);
+        });
+        const signature = field.hasCallbackFunctions()
+            ? "@type " + getCallbackTypenameForField(clazz.getData(), field)
+            : getDocblockTypeTag(field).split("\n");
+
         fields += Template.variableAssignment({
             documentation: field.getDocumentation().split("\n"),
-            signature: getDocblockTypeTag(field).split("\n"),
+            signature: signature,
             prefix: "this",
             variable: field.getName(),
             assignment: "null"
         });
     });
     return fields;
+}
+
+/**
+ * @param {*} parameter
+ * @param {NamedElement} namedElement
+ * @returns {string}
+ */
+function getCallbackTypenameForField(parameter, namedElement) {
+    return "callback_" + namedElement.getNamespaceName() + "_" + parameter.$.name + "_" + namedElement.getName();
 }
 
 /**

@@ -45,7 +45,9 @@ function processNamespace(namespace) {
         });
     });
 
-    converted += processFunctions(namespace.getName(), namespace.getCallbackFunctions(), true, true);
+    converted += processFunctions(namespace.getName(), namespace.getCallbackFunctions(), true, true, function(element) {
+        return element.getFullyQualifiedName();
+    });
     converted += processFunctions(namespace.getName(), namespace.getFunctions(), true, false);
 
     converted += processClasses(namespace.getInterfaces(), namespace, true);

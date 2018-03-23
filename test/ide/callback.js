@@ -8,13 +8,13 @@ CGtk.AboutDialogClass = function() {
      */
     this.parent_class = null;
     /**
-     * @callback callback_GtkAboutDialogClass
+     * @callback callback_GtkAboutDialogClass_activate_link
      * @param {boolean} param_bool doc1
      * @param {number} param_num doc2
      * @return {boolean}
      */
     /**
-     * @type {callback_GtkAboutDialogClass}
+     * @type {callback_GtkAboutDialogClass_activate_link}
      */
     this.activate_link = null;
 

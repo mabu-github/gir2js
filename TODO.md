@@ -61,3 +61,6 @@ cgtk.activate_link;
 ---/snip
 
 Add python as a language conversion target.
+* getParameterType does not separate between data structure and target language. It returns javascript specific return types.
+
+Cleanup handling of callbacks in fields;

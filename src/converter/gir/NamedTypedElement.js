@@ -1,15 +1,21 @@
 const NamedElement = require('./NamedElement').NamedElement;
 
-function getParameterType(parameter, namespace) {
+/**
+ * @param {*} parameter
+ * @param {NamedElement} namedElement
+ * @returns {string}
+ */
+function getParameterType(parameter, namedElement) {
+    const namespace = namedElement.getNamespaceName();
+
     if (parameter.varargs) {
         return "...*";
     }
     if (parameter.array) {
-        return "Array.<" + getParameterType(parameter.array[0], namespace) + ">";
+        return "Array.<" + getParameterType(parameter.array[0], namedElement) + ">";
     }
     if (parameter.callback) {
-        console.warn("Cannot process callback parameter");
-        return "__non_introspectable_type__";
+        throw new Exception("Cannot handle callback type here because an additional corresponding docblock needs to be generated");
     }
     if (!parameter.type[0].$) {
         console.warn("Found non introspectable type");
@@ -89,7 +95,7 @@ class NamedTypedElement extends NamedElement {
      * @return {string}
      */
     getType() {
-        return getParameterType(this.getData(), this.getNamespaceName());
+        return getParameterType(this.getData(), this);
     }
 }
 
