@@ -32,6 +32,32 @@ Need to mix the signals and properties of interfaces manually into the definitio
 Autocompletion for signals does not work for inherited classes and mixins (gi interfaces). Implement as shown
 in test/ide/mixin.js to provide autocompletion.
 
-Handle parameter type callback.
+Handle parameter type callback. Callback needs to be in a docblock before usage and the name must not contain '.':
+---snip
+var CGtk = {};
+/**
+ * @constructor
+ */
+CGtk.AboutDialogClass = function() {
+    /**
+     * @type {Gtk.DialogClass}
+     */
+    this.parent_class = null;
+    /**
+     * @callback callback_GtkAboutDialogClass
+     * @param {boolean} param_bool
+     * @param {number} param_num
+     * @return {boolean}
+     */
+    /*
+     * @type {callback_GtkAboutDialogClass}
+     */
+    this.activate_link = null;
+
+};
+
+let cgtk = new CGtk.AboutDialogClass();
+cgtk.activate_link;
+---/snip
 
 Add python as a language conversion target.
