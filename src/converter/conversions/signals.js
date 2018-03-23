@@ -5,8 +5,6 @@ const Template = require("../templates/Template").Template;
  * @return {string}
  */
 function processSignals(clazz) {
-    let signalProto = "{ connect: function(connectTo) {}, disconnect: function(disconnectFrom) {}, emit: function() {} }";
-
     const classSignals = clazz.getSignals();
     if (classSignals.length === 0)
         return "";
@@ -15,7 +13,7 @@ function processSignals(clazz) {
         return {
             documentation: signal.getDocumentation().split("\n"),
             name: signal.getName(),
-            definition: signalProto
+            definition: Template.signalType()
         }
     });
 

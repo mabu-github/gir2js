@@ -14,6 +14,7 @@ const TPL_LITERAL_OBJECT = __dirname + "/literalObject.mustache";
 const TPL_METHOD = __dirname + "/method.mustache";
 const TPL_CALLBACK = __dirname + "/callback.mustache";
 const TPL_CLASS = __dirname + "/class.mustache";
+const TPL_SIGNAL_TYPE = __dirname + "/signalType.mustache";
 
 let templates = {};
 function renderFile(file, view) {
@@ -111,6 +112,10 @@ const Template = {
 
         return renderFile(TPL_CLASS, view);
     },
+
+    signalType: function() {
+        return renderFile(TPL_SIGNAL_TYPE);
+    }
 };
 
 exports.Template = Template;
