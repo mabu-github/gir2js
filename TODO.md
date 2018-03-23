@@ -25,7 +25,6 @@ Improve seed runtime info file:
 Handle parent classes outside of own class namespace.
 
 Documentation from GIR file needs to be processed to be valid in docblock.
-* @ signs
 * # links to foreign namespace
 
 Check for duplicated method names (method, virtual-method -> at least in interface a method may appear multiple times).

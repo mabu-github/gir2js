@@ -6,14 +6,19 @@ function getValidJsIdentifierName(name) {
 
 function processDocumentation(doc, namespace) {
     namespace = escapeStringRegexp(namespace);
+    const emphasize = function(str, toEmphasize) {
+        return "_" + toEmphasize + "_";
+    };
     return doc
+        .replace(/@([\w\d-_]+)/g, emphasize)
+        .replace(/%([\w\d-_]+)/g, emphasize)
         .replace(
-            new RegExp("#(" + namespace + ")([\\w\\d]*)::?([-_\\w\\d]*)"),
+            new RegExp("#(" + namespace + ")([\\w\\d]*)::?([-_\\w\\d]*)", "g"),
             function (str, namespace, clazz, method) {
                 return "{@link " + namespace + "." + clazz + "#" + getValidJsIdentifierName(method) + "}";
             }
         )
-        .replace(new RegExp("#(" + namespace + ")([\\w\\d]*)"), "{@link $1.$2}")
+        .replace(new RegExp("#(" + namespace + ")([\\w\\d]*)", "g"), "{@link $1.$2}")
         ;
 }
 
