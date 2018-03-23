@@ -16,12 +16,14 @@
 <%#implements%>
   * @mixes <%.%>
 <%/implements%>
+<%#constructorHasParameters%>
   * @param {{
 <%#constructorParameters%>
   *   [<%name%>]: <%type%><%^last%>,<%/last%>
 <%/constructorParameters%>
   *   }} constructorProperties
+<%/constructorHasParameters%>
   */
-<%prefix%>.<%class%> = function(constructorProperties) {
+<%prefix%>.<%class%> = function(<%#constructorHasParameters%>constructorProperties<%/constructorHasParameters%>) {
     <%classBody%>
 };

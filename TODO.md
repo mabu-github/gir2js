@@ -40,6 +40,3 @@ Need to mix the signals and properties of interfaces manually into the definitio
 
 Autocompletion for signals does not work for inherited classes and mixins (gi interfaces). Implement as shown
 in test/ide/mixin.js to provide autocompletion.
-
-Do not display empty constructor parameters in docblock when there are none -> just don't display constructorParameters.
-E.g. Gtk.AccelGroupPrivate.

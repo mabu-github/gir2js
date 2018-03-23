@@ -106,6 +106,7 @@ const Template = {
         view.documentationAvailable = !!view.documentation.join("\n");
         if (view.constructorParameters.length >= 1) {
             view.constructorParameters[view.constructorParameters.length-1].last = true;
+            view.constructorHasParameters = true;
         }
 
         return renderFile(TPL_CLASS, view);
