@@ -7,6 +7,7 @@ const beautify = require('js-beautify').js_beautify;
 const getTypesWithoutJsEquivalent = require('./gir/NamedTypedElement').getTypesWithoutJsEquivalent;
 const processGir = require('./conversions/gir.js').processGir;
 const execFile = require('child_process').execFile;
+const Template = require('./templates/Template').Template;
 
 let outputDir = process.argv[2];
 const girFiles = process.argv.slice(3);
@@ -28,6 +29,13 @@ girFiles.forEach(girFile => {
             });
         });
     });
+});
+
+// write signal type file
+fs.writeFile(path.join(outputDir, "SignalType.js"), beautify(Template.signalType(), {indent_size: 4}), err => {
+    if(err) {
+        console.log(err);
+    }
 });
 
 // write additional type file for types without javascript equivalent

@@ -11,9 +11,9 @@ function processSignals(clazz) {
 
     let signals = classSignals.map(signal => {
         return {
-            documentation: signal.getDocumentation().split("\n"),
+            documentation: signal.getDocumentation().split("\n").concat(["@type {__SignalType}"]),
             name: signal.getName(),
-            definition: Template.signalType()
+            definition: "null"
         }
     });
 

@@ -4,7 +4,6 @@ Process elements in namespace:
 * alias
 * signals
 ** mix in signals from parents into class
-** make a single typedef for signal type instead of writing the whole declaration into every signal
 
 Handle basic types in getParameterType():
 * is GStr also a normal string in javascript?
