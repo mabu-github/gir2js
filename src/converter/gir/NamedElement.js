@@ -10,6 +10,8 @@ function processDocumentation(doc, namespace) {
         return "_" + toEmphasize + "_";
     };
     return doc
+        .replace(new RegExp(escapeStringRegexp('|[') + "(" + escapeStringRegexp('<!-- language="') + '[^"]+' + escapeStringRegexp('" -->') + ")?", "g"), "<pre><code>")
+        .replace(new RegExp(escapeStringRegexp(']|'), "g"), "</code></pre>")
         .replace(/@([\w\d-_]+)/g, emphasize)
         .replace(/%([\w\d-_]+)/g, emphasize)
         .replace(
