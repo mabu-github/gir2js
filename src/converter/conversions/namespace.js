@@ -46,7 +46,7 @@ function processNamespace(namespace) {
     });
 
     converted += processFunctions(namespace.getName(), namespace.getCallbackFunctions(), true, true, function(element) {
-        return element.getFullyQualifiedName();
+        return element.getNamespaceName() + "_" + element.getName();
     });
     converted += processFunctions(namespace.getName(), namespace.getFunctions(), true, false);
 

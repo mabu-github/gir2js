@@ -29,6 +29,12 @@ class Namespace extends NamedElement {
          * @type {Object.<string, Class>}
          */
         this._interfacesByName = {};
+
+        /**
+         * @dict
+         * @type {Object.<string, Function>}
+         */
+        this._callbackFunctionsByFullyQualifiedName = {};
     }
 
     initClassesByName() {
@@ -51,6 +57,17 @@ class Namespace extends NamedElement {
         });
 
         this._initializedInterfacesByName = true;
+    };
+
+    initCallbackFunctionsByFullyQualifiedName() {
+        if (this._initializedCallbackFunctionsByFullyQualifiedName === true)
+            return;
+
+        this.getCallbackFunctions().forEach(callback => {
+            this._callbackFunctionsByFullyQualifiedName[callback.getFullyQualifiedName()] = callback;
+        });
+
+        this._initializedCallbackFunctionsByFullyQualifiedName = true;
     };
 
     /**
@@ -125,7 +142,7 @@ class Namespace extends NamedElement {
 
     /**
      * @param {string} name
-     * @return {Class}
+     * @return {?Class}
      */
     getClassByName(name) {
         this.initClassesByName();
@@ -134,11 +151,20 @@ class Namespace extends NamedElement {
 
     /**
      * @param {string} name
-     * @return {Class}
+     * @return {?Class}
      */
     getInterfaceByName(name) {
         this.initInterfacesByName();
         return this._interfacesByName[name];
+    }
+
+    /**
+     * @param {string} name
+     * @return {?Function}
+     */
+    getCallbackFunctionByFullyQualifiedName(name) {
+        this.initCallbackFunctionsByFullyQualifiedName();
+        return this._callbackFunctionsByFullyQualifiedName[name];
     }
 
     getRecords() {

@@ -95,7 +95,14 @@ class NamedTypedElement extends NamedElement {
      * @return {string}
      */
     getType() {
-        return getParameterType(this.getData(), this);
+        const parameterType = getParameterType(this.getData(), this);
+
+        // handle typename transformation for callbacks in namespace
+        if (this._namespace.getCallbackFunctionByFullyQualifiedName(parameterType)) {
+            return parameterType.replace(/\./g, "_");
+        }
+
+        return parameterType;
     }
 }
 
