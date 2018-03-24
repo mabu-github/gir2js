@@ -1,5 +1,4 @@
 const getDocblockTypeTag = require("./documentation").getDocblockTypeTag;
-const processSignals = require("./signals").processSignals;
 const processFunctions = require("./function").processFunctions;
 const Template = require("../templates/Template").Template;
 
@@ -31,7 +30,7 @@ function processClass(namespace, clazz, abstract) {
         };
     });
 
-    return Template.class({
+    return preprocessSignals(clazz) + Template.class({
         documentation: clazz.getDocumentation().split("\n"),
         constructorParameters: constructorParameters,
         extends: clazz.getFullyQualifiedParentName(),
@@ -98,6 +97,54 @@ function processClassProperties(namespace, clazz) {
         });
     });
     return properties;
+}
+
+/**
+ * @param {Class} clazz
+ * @return {string}
+ */
+function processSignals(clazz) {
+    return Template.variableAssignment({
+        documentation: null,
+        signature: ["@type {" + getSignalTypename(clazz) + "}"],
+        prefix: "this",
+        variable: "signal",
+        assignment: "null"
+    });
+}
+
+/**
+ * @param {Class} clazz
+ * @return {string}
+ */
+function preprocessSignals(clazz) {
+    const classSignals = clazz.getOwnSignals();
+    if (classSignals.length === 0)
+        return "";
+
+    let signals = "";
+
+    classSignals.forEach(signal => {
+        signals += Template.variableAssignment({
+            documentation: signal.getDocumentation().split("\n"),
+            prefix: "this",
+            variable: signal.getName(),
+            assignment: Template.signalType()
+        });
+    });
+
+    signals =  Template.class({
+        documentation: [],
+        variableSpecifier: "const",
+        class: getSignalTypename(clazz),
+        classBody: signals
+    });
+
+    return signals;
+}
+
+function getSignalTypename(clazz) {
+    return "__signals_" + clazz.getName();
 }
 
 exports.processClasses = processClasses;

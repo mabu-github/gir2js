@@ -94,20 +94,31 @@ const Template = {
      * @typedef {{name: string, type: string}} _ConstructorParameterType
      * @param {{
      *  documentation: Array.<string>,
-     *  constructorParameters: Array<_ConstructorParameterType>
-     *  prefix: string,
+     *  [constructorParameters]: Array<_ConstructorParameterType>
+     *  [prefix]: string,
      *  class: string,
-     *  extends: ?string,
-     *  abstract: boolean
-     *  implements: Array.<string>,
-     *  classBody: string}} view
+     *  [extends]: ?string,
+     *  [abstract]: boolean
+     *  [implements]: Array.<string>,
+     *  classBody: string,
+     *  [variableSpecifier]: string
+     *  }} view
      * @return {string}
      */
     class: function(view) {
+        if (!view.constructorParameters) {
+            view.constructorParameters = [];
+        }
         view.documentationAvailable = !!view.documentation.join("\n");
         if (view.constructorParameters.length >= 1) {
             view.constructorParameters[view.constructorParameters.length-1].last = true;
             view.constructorHasParameters = true;
+        }
+        if (view.prefix) {
+            view.hasPrefix = true;
+        }
+        if (view.variableSpecifier) {
+            view.introduceVariable = true;
         }
 
         return renderFile(TPL_CLASS, view);

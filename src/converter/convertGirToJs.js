@@ -31,13 +31,6 @@ girFiles.forEach(girFile => {
     });
 });
 
-// write signal type file
-fs.writeFile(path.join(outputDir, "SignalType.js"), beautify(Template.signalType(), {indent_size: 4}), err => {
-    if(err) {
-        console.log(err);
-    }
-});
-
 // write additional type file for types without javascript equivalent
 let types = "var " + getTypesWithoutJsEquivalent().join(";\nvar ") + ";\n";
 fs.writeFile(path.join(outputDir, "GLibJsIncompatibleTypes.js"), beautify(types, {indent_size: 4}), err => {

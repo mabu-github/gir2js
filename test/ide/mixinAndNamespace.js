@@ -60,7 +60,10 @@ NS.MAB = function() {
  * @ignore
  */
 const __MAD_signals = function() {
-    this.sigFourth = function() {};
+    this.sigFourth = {
+        connect: null,
+        emit: null
+    };
 };
 
 /**
@@ -78,4 +81,4 @@ NS.MAD = function() {
 let mad = new NS.MAD();
 // complete here and find properties of B, A
 // and also find signals (must show up before hasOwnProperty in WebStorm)
-mad.signal;
+mad.signal.sigFourth.connect;

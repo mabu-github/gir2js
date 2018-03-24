@@ -24,6 +24,6 @@
   *   }} constructorProperties
 <%/constructorHasParameters%>
   */
-<%prefix%>.<%class%> = function(<%#constructorHasParameters%>constructorProperties<%/constructorHasParameters%>) {
+<%#introduceVariable%><%variableSpecifier%> <%/introduceVariable%><%#hasPrefix%><%prefix%>.<%/hasPrefix%><%class%> = function(<%#constructorHasParameters%>constructorProperties<%/constructorHasParameters%>) {
     <%classBody%>
 };
