@@ -28,9 +28,6 @@ Do Interface parameters have to be added to a class constructor? If yes, impleme
 Autocompletion for interfaces does not work (signals, properties, methods).
 Need to mix the signals and properties of interfaces manually into the definition.
 
-Autocompletion for signals does not work for inherited classes and mixins (gi interfaces). Implement as shown
-in test/ide/mixin.js to provide autocompletion.
-
 Add python as a language conversion target.
 * getParameterType does not separate between data structure and target language. It returns javascript specific return types.
 
