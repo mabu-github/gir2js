@@ -14,6 +14,12 @@ function mapFunctions(functions, namespace) {
     return functions.map(func => new Function(func, namespace));
 }
 
+/**
+ * @template T
+ * @param {Array.<T>} list
+ * @param {function(T):string} getEqualityAttributeValue
+ * @returns {Array.<T>}
+ */
 function removeDuplicates(list, getEqualityAttributeValue) {
     const items = list.map(getEqualityAttributeValue);
 
@@ -160,7 +166,7 @@ class Class extends NamedElement {
         classes.forEach(clazz => {
             properties = properties.concat(clazz.getOwnProperties());
         });
-        return properties;
+        return removeDuplicates(properties, property => property.getName());
     }
 
     /**
