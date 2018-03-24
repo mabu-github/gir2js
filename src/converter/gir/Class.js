@@ -200,7 +200,7 @@ class Class extends NamedElement {
         classes.forEach(clazz => {
             signals = signals.concat(clazz.getOwnSignals());
         });
-        return signals;
+        return removeDuplicates(signals, signal => signal.getName());
     }
 
     /**
