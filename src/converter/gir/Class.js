@@ -114,7 +114,8 @@ class Class extends NamedElement {
      * @return {Array.<Property>}
      */
     getOwnProperties() {
-        if (!this._clazz.property) return [];
+        if (!this._clazz.property)
+            return [];
 
         return this._clazz.property.map(property => new Property(property, this.getNamespace()));
     }
@@ -146,11 +147,25 @@ class Class extends NamedElement {
     /**
      * @return {Array.<Signal>}
      */
-    getSignals() {
+    getOwnSignals() {
         if (!this._clazz['glib:signal'])
             return [];
 
         return this._clazz['glib:signal'].map(signal => new Signal(signal, this.getNamespace()));
+    }
+
+    /**
+     * @return {Array.<Signal>}
+     */
+    getAllSignals() {
+        let signals = [];
+        const classes = [this]
+            .concat(this.getParents())
+            .concat(this.getImplementedInterfaces());
+        classes.forEach(clazz => {
+            signals = signals.concat(clazz.getOwnSignals());
+        });
+        return signals;
     }
 
     /**
@@ -222,6 +237,10 @@ class ClassOutsideNamespace extends Class {
     }
 
     getOwnProperties() {
+        return [];
+    }
+
+    getOwnSignals() {
         return [];
     }
 }
