@@ -104,6 +104,9 @@ function processClassProperties(namespace, clazz) {
  * @return {string}
  */
 function processSignals(clazz) {
+    if (clazz.getOwnSignals().length === 0)
+        return "";
+
     return Template.variableAssignment({
         documentation: null,
         signature: ["@type {" + getSignalTypename(clazz) + "}"],
@@ -133,8 +136,13 @@ function preprocessSignals(clazz) {
         });
     });
 
+    const signalParents = clazz.getParents()
+        .filter(parent => parent.getOwnSignals().length > 0)
+        .map(parent => getSignalTypename(parent));
+
     signals =  Template.class({
         documentation: [],
+        implements: signalParents,
         variableSpecifier: "const",
         class: getSignalTypename(clazz),
         classBody: signals
