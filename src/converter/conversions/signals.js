@@ -13,7 +13,7 @@ function processSignals(clazz) {
         return {
             documentation: signal.getDocumentation().split("\n").concat(["@type {__SignalType}"]),
             name: signal.getName(),
-            definition: Template.signalType()
+            definition: "null"
         }
     });
 

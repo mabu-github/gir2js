@@ -48,3 +48,13 @@ Seed:
 
 Glib Basic Types:
 * [Glib Basic Types](https://developer.gnome.org/glib/stable/glib-Basic-Types.html)
+
+## IDE Settings for bigger files
+
+### WebStorm
+
+Open `Help->Edit Custom Properties` and put in the following property (analyze files up to 10MB):
+
+```
+idea.max.intellisense.filesize=10000
+```
