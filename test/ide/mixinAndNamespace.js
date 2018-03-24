@@ -68,7 +68,10 @@ const __MAD_signals = function() {
  * @mixes MAB
  */
 NS.MAD = function() {
-    this.signal = new __MAD_signals();
+    /**
+     * @type {__MAD_signals}
+     */
+    this.signal = null;
     this.propD = '';
 };
 
