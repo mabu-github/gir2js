@@ -19,8 +19,7 @@ Documentation from GIR file needs to be processed to be valid in docblock.
 * # links to foreign namespace
 * #, ## heading -> markdown ===, ---
 
-Check for duplicated method names (method, virtual-method -> at least in interface a method may appear multiple times):
-  e.g. Gtk.Window::show_all
+Check for duplicated properties and fields in classes. Use removeDuplicates() method when necessary for getAll* methods.
 
 Do Interface parameters have to be added to a class constructor? If yes, implement.
 
