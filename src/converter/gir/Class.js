@@ -14,6 +14,35 @@ function mapFunctions(functions, namespace) {
     return functions.map(func => new Function(func, namespace));
 }
 
+function removeDuplicates(list, getEqualityAttributeValue) {
+    const items = list.map(getEqualityAttributeValue);
+
+    let duplicateIdxs = [];
+    items.reverse().forEach((item, idx, items) => {
+        if (items.indexOf(item, idx+1) > -1) {
+            duplicateIdxs.push(items.length - idx - 1);
+        }
+    });
+    duplicateIdxs.reverse();
+
+    if (duplicateIdxs.length === 0)
+        return list;
+
+    let withoutDuplicates = [];
+    let j = 0;
+    for (let i = 0; i < list.length; i++) {
+        if (duplicateIdxs[j] === i) {
+            if (j < duplicateIdxs.length - 1) {
+                j++;
+            }
+            continue;
+        }
+        withoutDuplicates.push(list[i]);
+    }
+
+    return withoutDuplicates;
+}
+
 class Class extends NamedElement {
     /**
      * @param {*} clazz
@@ -202,12 +231,14 @@ class Class extends NamedElement {
      * @return {Array.<Function>}
      */
     getAllFunctions() {
-        return []
+        const allMethodsContainingDuplicates = []
             .concat(this.getConstructors())
             .concat(this.getInstanceMethods())
             .concat(this.getStaticMethods())
             .concat(this.getVirtualMethods())
             ;
+
+        return removeDuplicates(allMethodsContainingDuplicates, method => method.getName());
     }
 
     /**
