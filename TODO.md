@@ -2,8 +2,6 @@
 
 Process elements in namespace:
 * alias
-* signals
-** mix in signals from parents into class
 
 Handle basic types in getParameterType():
 * is GStr also a normal string in javascript?
